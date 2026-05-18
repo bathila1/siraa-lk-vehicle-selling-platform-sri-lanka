@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { MoreVertical, Edit3, CheckSquare, Trash2 } from 'lucide-react';
+import { MoreVertical, Edit3, CheckSquare, Trash2, Zap } from 'lucide-react';
 
 interface Props {
   vehicleId: number;
@@ -65,6 +65,15 @@ export function DashboardActions({ vehicleId, isSold }: Props) {
 
       {open && (
         <div className="absolute right-0 top-full mt-1 w-44 bg-white border border-[var(--color-border)] rounded-lg shadow-lg z-30 overflow-hidden">
+          {!isSold && (
+            <Link
+              href={`/dashboard/boost/${vehicleId}`}
+              className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-[var(--brand-bg)] text-[var(--brand-deep)] font-medium transition-colors"
+            >
+              <Zap className="w-3.5 h-3.5 text-amber-500" />
+              Boost ad
+            </Link>
+          )}
           <Link
             href={`/dashboard/edit/${vehicleId}`}
             className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 transition-colors"

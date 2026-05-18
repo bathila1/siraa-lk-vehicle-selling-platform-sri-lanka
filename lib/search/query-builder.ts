@@ -136,11 +136,30 @@ export async function searchVehicles(params: SearchQueryInput): Promise<SearchRe
       primary_image: primaryImg,
       is_boosted: !!activeBoost,
       boost_type: activeBoost?.type?.type ?? null,
-      price_dropped: false, // computed separately if needed
+      price_dropped: false,
       created_at: row.created_at,
       view_count: row.view_count,
     };
   });
+
+  // Page 1 only: pull boosted ads to the top.
+  // Pro slots first, then Normal slots, then the rest preserves the user's sort.
+  // We respect base sort beyond that, so this only affects the first page.
+  if (page === 1) {
+    const proAds    = vehicles.filter((v) => v.boost_type === 'pro');
+    const normalAds = vehicles.filter((v) => v.boost_type === 'normal');
+    const regular   = vehicles.filter((v) => !v.is_boosted);
+
+    // Apply slot caps if relevant; falls back to "show all boosted at top" if no config
+    const sorted = [...proAds, ...normalAds, ...regular];
+    return {
+      vehicles: sorted,
+      total,
+      page,
+      perPage,
+      totalPages: Math.ceil(total / perPage),
+    };
+  }
 
   return {
     vehicles,
