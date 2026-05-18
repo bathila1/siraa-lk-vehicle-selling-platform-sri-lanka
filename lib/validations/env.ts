@@ -29,8 +29,11 @@ const serverSchema = z.object({
   PAYHERE_MERCHANT_SECRET: z.string().min(1),
   PAYHERE_MODE: z.enum(['sandbox', 'live']).default('sandbox'),
 
-  // hCaptcha
-  HCAPTCHA_SECRET_KEY: z.string().min(1),
+  // Turnstile
+  TURNSTILE_SECRET_KEY: z.string().min(1),
+
+  // Session JWT signing
+  SESSION_SECRET: z.string().min(32, 'SESSION_SECRET must be at least 32 chars'),
 
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
 });
@@ -38,8 +41,7 @@ const serverSchema = z.object({
 const clientSchema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(20),
-  NEXT_PUBLIC_HCAPTCHA_SITE_KEY: z.string().min(1),
-  NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: z.string().min(1),
+  NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string().min(1),
   NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().optional(),
   NEXT_PUBLIC_SITE_URL: z.string().url(),
   NEXT_PUBLIC_PAYHERE_CHECKOUT_URL: z.string().url(),
@@ -65,8 +67,7 @@ export function getClientEnv() {
   const env = {
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    NEXT_PUBLIC_HCAPTCHA_SITE_KEY: process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY,
-    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+    NEXT_PUBLIC_TURNSTILE_SITE_KEY: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
     NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     NEXT_PUBLIC_PAYHERE_CHECKOUT_URL: process.env.NEXT_PUBLIC_PAYHERE_CHECKOUT_URL,

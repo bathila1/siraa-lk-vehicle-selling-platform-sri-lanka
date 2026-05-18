@@ -8,23 +8,24 @@ interface LocationMapProps {
   label: string;
 }
 
-/**
- * OpenStreetMap via Leaflet — free, no API key needed.
- * Shows a ~500m radius circle around the pin (not exact location).
- * Loaded dynamically so it doesn't bloat SSR.
- */
 export function LocationMap({ lat, lng, label }: LocationMapProps) {
-  const mapRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
+  const initStartedRef = useRef(false);
 
   useEffect(() => {
-    if (!mapRef.current || mapInstanceRef.current) return;
+    if (initStartedRef.current) return;
+    initStartedRef.current = true;
 
-    // Dynamic import — Leaflet is browser-only
+    if (!containerRef.current) return;
+    const container = containerRef.current;
+
+    let cancelled = false;
+
     const loadMap = async () => {
       const L = (await import('leaflet')).default;
+      if (cancelled) return;
 
-      // Fix Leaflet default marker icons (broken in bundlers)
       // @ts-ignore
       delete L.Icon.Default.prototype._getIconUrl;
       L.Icon.Default.mergeOptions({
@@ -33,7 +34,13 @@ export function LocationMap({ lat, lng, label }: LocationMapProps) {
         shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
       });
 
-      const map = L.map(mapRef.current!, {
+      // Defensive: wipe any leftover Leaflet state on the container
+      if ((container as any)._leaflet_id) {
+        delete (container as any)._leaflet_id;
+        container.innerHTML = '';
+      }
+
+      const map = L.map(container, {
         center: [lat, lng],
         zoom: 13,
         zoomControl: true,
@@ -45,7 +52,6 @@ export function LocationMap({ lat, lng, label }: LocationMapProps) {
         maxZoom: 18,
       }).addTo(map);
 
-      // ~500m radius circle — approximate privacy-preserving location
       L.circle([lat, lng], {
         radius: 500,
         color: '#2FA084',
@@ -63,16 +69,17 @@ export function LocationMap({ lat, lng, label }: LocationMapProps) {
     loadMap();
 
     return () => {
+      cancelled = true;
       if (mapInstanceRef.current) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
       }
+      initStartedRef.current = false;
     };
   }, [lat, lng, label]);
 
   return (
     <>
-      {/* Leaflet CSS */}
       <link
         rel="stylesheet"
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -80,7 +87,7 @@ export function LocationMap({ lat, lng, label }: LocationMapProps) {
         crossOrigin=""
       />
       <div
-        ref={mapRef}
+        ref={containerRef}
         className="w-full h-52 rounded-xl overflow-hidden border border-[var(--color-border)]"
         aria-label={`Map showing approximate location in ${label}`}
       />

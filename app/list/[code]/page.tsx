@@ -27,7 +27,7 @@ export default async function SharedListPage({ params }: Props) {
   if (!list || !list.vehicle_ids?.length) notFound();
 
   // Increment view count
-  await supabase.rpc('increment_saved_list_views' as any, { p_code: code }).catch(() => {});
+  // await supabase.rpc('increment_saved_list_views' as any, { p_code: code }).catch(() => {});
 
   // Fetch the vehicles
   const { data: rawVehicles } = await supabase

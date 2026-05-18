@@ -135,6 +135,7 @@ export default async function HomePage() {
                             src={img}
                             alt={vehicle.model}
                             fill
+                            loading="eager"
                             sizes="200px"
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
                           />

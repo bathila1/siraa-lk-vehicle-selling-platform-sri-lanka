@@ -68,23 +68,9 @@ export const sellerSignupSchema = z.object({
 
 export const vehicleConditionEnum = z.enum(['registered']);
 
-export const transmissionEnum = z.enum([
-  'auto',
-  'manual',
-  'tiptronic',
-  'cvt',
-  'other',
-]);
+export const transmissionEnum = z.enum(['auto', 'manual', 'tiptronic', 'cvt', 'other']);
 
-export const fuelEnum = z.enum([
-  'petrol',
-  'diesel',
-  'hybrid',
-  'electric',
-  'cng',
-  'lpg',
-  'other',
-]);
+export const fuelEnum = z.enum(['petrol', 'diesel', 'hybrid', 'electric', 'cng', 'lpg', 'other']);
 
 export const bodyTypeEnum = z.enum([
   'sedan',
@@ -125,10 +111,7 @@ export const vehicleCreateSchema = z.object({
   lat: z.coerce.number().min(-90).max(90).optional(),
   lng: z.coerce.number().min(-180).max(180).optional(),
   customAttributes: z.record(z.unknown()).default({}),
-  imageIds: z
-    .array(z.string())
-    .min(3, 'Upload at least 3 images')
-    .max(6, 'Maximum 6 images'),
+  imageIds: z.array(z.string()).min(3, 'Upload at least 3 images').max(6, 'Maximum 6 images'),
 });
 
 export const vehicleUpdateSchema = vehicleCreateSchema.partial();
@@ -161,7 +144,11 @@ export const searchQuerySchema = z.object({
 export const imageUploadSchema = z.object({
   filename: z.string().trim().min(1).max(120),
   contentType: z.enum(['image/jpeg', 'image/png', 'image/webp']),
-  size: z.number().int().positive().max(8 * 1024 * 1024, 'Max 8 MB per image'),
+  size: z
+    .number()
+    .int()
+    .positive()
+    .max(8 * 1024 * 1024, 'Max 8 MB per image'),
 });
 
 // ---------- Boosts & payments ----------

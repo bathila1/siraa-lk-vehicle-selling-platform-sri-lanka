@@ -41,6 +41,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
           src={images[active].url}
           alt={`${title} — photo ${active + 1}`}
           fill
+          loading='eager'
           sizes="(max-width: 768px) 100vw, 66vw"
           className="object-cover"
           priority={active === 0}

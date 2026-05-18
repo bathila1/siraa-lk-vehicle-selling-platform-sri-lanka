@@ -11,6 +11,7 @@ import { VehicleCard } from '@/components/vehicle/VehicleCard';
 import { ContactButtons } from '@/components/vehicle/ContactButtons';
 import { ImageGallery } from '@/components/vehicle/ImageGallery';
 import { LocationMap } from '@/components/vehicle/LocationMap';
+import { SaveButton } from '@/components/vehicle/SaveButton';
 import { getVehicleBySlug, getSimilarVehicles } from '@/lib/db/queries';
 import { formatLKR, timeAgo, buildVehicleSlug } from '@/lib/utils';
 
@@ -230,6 +231,8 @@ export default async function VehicleDetailPage({ params }: Props) {
                 vehicleTitle={`${vehicle.year} ${vehicle.make?.name} ${vehicle.model}`}
                 price={vehicle.price}
               />
+
+              <SaveButton vehicleId={vehicle.id} />
 
               {/* Seller card */}
               {vehicle.seller && (
