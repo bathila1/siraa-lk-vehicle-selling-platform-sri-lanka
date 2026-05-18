@@ -1,0 +1,92 @@
+{
+  "brand": {
+    "name": "Siraa",
+    "tagline": "Sri Lanka's vehicle marketplace",
+    "tagline_si": "අභිමානවත් ශ්‍රී ලාංකීය නිර්මාණයකි"
+  },
+  "nav": {
+    "browse": "Browse",
+    "post_ad": "Post Ad",
+    "saved": "Saved",
+    "dashboard": "Dashboard",
+    "login": "Sign In",
+    "logout": "Sign Out"
+  },
+  "search": {
+    "placeholder": "Search make, model, city... e.g. Toyota Aqua 2015 Colombo",
+    "filter": "Filter",
+    "sort": "Sort",
+    "no_results": "No vehicles match — try fewer filters",
+    "did_you_mean": "Did you mean",
+    "results_count": "{count} vehicles"
+  },
+  "vehicle": {
+    "show_number": "Show Number",
+    "call_now": "Call Now",
+    "whatsapp": "WhatsApp",
+    "save": "Save",
+    "saved": "Saved",
+    "share": "Share",
+    "report": "Report this ad",
+    "price_dropped": "Price dropped",
+    "boosted": "Boosted",
+    "pro": "Pro",
+    "sold": "Sold",
+    "view_seller_ads": "View seller's other ads",
+    "similar_vehicles": "Similar vehicles"
+  },
+  "post_ad": {
+    "title": "Post your ad",
+    "step_details": "Vehicle details",
+    "step_images": "Add photos (3–6)",
+    "step_location": "Pin location",
+    "step_review": "Review & publish",
+    "publish": "Publish ad",
+    "image_help": "Upload 3 to 6 clear photos. Max 8 MB each.",
+    "promo_active": "🎉 First 100 sellers — free posting!"
+  },
+  "report": {
+    "title": "Report this ad",
+    "reason_sold": "Already sold",
+    "reason_scam": "Looks like a scam",
+    "reason_wrong_info": "Wrong information",
+    "reason_duplicate": "Duplicate ad",
+    "reason_other": "Other",
+    "submit": "Submit report",
+    "thanks": "Thanks — we'll review this shortly."
+  },
+  "auth": {
+    "phone_label": "Mobile number",
+    "phone_placeholder": "07x xxx xxxx",
+    "send_otp": "Send code",
+    "otp_label": "Enter the 6-digit code sent to your phone",
+    "verify": "Verify",
+    "resend": "Resend code",
+    "captcha_check": "Verifying you're human..."
+  },
+  "boost": {
+    "title": "Boost your ad",
+    "normal_name": "NormalBoost",
+    "pro_name": "BoostPro",
+    "buy": "Buy & Boost",
+    "active_until": "Active until {date}",
+    "expired": "Expired"
+  },
+  "errors": {
+    "network": "Network error. Please try again.",
+    "rate_limit": "Too many requests. Please slow down.",
+    "validation": "Please check the highlighted fields.",
+    "phone_invalid": "Enter a valid Sri Lankan mobile number",
+    "otp_invalid": "That code didn't work — try again",
+    "image_too_large": "Image is too large (max 8 MB)",
+    "image_count": "Upload between 3 and 6 photos"
+  },
+  "footer": {
+    "about": "About",
+    "contact": "Contact",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "blog": "Blog",
+    "copyright": "© {year} Siraa.lk — All rights reserved."
+  }
+}
