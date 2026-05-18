@@ -29,11 +29,13 @@ export default async function BoostPage({ params }: Props) {
   const [{ data: vehicle }, { data: plans }, { data: activeBoost }] = await Promise.all([
     supabase
       .from('vehicles')
-      .select(`
+      .select(
+        `
         id, slug, model, year, price, status, seller_id,
         vehicle_makes ( name ),
         vehicle_images ( url, is_primary, sort_order )
-      `)
+      `,
+      )
       .eq('id', vehicleId)
       .single(),
     supabase
@@ -59,45 +61,58 @@ export default async function BoostPage({ params }: Props) {
     <>
       <Header />
       <main className="min-h-[calc(100vh-3.5rem)] bg-[var(--brand-bg)]">
-        <div className="max-w-2xl mx-auto px-4 py-6 pb-24 md:pb-6">
+        <div className="mx-auto max-w-2xl px-4 py-6 pb-24 md:pb-6">
           <Link
             href="/dashboard"
-            className="text-xs text-gray-500 hover:text-[var(--brand-green)] flex items-center gap-1 mb-3"
+            className="mb-3 flex items-center gap-1 text-xs text-gray-500 hover:text-[var(--brand-green)]"
           >
-            <ArrowLeft className="w-3 h-3" />
+            <ArrowLeft className="h-3 w-3" />
             Back to dashboard
           </Link>
 
-          <h1 className="text-xl font-bold mb-1">Boost your ad</h1>
-          <p className="text-sm text-gray-500 mb-5">
+          <h1 className="mb-1 text-xl font-bold">Boost your ad</h1>
+          <p className="mb-5 text-sm text-gray-500">
             Get more views by featuring your listing at the top of search results.
           </p>
 
           {/* Vehicle preview */}
-          <div className="bg-white rounded-xl border border-[var(--color-border)] p-3 flex items-center gap-3 mb-5">
+          <div className="mb-5 flex items-center gap-3 rounded-xl border border-[var(--color-border)] bg-white p-3">
             {primaryImage && (
-              <div className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
-                <Image src={primaryImage} alt={v.model} fill sizes="64px" className="object-cover" />
+              <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
+                <Image
+                  src={primaryImage}
+                  alt={v.model}
+                  fill
+                  sizes="64px"
+                  className="object-cover"
+                />
               </div>
             )}
-            <div className="flex-1 min-w-0">
-              <p className="font-medium text-sm truncate">
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-medium">
                 {v.year} {v.vehicle_makes?.name} {v.model}
               </p>
-              <p className="text-[var(--brand-deep)] font-bold text-sm mt-0.5">{formatLKR(v.price)}</p>
+              <p className="mt-0.5 text-sm font-bold text-[var(--brand-deep)]">
+                {formatLKR(v.price)}
+              </p>
             </div>
           </div>
 
           {activeBoost ? (
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm">
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm">
               <p className="font-medium text-amber-800">
                 {activeBoost.status === 'pending'
                   ? 'A boost is pending payment for this vehicle.'
                   : `This vehicle is currently boosted as ${(activeBoost as any).boost_plans?.name}.`}
               </p>
               {activeBoost.status === 'active' && (
-                <p className="text-xs text-amber-700 mt-1">
-                  Expires {new Date(activeBoost.expires_at).toLocaleDateString('en-LK', { year: 'numeric', month: 'long', day: 'numeric' })}
+                <p className="mt-1 text-xs text-amber-700">
+                  Expires{' '}
+                  {new Date(activeBoost.expires_at).toLocaleDateString('en-LK', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
                 </p>
               )}
             </div>

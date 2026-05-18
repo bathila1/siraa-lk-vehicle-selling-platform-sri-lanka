@@ -18,10 +18,7 @@ interface TurnstileResponse {
  * Returns true if valid, false otherwise.
  * In development mode (no secret set), returns true to allow local testing.
  */
-export async function verifyTurnstileToken(
-  token: string,
-  remoteIp?: string,
-): Promise<boolean> {
+export async function verifyTurnstileToken(token: string, remoteIp?: string): Promise<boolean> {
   const secret = process.env.TURNSTILE_SECRET_KEY;
 
   // In dev without a secret, allow through (warn loudly)
@@ -42,14 +39,11 @@ export async function verifyTurnstileToken(
   if (remoteIp) body.append('remoteip', remoteIp);
 
   try {
-    const res = await fetch(
-      'https://challenges.cloudflare.com/turnstile/v0/siteverify',
-      {
-        method: 'POST',
-        body,
-        signal: AbortSignal.timeout(5_000),
-      },
-    );
+    const res = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body,
+      signal: AbortSignal.timeout(5_000),
+    });
     const data = (await res.json()) as TurnstileResponse;
     if (!data.success) {
       console.warn('[Turnstile] Verification failed:', data['error-codes']);

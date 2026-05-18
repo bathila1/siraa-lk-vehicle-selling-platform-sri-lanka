@@ -94,18 +94,21 @@ export function PostAdWizard({
     try {
       const raw = localStorage.getItem(DRAFT_KEY);
       if (raw) setDraft({ ...emptyDraft, ...(JSON.parse(raw) as PostAdDraft) });
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }, []);
 
   // Persist draft on every change
   useEffect(() => {
     try {
       localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }, [draft]);
 
-  const updateDraft = (patch: Partial<PostAdDraft>) =>
-    setDraft((d) => ({ ...d, ...patch }));
+  const updateDraft = (patch: Partial<PostAdDraft>) => setDraft((d) => ({ ...d, ...patch }));
 
   // Per-step validation — controls whether "Next" is enabled
   const canProceed = useMemo(() => {
@@ -115,7 +118,8 @@ export function PostAdWizard({
         draft.makeId !== null &&
         draft.model.trim().length > 0 &&
         draft.year !== null &&
-        draft.price !== null && draft.price >= 1000
+        draft.price !== null &&
+        draft.price >= 1000
       );
     }
     if (step === 2) {
@@ -133,26 +137,26 @@ export function PostAdWizard({
 
     try {
       const payload = {
-        vehicleTypeId:    draft.vehicleTypeId,
-        makeId:           draft.makeId,
-        model:            draft.model,
-        year:             draft.year,
-        price:            draft.price,
-        mileageKm:        draft.mileageKm ?? undefined,
-        engineCc:         draft.engineCc ?? undefined,
-        bodyType:         draft.bodyType ?? undefined,
-        transmission:     draft.transmission ?? undefined,
-        fuelType:         draft.fuelType ?? undefined,
-        condition:        draft.condition,
-        color:            draft.color || undefined,
-        previousOwners:   draft.previousOwners ?? undefined,
-        description:      draft.description || undefined,
-        districtId:       draft.districtId,
-        cityId:           draft.cityId ?? undefined,
-        lat:              draft.lat ?? undefined,
-        lng:              draft.lng ?? undefined,
+        vehicleTypeId: draft.vehicleTypeId,
+        makeId: draft.makeId,
+        model: draft.model,
+        year: draft.year,
+        price: draft.price,
+        mileageKm: draft.mileageKm ?? undefined,
+        engineCc: draft.engineCc ?? undefined,
+        bodyType: draft.bodyType ?? undefined,
+        transmission: draft.transmission ?? undefined,
+        fuelType: draft.fuelType ?? undefined,
+        condition: draft.condition,
+        color: draft.color || undefined,
+        previousOwners: draft.previousOwners ?? undefined,
+        description: draft.description || undefined,
+        districtId: draft.districtId,
+        cityId: draft.cityId ?? undefined,
+        lat: draft.lat ?? undefined,
+        lng: draft.lng ?? undefined,
         customAttributes: draft.customAttributes,
-        imageIds:         draft.imageUrls, // URLs serve as IDs at this stage
+        imageIds: draft.imageUrls, // URLs serve as IDs at this stage
       };
 
       const res = await fetch('/api/vehicles', {
@@ -178,33 +182,33 @@ export function PostAdWizard({
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-6 pb-24">
+    <div className="mx-auto max-w-2xl px-4 py-6 pb-24">
       {/* Promo banner */}
       {promoActive && (
-        <div className="bg-[var(--brand-mint)] text-[var(--brand-deep)] text-sm text-center px-4 py-2 rounded-full mb-4 font-medium">
+        <div className="mb-4 rounded-full bg-[var(--brand-mint)] px-4 py-2 text-center text-sm font-medium text-[var(--brand-deep)]">
           🎉 Free posting active — first 100 sellers!
         </div>
       )}
 
       {/* Progress bar */}
-      <div className="bg-white rounded-xl border border-[var(--color-border)] p-4 mb-4">
-        <div className="flex items-center justify-between mb-2">
+      <div className="mb-4 rounded-xl border border-[var(--color-border)] bg-white p-4">
+        <div className="mb-2 flex items-center justify-between">
           {STEPS.map((s, i) => (
-            <div key={s.id} className="flex items-center flex-1">
+            <div key={s.id} className="flex flex-1 items-center">
               <div
                 className={cn(
-                  'w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0',
+                  'flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-medium',
                   step > s.id && 'bg-[var(--brand-green)] text-white',
                   step === s.id && 'bg-[var(--brand-deep)] text-white',
                   step < s.id && 'bg-gray-200 text-gray-400',
                 )}
               >
-                {step > s.id ? <Check className="w-3.5 h-3.5" /> : s.id}
+                {step > s.id ? <Check className="h-3.5 w-3.5" /> : s.id}
               </div>
               {i < STEPS.length - 1 && (
                 <div
                   className={cn(
-                    'h-0.5 flex-1 mx-2',
+                    'mx-2 h-0.5 flex-1',
                     step > s.id ? 'bg-[var(--brand-green)]' : 'bg-gray-200',
                   )}
                 />
@@ -212,13 +216,13 @@ export function PostAdWizard({
             </div>
           ))}
         </div>
-        <p className="text-xs text-center text-gray-500 mt-2 font-medium">
+        <p className="mt-2 text-center text-xs font-medium text-gray-500">
           Step {step} of 4: {STEPS[step - 1].label}
         </p>
       </div>
 
       {/* Step content */}
-      <div className="bg-white rounded-xl border border-[var(--color-border)] p-4 md:p-6">
+      <div className="rounded-xl border border-[var(--color-border)] bg-white p-4 md:p-6">
         {step === 1 && (
           <StepDetails
             draft={draft}
@@ -230,12 +234,7 @@ export function PostAdWizard({
         )}
         {step === 2 && <StepImages draft={draft} update={updateDraft} />}
         {step === 3 && (
-          <StepLocation
-            draft={draft}
-            update={updateDraft}
-            districts={districts}
-            cities={cities}
-          />
+          <StepLocation draft={draft} update={updateDraft} districts={districts} cities={cities} />
         )}
         {step === 4 && (
           <StepReview
@@ -248,13 +247,11 @@ export function PostAdWizard({
         )}
       </div>
 
-      {submitError && (
-        <p className="text-xs text-red-500 mt-3 text-center">{submitError}</p>
-      )}
+      {submitError && <p className="mt-3 text-center text-xs text-red-500">{submitError}</p>}
 
       {/* Sticky bottom action bar (mobile-friendly) */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[var(--color-border)] p-3 z-30 md:relative md:bg-transparent md:border-0 md:p-0 md:mt-4">
-        <div className="flex items-center gap-2 max-w-2xl mx-auto">
+      <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-[var(--color-border)] bg-white p-3 md:relative md:mt-4 md:border-0 md:bg-transparent md:p-0">
+        <div className="mx-auto flex max-w-2xl items-center gap-2">
           {step > 1 && (
             <Button
               variant="outline"
@@ -262,7 +259,7 @@ export function PostAdWizard({
               onClick={() => setStep((s) => s - 1)}
               className="flex-shrink-0"
             >
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowLeft className="h-4 w-4" />
             </Button>
           )}
           {step < 4 ? (
@@ -274,7 +271,7 @@ export function PostAdWizard({
               className="flex-1"
             >
               Continue
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="h-4 w-4" />
             </Button>
           ) : (
             <Button

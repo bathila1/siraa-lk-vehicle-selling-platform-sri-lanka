@@ -20,7 +20,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://siraa.lk';
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Siraa.lk — Sri Lanka\'s Vehicle Marketplace',
+    default: "Siraa.lk — Sri Lanka's Vehicle Marketplace",
     template: '%s | Siraa.lk',
   },
   description:
@@ -71,11 +71,7 @@ export const viewport: Viewport = {
   maximumScale: 5,
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${notoSinhala.variable}`}>
       <body>{children}</body>

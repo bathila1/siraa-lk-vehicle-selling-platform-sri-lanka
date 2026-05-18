@@ -28,7 +28,7 @@ export function SavedListClient() {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      const ids = raw ? JSON.parse(raw) as number[] : [];
+      const ids = raw ? (JSON.parse(raw) as number[]) : [];
       setSavedIds(ids);
     } catch {
       setSavedIds([]);
@@ -36,7 +36,10 @@ export function SavedListClient() {
   }, []);
 
   useEffect(() => {
-    if (savedIds.length === 0) { setLoading(false); return; }
+    if (savedIds.length === 0) {
+      setLoading(false);
+      return;
+    }
 
     const fetchVehicles = async () => {
       try {
@@ -90,9 +93,9 @@ export function SavedListClient() {
 
   return (
     <>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-bold flex items-center gap-2">
-          <Heart className="w-5 h-5 text-red-500 fill-red-500" />
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="flex items-center gap-2 text-xl font-bold">
+          <Heart className="h-5 w-5 fill-red-500 text-red-500" />
           Saved Vehicles
           {savedIds.length > 0 && (
             <span className="text-sm font-normal text-gray-500">({savedIds.length})</span>
@@ -101,11 +104,16 @@ export function SavedListClient() {
         {savedIds.length > 0 && (
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" onClick={handleShare} loading={sharing}>
-              <Share2 className="w-3.5 h-3.5" />
+              <Share2 className="h-3.5 w-3.5" />
               Share List
             </Button>
-            <Button variant="ghost" size="sm" onClick={clearAll} className="text-red-500 hover:text-red-600">
-              <Trash2 className="w-3.5 h-3.5" />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={clearAll}
+              className="text-red-500 hover:text-red-600"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
               Clear
             </Button>
           </div>
@@ -113,50 +121,58 @@ export function SavedListClient() {
       </div>
 
       {shareUrl && (
-        <div className="bg-[var(--brand-bg)] border border-[var(--brand-mint)] rounded-xl p-4 mb-6 flex items-center justify-between gap-3">
+        <div className="mb-6 flex items-center justify-between gap-3 rounded-xl border border-[var(--brand-mint)] bg-[var(--brand-bg)] p-4">
           <div>
             <p className="text-sm font-medium text-[var(--brand-deep)]">Share link copied! 🎉</p>
-            <p className="text-xs text-gray-500 mt-0.5 break-all">{shareUrl}</p>
+            <p className="mt-0.5 break-all text-xs text-gray-500">{shareUrl}</p>
           </div>
           <a href={shareUrl} target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
-            <ExternalLink className="w-4 h-4 text-[var(--brand-green)]" />
+            <ExternalLink className="h-4 w-4 text-[var(--brand-green)]" />
           </a>
         </div>
       )}
 
       {loading ? (
-        <div className="py-20 text-center text-gray-400 text-sm">Loading...</div>
+        <div className="py-20 text-center text-sm text-gray-400">Loading...</div>
       ) : savedIds.length === 0 ? (
         <div className="py-20 text-center">
-          <Heart className="w-12 h-12 text-gray-200 mx-auto mb-4" />
-          <p className="text-gray-500 mb-2">No saved vehicles yet</p>
-          <p className="text-sm text-gray-400 mb-6">Tap the heart on any vehicle to save it here</p>
-          <Link href="/search" className="text-[var(--brand-green)] hover:underline text-sm">
+          <Heart className="mx-auto mb-4 h-12 w-12 text-gray-200" />
+          <p className="mb-2 text-gray-500">No saved vehicles yet</p>
+          <p className="mb-6 text-sm text-gray-400">Tap the heart on any vehicle to save it here</p>
+          <Link href="/search" className="text-sm text-[var(--brand-green)] hover:underline">
             Browse vehicles →
           </Link>
         </div>
       ) : (
         <div className="space-y-3">
           {vehicles.map((v) => (
-            <div key={v.id} className="flex items-center gap-4 bg-white border border-[var(--color-border)] rounded-xl p-3 hover:border-[var(--brand-green)] transition-colors">
+            <div
+              key={v.id}
+              className="flex items-center gap-4 rounded-xl border border-[var(--color-border)] bg-white p-3 transition-colors hover:border-[var(--brand-green)]"
+            >
               {v.image && (
-                <div className="relative w-20 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
-                  <img src={v.image} alt={v.title} className="object-cover w-full h-full" />
+                <div className="relative h-16 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
+                  <img src={v.image} alt={v.title} className="h-full w-full object-cover" />
                 </div>
               )}
-              <div className="flex-1 min-w-0">
-                <Link href={`/vehicle/${v.slug}`} className="font-medium text-sm hover:text-[var(--brand-green)] truncate block">
+              <div className="min-w-0 flex-1">
+                <Link
+                  href={`/vehicle/${v.slug}`}
+                  className="block truncate text-sm font-medium hover:text-[var(--brand-green)]"
+                >
                   {v.title}
                 </Link>
-                <p className="text-[var(--brand-deep)] font-bold text-sm mt-0.5">{formatLKR(v.price)}</p>
+                <p className="mt-0.5 text-sm font-bold text-[var(--brand-deep)]">
+                  {formatLKR(v.price)}
+                </p>
                 <p className="text-xs text-gray-400">{v.location}</p>
               </div>
               <button
                 onClick={() => remove(v.id)}
-                className="flex-shrink-0 p-2 text-gray-400 hover:text-red-500 transition-colors"
+                className="flex-shrink-0 p-2 text-gray-400 transition-colors hover:text-red-500"
                 aria-label="Remove from saved"
               >
-                <Heart className="w-4 h-4 fill-current" />
+                <Heart className="h-4 w-4 fill-current" />
               </button>
             </div>
           ))}

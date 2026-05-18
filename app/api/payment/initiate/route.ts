@@ -69,8 +69,8 @@ export async function POST(request: NextRequest) {
   if (!seller) return NextResponse.json({ error: 'Seller not found.' }, { status: 404 });
 
   // Generate order ID and compute durations
-  const orderId   = buildOrderId(randomShortId(10));
-  const startsAt  = new Date();
+  const orderId = buildOrderId(randomShortId(10));
+  const startsAt = new Date();
   const expiresAt = new Date(startsAt.getTime() + plan.duration_days * 86400_000);
 
   // Create payment + boost in a logical pair (no transaction needed — we
@@ -78,12 +78,12 @@ export async function POST(request: NextRequest) {
   const { data: payment, error: paymentError } = await supabase
     .from('payments')
     .insert({
-      seller_id:         session.seller_id,
-      amount:            plan.price,
-      currency:          'LKR',
-      gateway:           'payhere',
-      gateway_order_id:  orderId,
-      status:            'pending',
+      seller_id: session.seller_id,
+      amount: plan.price,
+      currency: 'LKR',
+      gateway: 'payhere',
+      gateway_order_id: orderId,
+      status: 'pending',
     })
     .select('id')
     .single();
@@ -94,13 +94,13 @@ export async function POST(request: NextRequest) {
   }
 
   const { error: boostError } = await supabase.from('boosts').insert({
-    vehicle_id:  vehicle.id,
-    plan_id:     plan.id,
-    starts_at:   startsAt.toISOString(),
-    expires_at:  expiresAt.toISOString(),
-    status:      'pending',
+    vehicle_id: vehicle.id,
+    plan_id: plan.id,
+    starts_at: startsAt.toISOString(),
+    expires_at: expiresAt.toISOString(),
+    status: 'pending',
     amount_paid: plan.price,
-    payment_id:  payment.id,
+    payment_id: payment.id,
   });
 
   if (boostError) {
@@ -111,11 +111,11 @@ export async function POST(request: NextRequest) {
   }
 
   // Build the PayHere form fields
-  const merchantId     = process.env.PAYHERE_MERCHANT_ID!;
+  const merchantId = process.env.PAYHERE_MERCHANT_ID!;
   const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET!;
-  const siteUrl        = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
-  const checkoutUrl    = process.env.NEXT_PUBLIC_PAYHERE_CHECKOUT_URL
-    ?? 'https://sandbox.payhere.lk/pay/checkout';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
+  const checkoutUrl =
+    process.env.NEXT_PUBLIC_PAYHERE_CHECKOUT_URL ?? 'https://sandbox.payhere.lk/pay/checkout';
 
   const hash = generateCheckoutHash({
     merchantId,
@@ -136,20 +136,20 @@ export async function POST(request: NextRequest) {
 
   const formFields = {
     merchant_id: merchantId,
-    return_url:  `${siteUrl}/payment/return?order_id=${orderId}`,
-    cancel_url:  `${siteUrl}/payment/cancel?order_id=${orderId}`,
-    notify_url:  `${siteUrl}/api/payment/notify`,
-    order_id:    orderId,
-    items:       itemDesc,
-    currency:    'LKR',
-    amount:      plan.price.toFixed(2),
-    first_name:  firstName || 'Customer',
-    last_name:   lastName,
-    email:       `noreply+${session.seller_id}@siraa.lk`,
-    phone:       localPhone,
-    address:     'Sri Lanka',
-    city:        'Colombo',
-    country:     'Sri Lanka',
+    return_url: `${siteUrl}/payment/return?order_id=${orderId}`,
+    cancel_url: `${siteUrl}/payment/cancel?order_id=${orderId}`,
+    notify_url: `${siteUrl}/api/payment/notify`,
+    order_id: orderId,
+    items: itemDesc,
+    currency: 'LKR',
+    amount: plan.price.toFixed(2),
+    first_name: firstName || 'Customer',
+    last_name: lastName,
+    email: `noreply+${session.seller_id}@siraa.lk`,
+    phone: localPhone,
+    address: 'Sri Lanka',
+    city: 'Colombo',
+    country: 'Sri Lanka',
     hash,
   };
 

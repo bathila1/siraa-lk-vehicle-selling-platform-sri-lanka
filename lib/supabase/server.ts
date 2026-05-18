@@ -40,7 +40,8 @@ export async function createClient() {
  * (admin routes, webhooks, cron jobs).
  */
 export function createServiceClient() {
-  const { createClient: createSupabaseClient } = require('@supabase/supabase-js') as typeof import('@supabase/supabase-js');
+  const { createClient: createSupabaseClient } =
+    require('@supabase/supabase-js') as typeof import('@supabase/supabase-js');
 
   return createSupabaseClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

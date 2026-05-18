@@ -70,16 +70,16 @@ export async function searchVehicles(params: SearchQueryInput): Promise<SearchRe
 
   // Filters
   if (params.vehicleTypeId) query = query.eq('vehicle_type_id', params.vehicleTypeId);
-  if (params.makeId)        query = query.eq('make_id', params.makeId);
-  if (params.model)         query = query.ilike('model', `%${params.model}%`);
-  if (params.yearMin)       query = query.gte('year', params.yearMin);
-  if (params.yearMax)       query = query.lte('year', params.yearMax);
-  if (params.priceMin)      query = query.gte('price', params.priceMin);
-  if (params.priceMax)      query = query.lte('price', params.priceMax);
-  if (params.transmission)  query = query.eq('transmission', params.transmission);
-  if (params.fuelType)      query = query.eq('fuel_type', params.fuelType);
-  if (params.districtId)    query = query.eq('district_id', params.districtId);
-  if (params.cityId)        query = query.eq('city_id', params.cityId);
+  if (params.makeId) query = query.eq('make_id', params.makeId);
+  if (params.model) query = query.ilike('model', `%${params.model}%`);
+  if (params.yearMin) query = query.gte('year', params.yearMin);
+  if (params.yearMax) query = query.lte('year', params.yearMax);
+  if (params.priceMin) query = query.gte('price', params.priceMin);
+  if (params.priceMax) query = query.lte('price', params.priceMax);
+  if (params.transmission) query = query.eq('transmission', params.transmission);
+  if (params.fuelType) query = query.eq('fuel_type', params.fuelType);
+  if (params.districtId) query = query.eq('district_id', params.districtId);
+  if (params.cityId) query = query.eq('city_id', params.cityId);
 
   // Sort
   switch (sort) {
@@ -112,11 +112,8 @@ export async function searchVehicles(params: SearchQueryInput): Promise<SearchRe
 
   // Shape the raw Supabase response into clean VehicleListItem
   const vehicles: VehicleListItem[] = (data ?? []).map((row: any) => {
-    const images = (row.vehicle_images ?? []).sort(
-      (a: any, b: any) => a.sort_order - b.sort_order,
-    );
-    const primaryImg =
-      images.find((i: any) => i.is_primary)?.url ?? images[0]?.url ?? null;
+    const images = (row.vehicle_images ?? []).sort((a: any, b: any) => a.sort_order - b.sort_order);
+    const primaryImg = images.find((i: any) => i.is_primary)?.url ?? images[0]?.url ?? null;
 
     const activeBoost = (row.boosts ?? []).find((b: any) => b.status === 'active');
 
@@ -146,9 +143,9 @@ export async function searchVehicles(params: SearchQueryInput): Promise<SearchRe
   // Pro slots first, then Normal slots, then the rest preserves the user's sort.
   // We respect base sort beyond that, so this only affects the first page.
   if (page === 1) {
-    const proAds    = vehicles.filter((v) => v.boost_type === 'pro');
+    const proAds = vehicles.filter((v) => v.boost_type === 'pro');
     const normalAds = vehicles.filter((v) => v.boost_type === 'normal');
-    const regular   = vehicles.filter((v) => !v.is_boosted);
+    const regular = vehicles.filter((v) => !v.is_boosted);
 
     // Apply slot caps if relevant; falls back to "show all boosted at top" if no config
     const sorted = [...proAds, ...normalAds, ...regular];

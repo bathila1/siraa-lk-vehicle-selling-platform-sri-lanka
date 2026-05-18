@@ -14,7 +14,13 @@ interface ContactButtonsProps {
   price: number;
 }
 
-export function ContactButtons({ phone, whatsapp, vehicleId, vehicleTitle, price }: ContactButtonsProps) {
+export function ContactButtons({
+  phone,
+  whatsapp,
+  vehicleId,
+  vehicleTitle,
+  price,
+}: ContactButtonsProps) {
   const [revealed, setRevealed] = useState(false);
 
   const handleReveal = async () => {
@@ -26,20 +32,20 @@ export function ContactButtons({ phone, whatsapp, vehicleId, vehicleTitle, price
   const waMessage = `Hi, I'm interested in your ${vehicleTitle} listed on Siraa.lk for ${new Intl.NumberFormat('en-LK', { style: 'currency', currency: 'LKR', maximumFractionDigits: 0 }).format(price)}. Is it still available?`;
 
   return (
-    <div className="bg-white border border-[var(--color-border)] rounded-xl p-4 space-y-3">
-      <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">Contact Seller</p>
+    <div className="space-y-3 rounded-xl border border-[var(--color-border)] bg-white p-4">
+      <p className="text-xs font-medium uppercase tracking-wide text-gray-500">Contact Seller</p>
 
       {!revealed ? (
         <Button variant="outline" size="lg" className="w-full" onClick={handleReveal}>
-          <Phone className="w-4 h-4" />
+          <Phone className="h-4 w-4" />
           Show Number
         </Button>
       ) : (
         <a
           href={callLink(phone)}
-          className="flex items-center justify-center gap-2 w-full bg-[var(--brand-green)] text-white font-medium py-3 px-4 rounded-lg hover:bg-[var(--brand-deep)] transition-colors text-sm"
+          className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--brand-green)] px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-[var(--brand-deep)]"
         >
-          <Phone className="w-4 h-4" />
+          <Phone className="h-4 w-4" />
           {phone}
         </a>
       )}
@@ -48,19 +54,19 @@ export function ContactButtons({ phone, whatsapp, vehicleId, vehicleTitle, price
         href={whatsappLink(whatsapp, waMessage)}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center justify-center gap-2 w-full bg-[#25D366] text-white font-medium py-3 px-4 rounded-lg hover:bg-[#1ebe5d] transition-colors text-sm"
+        className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#25D366] px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-[#1ebe5d]"
         onClick={() => !revealed && handleReveal()}
       >
-        <MessageCircle className="w-4 h-4" />
+        <MessageCircle className="h-4 w-4" />
         WhatsApp
       </a>
 
       {revealed && (
         <a
           href={callLink(phone)}
-          className="flex items-center justify-center gap-2 w-full border border-[var(--color-border)] text-gray-700 font-medium py-3 px-4 rounded-lg hover:border-[var(--brand-green)] hover:text-[var(--brand-green)] transition-colors text-sm"
+          className="flex w-full items-center justify-center gap-2 rounded-lg border border-[var(--color-border)] px-4 py-3 text-sm font-medium text-gray-700 transition-colors hover:border-[var(--brand-green)] hover:text-[var(--brand-green)]"
         >
-          <Phone className="w-4 h-4" />
+          <Phone className="h-4 w-4" />
           Call Now
         </a>
       )}

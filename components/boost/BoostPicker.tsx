@@ -75,7 +75,7 @@ export function BoostPicker({ vehicleId, plans }: Props) {
             type="button"
             onClick={() => setSelectedId(plan.id)}
             className={cn(
-              'w-full text-left bg-white rounded-xl border-2 p-4 transition-all',
+              'w-full rounded-xl border-2 bg-white p-4 text-left transition-all',
               selected
                 ? 'border-[var(--brand-green)] shadow-sm'
                 : 'border-[var(--color-border)] hover:border-gray-300',
@@ -83,26 +83,24 @@ export function BoostPicker({ vehicleId, plans }: Props) {
           >
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
+                <div className="mb-1 flex items-center gap-2">
                   {isPro ? (
-                    <Zap className="w-4 h-4 text-amber-500" />
+                    <Zap className="h-4 w-4 text-amber-500" />
                   ) : (
-                    <TrendingUp className="w-4 h-4 text-[var(--brand-green)]" />
+                    <TrendingUp className="h-4 w-4 text-[var(--brand-green)]" />
                   )}
-                  <p className="font-semibold text-sm">{plan.name}</p>
+                  <p className="text-sm font-semibold">{plan.name}</p>
                   {isPro && (
-                    <span className="text-[10px] font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full uppercase">
+                    <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase text-amber-700">
                       Best Value
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-gray-500 leading-relaxed pr-2">
-                  {plan.description}
-                </p>
+                <p className="pr-2 text-xs leading-relaxed text-gray-500">{plan.description}</p>
               </div>
 
-              <div className="text-right flex-shrink-0">
-                <p className="font-bold text-base text-[var(--brand-deep)]">
+              <div className="flex-shrink-0 text-right">
+                <p className="text-base font-bold text-[var(--brand-deep)]">
                   {formatLKR(plan.price)}
                 </p>
                 <p className="text-[10px] text-gray-400">
@@ -112,8 +110,8 @@ export function BoostPicker({ vehicleId, plans }: Props) {
             </div>
 
             {selected && (
-              <div className="mt-3 pt-3 border-t border-[var(--color-border)] flex items-center gap-1.5 text-xs text-[var(--brand-green)]">
-                <Check className="w-3.5 h-3.5" />
+              <div className="mt-3 flex items-center gap-1.5 border-t border-[var(--color-border)] pt-3 text-xs text-[var(--brand-green)]">
+                <Check className="h-3.5 w-3.5" />
                 Selected
               </div>
             )}
@@ -121,13 +119,11 @@ export function BoostPicker({ vehicleId, plans }: Props) {
         );
       })}
 
-      {error && (
-        <p className="text-xs text-red-500 text-center">{error}</p>
-      )}
+      {error && <p className="text-center text-xs text-red-500">{error}</p>}
 
       {/* Sticky bottom action bar on mobile */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[var(--color-border)] p-3 z-30 md:relative md:bg-transparent md:border-0 md:p-0 md:pt-3">
-        <div className="max-w-2xl mx-auto">
+      <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-[var(--color-border)] bg-white p-3 md:relative md:border-0 md:bg-transparent md:p-0 md:pt-3">
+        <div className="mx-auto max-w-2xl">
           <Button
             variant="primary"
             size="lg"
@@ -138,7 +134,7 @@ export function BoostPicker({ vehicleId, plans }: Props) {
           >
             Continue to Payment
           </Button>
-          <p className="text-[10px] text-gray-400 text-center mt-2">
+          <p className="mt-2 text-center text-[10px] text-gray-400">
             Secure payment via PayHere · Cards, eZ Cash & bank transfers accepted
           </p>
         </div>

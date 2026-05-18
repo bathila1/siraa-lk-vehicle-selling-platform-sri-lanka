@@ -25,9 +25,9 @@ export function LogoutButton() {
       type="button"
       onClick={handleLogout}
       disabled={busy}
-      className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-red-500 transition-colors px-3 py-1.5 rounded-lg hover:bg-red-50"
+      className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs text-gray-500 transition-colors hover:bg-red-50 hover:text-red-500"
     >
-      <LogOut className="w-3.5 h-3.5" />
+      <LogOut className="h-3.5 w-3.5" />
       Sign Out
     </button>
   );

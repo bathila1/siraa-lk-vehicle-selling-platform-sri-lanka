@@ -29,7 +29,9 @@ export function StepImages({ draft, update }: Props) {
       const img = new Image();
       const reader = new FileReader();
 
-      reader.onload = (e) => { img.src = e.target?.result as string; };
+      reader.onload = (e) => {
+        img.src = e.target?.result as string;
+      };
       reader.onerror = () => reject(new Error('Failed to read file'));
 
       img.onload = () => {
@@ -45,7 +47,7 @@ export function StepImages({ draft, update }: Props) {
 
         ctx.drawImage(img, 0, 0, w, h);
         canvas.toBlob(
-          (blob) => blob ? resolve(blob) : reject(new Error('toBlob failed')),
+          (blob) => (blob ? resolve(blob) : reject(new Error('toBlob failed'))),
           'image/jpeg',
           TARGET_QUALITY,
         );
@@ -55,38 +57,41 @@ export function StepImages({ draft, update }: Props) {
     });
   }, []);
 
-  const uploadOne = useCallback(async (file: File): Promise<string> => {
-    if (file.size > MAX_FILE_BYTES) throw new Error('Image too large (max 8 MB)');
-    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-      throw new Error('Only JPG, PNG, WebP allowed');
-    }
+  const uploadOne = useCallback(
+    async (file: File): Promise<string> => {
+      if (file.size > MAX_FILE_BYTES) throw new Error('Image too large (max 8 MB)');
+      if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+        throw new Error('Only JPG, PNG, WebP allowed');
+      }
 
-    // Compress client-side
-    const compressed = await resizeImage(file);
+      // Compress client-side
+      const compressed = await resizeImage(file);
 
-    // Ask server for a presigned URL
-    const upRes = await fetch('/api/upload', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        filename: file.name,
-        contentType: 'image/jpeg',
-        size: compressed.size,
-      }),
-    });
-    if (!upRes.ok) throw new Error((await upRes.json()).error ?? 'Upload prep failed');
-    const { uploadUrl, publicUrl } = await upRes.json();
+      // Ask server for a presigned URL
+      const upRes = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          filename: file.name,
+          contentType: 'image/jpeg',
+          size: compressed.size,
+        }),
+      });
+      if (!upRes.ok) throw new Error((await upRes.json()).error ?? 'Upload prep failed');
+      const { uploadUrl, publicUrl } = await upRes.json();
 
-    // PUT directly to R2
-    const putRes = await fetch(uploadUrl, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'image/jpeg' },
-      body: compressed,
-    });
-    if (!putRes.ok) throw new Error('Upload failed');
+      // PUT directly to R2
+      const putRes = await fetch(uploadUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'image/jpeg' },
+        body: compressed,
+      });
+      if (!putRes.ok) throw new Error('Upload failed');
 
-    return publicUrl as string;
-  }, [resizeImage]);
+      return publicUrl as string;
+    },
+    [resizeImage],
+  );
 
   const handleFiles = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
@@ -131,8 +136,8 @@ export function StepImages({ draft, update }: Props) {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="font-semibold text-base">Add Photos</h2>
-        <p className="text-xs text-gray-500 mt-1">
+        <h2 className="text-base font-semibold">Add Photos</h2>
+        <p className="mt-1 text-xs text-gray-500">
           Upload {MIN_IMAGES}–{MAX_IMAGES} clear photos. First photo is the cover image.
         </p>
       </div>
@@ -140,27 +145,30 @@ export function StepImages({ draft, update }: Props) {
       {/* Grid of uploaded photos */}
       <div className="grid grid-cols-3 gap-2">
         {draft.imageUrls.map((url, i) => (
-          <div key={url} className="relative aspect-[4/3] rounded-lg overflow-hidden bg-gray-100 group">
-            <img src={url} alt={`Photo ${i + 1}`} className="w-full h-full object-cover" />
+          <div
+            key={url}
+            className="group relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-100"
+          >
+            <img src={url} alt={`Photo ${i + 1}`} className="h-full w-full object-cover" />
             {i === 0 && (
-              <div className="absolute top-1 left-1 bg-amber-500 text-white text-[10px] font-medium px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
-                <Star className="w-2.5 h-2.5 fill-current" />
+              <div className="absolute left-1 top-1 flex items-center gap-0.5 rounded-full bg-amber-500 px-1.5 py-0.5 text-[10px] font-medium text-white">
+                <Star className="h-2.5 w-2.5 fill-current" />
                 Cover
               </div>
             )}
             <button
               type="button"
               onClick={() => remove(url)}
-              className="absolute top-1 right-1 bg-black/60 text-white rounded-full p-1 hover:bg-black/80 transition-opacity"
+              className="absolute right-1 top-1 rounded-full bg-black/60 p-1 text-white transition-opacity hover:bg-black/80"
               aria-label="Remove photo"
             >
-              <X className="w-3 h-3" />
+              <X className="h-3 w-3" />
             </button>
             {i !== 0 && (
               <button
                 type="button"
                 onClick={() => makePrimary(url)}
-                className="absolute bottom-1 left-1 bg-white/90 text-gray-700 text-[10px] font-medium px-2 py-0.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute bottom-1 left-1 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-medium text-gray-700 opacity-0 transition-opacity group-hover:opacity-100"
               >
                 Set as cover
               </button>
@@ -175,21 +183,21 @@ export function StepImages({ draft, update }: Props) {
             onClick={() => inputRef.current?.click()}
             disabled={uploading}
             className={cn(
-              'aspect-[4/3] rounded-lg border-2 border-dashed flex flex-col items-center justify-center gap-1 transition-colors',
+              'flex aspect-[4/3] flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed transition-colors',
               'border-[var(--color-border)] hover:border-[var(--brand-green)] hover:bg-[var(--brand-bg)]',
-              uploading && 'opacity-50 cursor-wait',
+              uploading && 'cursor-wait opacity-50',
             )}
           >
             {uploading ? (
               <>
-                <Loader2 className="w-5 h-5 text-gray-400 animate-spin" />
+                <Loader2 className="h-5 w-5 animate-spin text-gray-400" />
                 <span className="text-[10px] text-gray-500">
                   {progress.done}/{progress.total}
                 </span>
               </>
             ) : (
               <>
-                <Upload className="w-5 h-5 text-gray-400" />
+                <Upload className="h-5 w-5 text-gray-400" />
                 <span className="text-[10px] text-gray-500">Add photo</span>
               </>
             )}
@@ -208,13 +216,13 @@ export function StepImages({ draft, update }: Props) {
 
       {error && <p className="text-xs text-red-500">{error}</p>}
 
-      <div className="text-xs text-gray-400 space-y-1">
+      <div className="space-y-1 text-xs text-gray-400">
         <p>• Photos are auto-resized and compressed</p>
         <p>• Take photos in good light, show interior and exterior</p>
         <p>• Personal info (number plates) is preserved — blur if you want</p>
       </div>
 
-      <p className="text-xs text-gray-500 text-center pt-2">
+      <p className="pt-2 text-center text-xs text-gray-500">
         {draft.imageUrls.length} of {MAX_IMAGES} photos
         {draft.imageUrls.length < MIN_IMAGES && (
           <span className="text-red-500"> · need at least {MIN_IMAGES}</span>

@@ -62,7 +62,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       <main className="container mx-auto px-4 py-6">
         <div className="flex gap-6">
           {/* Sidebar filters — hidden on mobile */}
-          <aside className="hidden lg:block w-56 flex-shrink-0">
+          <aside className="hidden w-56 flex-shrink-0 lg:block">
             <Suspense>
               <FilterBar
                 vehicleTypes={typeOptions}
@@ -73,12 +73,21 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           </aside>
 
           {/* Results */}
-          <div className="flex-1 min-w-0">
+          <div className="min-w-0 flex-1">
             {/* Results header */}
-            <div className="flex items-center justify-between mb-4 gap-4 flex-wrap">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
               <p className="text-sm text-gray-500">
-                {total === 0 ? 'No results' : `${total.toLocaleString()} vehicle${total === 1 ? '' : 's'}`}
-                {raw.q ? <> for <strong>"{raw.q}"</strong></> : ''}
+                {total === 0
+                  ? 'No results'
+                  : `${total.toLocaleString()} vehicle${total === 1 ? '' : 's'}`}
+                {raw.q ? (
+                  <>
+                    {' '}
+                    for <strong>"{raw.q}"</strong>
+                  </>
+                ) : (
+                  ''
+                )}
               </p>
 
               {/* Sort */}
@@ -88,7 +97,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             </div>
 
             {/* Mobile filters */}
-            <div className="lg:hidden mb-4">
+            <div className="mb-4 lg:hidden">
               <Suspense>
                 <FilterBar
                   vehicleTypes={typeOptions}
@@ -100,12 +109,12 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
             {/* Grid */}
             {vehicles.length === 0 ? (
-              <div className="text-center py-20 text-gray-400">
-                <p className="text-base mb-2">No vehicles found</p>
+              <div className="py-20 text-center text-gray-400">
+                <p className="mb-2 text-base">No vehicles found</p>
                 <p className="text-sm">Try removing some filters or a different search.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 xl:grid-cols-4">
                 {vehicles.map((v) => (
                   <VehicleCard key={v.id} vehicle={v} />
                 ))}
@@ -113,9 +122,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             )}
 
             {/* Pagination */}
-            {totalPages > 1 && (
-              <Pagination current={currentPage} total={totalPages} params={raw} />
-            )}
+            {totalPages > 1 && <Pagination current={currentPage} total={totalPages} params={raw} />}
           </div>
         </div>
       </main>
@@ -132,13 +139,18 @@ function SortSelect({ current }: { current: string }) {
   // For now, render as a link list or use a server action.
   // Simple approach: render as native select with form action.
   return (
-    <div className="text-sm text-gray-500 flex items-center gap-2">
+    <div className="flex items-center gap-2 text-sm text-gray-500">
       <span>Sort:</span>
       <span className="font-medium capitalize text-gray-700">
-        {current === 'newest' ? 'Newest' :
-         current === 'price_asc' ? 'Price ↑' :
-         current === 'price_desc' ? 'Price ↓' :
-         current === 'year_desc' ? 'Year ↓' : 'Newest'}
+        {current === 'newest'
+          ? 'Newest'
+          : current === 'price_asc'
+            ? 'Price ↑'
+            : current === 'price_desc'
+              ? 'Price ↓'
+              : current === 'year_desc'
+                ? 'Year ↓'
+                : 'Newest'}
       </span>
       {/* Full sort selector is in FilterBar client component */}
     </div>
@@ -168,9 +180,12 @@ function Pagination({
   });
 
   return (
-    <nav className="flex items-center justify-center gap-1 mt-10">
+    <nav className="mt-10 flex items-center justify-center gap-1">
       {current > 1 && (
-        <Link href={buildUrl(current - 1)} className="px-3 py-2 text-sm rounded-lg border border-[var(--color-border)] hover:border-[var(--brand-green)] hover:text-[var(--brand-green)]">
+        <Link
+          href={buildUrl(current - 1)}
+          className="rounded-lg border border-[var(--color-border)] px-3 py-2 text-sm hover:border-[var(--brand-green)] hover:text-[var(--brand-green)]"
+        >
           ← Prev
         </Link>
       )}
@@ -178,9 +193,9 @@ function Pagination({
         <Link
           key={p}
           href={buildUrl(p)}
-          className={`px-3 py-2 text-sm rounded-lg border transition-colors ${
+          className={`rounded-lg border px-3 py-2 text-sm transition-colors ${
             p === current
-              ? 'bg-[var(--brand-green)] text-white border-[var(--brand-green)]'
+              ? 'border-[var(--brand-green)] bg-[var(--brand-green)] text-white'
               : 'border-[var(--color-border)] hover:border-[var(--brand-green)] hover:text-[var(--brand-green)]'
           }`}
         >
@@ -188,7 +203,10 @@ function Pagination({
         </Link>
       ))}
       {current < total && (
-        <Link href={buildUrl(current + 1)} className="px-3 py-2 text-sm rounded-lg border border-[var(--color-border)] hover:border-[var(--brand-green)] hover:text-[var(--brand-green)]">
+        <Link
+          href={buildUrl(current + 1)}
+          className="rounded-lg border border-[var(--color-border)] px-3 py-2 text-sm hover:border-[var(--brand-green)] hover:text-[var(--brand-green)]"
+        >
           Next →
         </Link>
       )}

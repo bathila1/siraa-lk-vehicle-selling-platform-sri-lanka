@@ -20,10 +20,12 @@ export default async function ReportPage({ params }: Props) {
   const supabase = createServiceClient();
   const { data: vehicle } = await supabase
     .from('vehicles')
-    .select(`
+    .select(
+      `
       id, year, model, slug,
       vehicle_makes ( name )
-    `)
+    `,
+    )
     .eq('id', id)
     .single();
 
@@ -35,10 +37,10 @@ export default async function ReportPage({ params }: Props) {
   return (
     <>
       <Header />
-      <main className="min-h-[calc(100vh-3.5rem)] flex items-start justify-center px-4 py-8 bg-[var(--brand-bg)]">
-        <div className="w-full max-w-sm bg-white rounded-2xl border border-[var(--color-border)] p-6">
-          <h1 className="text-lg font-bold mb-1">Report this ad</h1>
-          <p className="text-xs text-gray-500 mb-5">{title}</p>
+      <main className="flex min-h-[calc(100vh-3.5rem)] items-start justify-center bg-[var(--brand-bg)] px-4 py-8">
+        <div className="w-full max-w-sm rounded-2xl border border-[var(--color-border)] bg-white p-6">
+          <h1 className="mb-1 text-lg font-bold">Report this ad</h1>
+          <p className="mb-5 text-xs text-gray-500">{title}</p>
           <ReportForm vehicleId={v.id} vehicleSlug={v.slug} />
         </div>
       </main>

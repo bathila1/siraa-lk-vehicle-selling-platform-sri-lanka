@@ -57,46 +57,46 @@ export function DashboardActions({ vehicleId, isSold }: Props) {
         type="button"
         onClick={() => setOpen((o) => !o)}
         disabled={busy}
-        className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+        className="rounded-lg p-2 transition-colors hover:bg-gray-100"
         aria-label="Actions"
       >
-        <MoreVertical className="w-4 h-4 text-gray-500" />
+        <MoreVertical className="h-4 w-4 text-gray-500" />
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-1 w-44 bg-white border border-[var(--color-border)] rounded-lg shadow-lg z-30 overflow-hidden">
+        <div className="absolute right-0 top-full z-30 mt-1 w-44 overflow-hidden rounded-lg border border-[var(--color-border)] bg-white shadow-lg">
           {!isSold && (
             <Link
               href={`/dashboard/boost/${vehicleId}`}
-              className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-[var(--brand-bg)] text-[var(--brand-deep)] font-medium transition-colors"
+              className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-[var(--brand-deep)] transition-colors hover:bg-[var(--brand-bg)]"
             >
-              <Zap className="w-3.5 h-3.5 text-amber-500" />
+              <Zap className="h-3.5 w-3.5 text-amber-500" />
               Boost ad
             </Link>
           )}
           <Link
             href={`/dashboard/edit/${vehicleId}`}
-            className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 transition-colors"
+            className="flex items-center gap-2 px-3 py-2 text-sm transition-colors hover:bg-gray-50"
           >
-            <Edit3 className="w-3.5 h-3.5 text-gray-500" />
+            <Edit3 className="h-3.5 w-3.5 text-gray-500" />
             Edit
           </Link>
           {!isSold && (
             <button
               type="button"
               onClick={markSold}
-              className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-50 transition-colors text-left"
+              className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors hover:bg-gray-50"
             >
-              <CheckSquare className="w-3.5 h-3.5 text-gray-500" />
+              <CheckSquare className="h-3.5 w-3.5 text-gray-500" />
               Mark as sold
             </button>
           )}
           <button
             type="button"
             onClick={deleteAd}
-            className="w-full flex items-center gap-2 px-3 py-2 text-sm hover:bg-red-50 text-red-600 transition-colors text-left"
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 transition-colors hover:bg-red-50"
           >
-            <Trash2 className="w-3.5 h-3.5" />
+            <Trash2 className="h-3.5 w-3.5" />
             Delete
           </button>
         </div>

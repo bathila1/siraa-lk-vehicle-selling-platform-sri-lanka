@@ -58,10 +58,10 @@ export function buildOtpMessage(code: string): string {
  * Phone must already be in +9476XXXXXXX format.
  */
 export async function sendOtp(phone: string, code: string): Promise<SendOtpResult> {
-  const userId   = process.env.SMSLENZ_USER_ID!;
-  const apiKey   = process.env.SMSLENZ_API_KEY!;
+  const userId = process.env.SMSLENZ_USER_ID!;
+  const apiKey = process.env.SMSLENZ_API_KEY!;
   const senderId = process.env.SMSLENZ_SENDER_ID ?? 'SiraaLK';
-  const baseUrl  = process.env.SMSLENZ_BASE_URL  ?? 'https://smslenz.lk/api';
+  const baseUrl = process.env.SMSLENZ_BASE_URL ?? 'https://smslenz.lk/api';
 
   const message = buildOtpMessage(code);
 
@@ -71,10 +71,10 @@ export async function sendOtp(phone: string, code: string): Promise<SendOtpResul
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        user_id:   userId,
-        api_key:   apiKey,
+        user_id: userId,
+        api_key: apiKey,
         sender_id: senderId,
-        contact:   phone,
+        contact: phone,
         message,
       }),
       // Hard cap — we don't want a slow SMS API to block the user's login for 30s
@@ -106,8 +106,8 @@ export async function sendOtp(phone: string, code: string): Promise<SendOtpResul
  * Not called in the user-facing request path.
  */
 export async function fetchSmsCreditBalance(): Promise<string | null> {
-  const userId  = process.env.SMSLENZ_USER_ID!;
-  const apiKey  = process.env.SMSLENZ_API_KEY!;
+  const userId = process.env.SMSLENZ_USER_ID!;
+  const apiKey = process.env.SMSLENZ_API_KEY!;
   const baseUrl = process.env.SMSLENZ_BASE_URL ?? 'https://smslenz.lk/api';
 
   try {

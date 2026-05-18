@@ -22,7 +22,10 @@ export async function GET(request: NextRequest) {
   });
 
   if (!parsed.success) {
-    return NextResponse.json({ error: 'Invalid query', details: parsed.error.flatten() }, { status: 400 });
+    return NextResponse.json(
+      { error: 'Invalid query', details: parsed.error.flatten() },
+      { status: 400 },
+    );
   }
 
   const result = await searchVehicles(parsed.data);

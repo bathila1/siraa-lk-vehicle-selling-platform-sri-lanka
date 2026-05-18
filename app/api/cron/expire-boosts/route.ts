@@ -51,10 +51,7 @@ export async function GET(request: NextRequest) {
     const ids = stalePayments.map((p) => p.id);
 
     // Mark payments as failed
-    await supabase
-      .from('payments')
-      .update({ status: 'failed' })
-      .in('id', ids);
+    await supabase.from('payments').update({ status: 'failed' }).in('id', ids);
 
     // Cancel linked pending boosts
     await supabase

@@ -19,15 +19,15 @@ export async function POST(request: NextRequest) {
     return new Response('Bad request', { status: 400 });
   }
 
-  const merchantId       = body.get('merchant_id')      as string | null;
-  const orderId          = body.get('order_id')         as string | null;
-  const paymentId        = body.get('payment_id')       as string | null;
-  const payhereAmount    = body.get('payhere_amount')   as string | null;
-  const payhereCurrency  = body.get('payhere_currency') as string | null;
-  const statusCode       = body.get('status_code')      as string | null;
-  const md5sig           = body.get('md5sig')           as string | null;
-  const statusMessage    = body.get('status_message')   as string | null;
-  const method           = body.get('method')           as string | null;
+  const merchantId = body.get('merchant_id') as string | null;
+  const orderId = body.get('order_id') as string | null;
+  const paymentId = body.get('payment_id') as string | null;
+  const payhereAmount = body.get('payhere_amount') as string | null;
+  const payhereCurrency = body.get('payhere_currency') as string | null;
+  const statusCode = body.get('status_code') as string | null;
+  const md5sig = body.get('md5sig') as string | null;
+  const statusMessage = body.get('status_message') as string | null;
+  const method = body.get('method') as string | null;
 
   // Required fields check
   if (!merchantId || !orderId || !payhereAmount || !payhereCurrency || !statusCode || !md5sig) {
@@ -108,13 +108,13 @@ export async function POST(request: NextRequest) {
   }
 
   const rawResponse = {
-    merchant_id:      merchantId,
-    order_id:         orderId,
-    payment_id:       paymentId,
-    payhere_amount:   payhereAmount,
+    merchant_id: merchantId,
+    order_id: orderId,
+    payment_id: paymentId,
+    payhere_amount: payhereAmount,
     payhere_currency: payhereCurrency,
-    status_code:      statusCode,
-    status_message:   statusMessage,
+    status_code: statusCode,
+    status_message: statusMessage,
     method,
   };
 
@@ -122,11 +122,11 @@ export async function POST(request: NextRequest) {
   await supabase
     .from('payments')
     .update({
-      status:             mapped.payment,
+      status: mapped.payment,
       gateway_payment_id: paymentId,
-      ipn_received_at:    new Date().toISOString(),
-      completed_at:       mapped.payment === 'completed' ? new Date().toISOString() : null,
-      raw_response:       rawResponse as any,
+      ipn_received_at: new Date().toISOString(),
+      completed_at: mapped.payment === 'completed' ? new Date().toISOString() : null,
+      raw_response: rawResponse as any,
     })
     .eq('id', payment.id);
 
@@ -147,24 +147,18 @@ export async function POST(request: NextRequest) {
       await supabase
         .from('boosts')
         .update({
-          status:     'active',
-          starts_at:  startsAt.toISOString(),
+          status: 'active',
+          starts_at: startsAt.toISOString(),
           expires_at: expiresAt.toISOString(),
         })
         .eq('id', boost.id);
     }
   } else if (mapped.payment === 'cancelled' || mapped.payment === 'failed') {
     // Cancel the linked boost
-    await supabase
-      .from('boosts')
-      .update({ status: 'cancelled' })
-      .eq('payment_id', payment.id);
+    await supabase.from('boosts').update({ status: 'cancelled' }).eq('payment_id', payment.id);
   } else if (mapped.payment === 'refunded') {
     // Mark boost cancelled but keep payment record as refunded for audit
-    await supabase
-      .from('boosts')
-      .update({ status: 'cancelled' })
-      .eq('payment_id', payment.id);
+    await supabase.from('boosts').update({ status: 'cancelled' }).eq('payment_id', payment.id);
   }
 
   return new Response('OK', { status: 200 });

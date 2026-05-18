@@ -88,10 +88,10 @@ export function LocationMap({ lat, lng, label }: LocationMapProps) {
       />
       <div
         ref={containerRef}
-        className="w-full h-52 rounded-xl overflow-hidden border border-[var(--color-border)]"
+        className="h-52 w-full overflow-hidden rounded-xl border border-[var(--color-border)]"
         aria-label={`Map showing approximate location in ${label}`}
       />
-      <p className="text-xs text-gray-400 mt-1 flex items-center gap-1">
+      <p className="mt-1 flex items-center gap-1 text-xs text-gray-400">
         📍 Approximate location shown for privacy
       </p>
     </>

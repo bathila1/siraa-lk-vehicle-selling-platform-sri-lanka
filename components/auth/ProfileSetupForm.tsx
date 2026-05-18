@@ -68,71 +68,65 @@ export function ProfileSetupForm({
   return (
     <div className="space-y-4">
       <div>
-        <label className="text-xs font-medium text-gray-700 mb-1.5 block">
+        <label className="mb-1.5 block text-xs font-medium text-gray-700">
           Your Name <span className="text-red-500">*</span>
         </label>
         <div className="relative">
-          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="e.g. Bathiya"
             maxLength={80}
-            className="w-full pl-10 pr-3 py-3 text-sm border-2 border-[var(--color-border)] rounded-lg focus:border-[var(--brand-green)] outline-none"
+            className="w-full rounded-lg border-2 border-[var(--color-border)] py-3 pl-10 pr-3 text-sm outline-none focus:border-[var(--brand-green)]"
             autoFocus
           />
         </div>
       </div>
 
       <div>
-        <label className="text-xs font-medium text-gray-700 mb-1.5 block">
+        <label className="mb-1.5 block text-xs font-medium text-gray-700">
           District <span className="text-red-500">*</span>
         </label>
         <div className="relative">
-          <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 z-10" />
+          <MapPin className="absolute left-3 top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <select
             value={districtId ?? ''}
             onChange={(e) => setDistrictId(e.target.value ? Number(e.target.value) : null)}
-            className="w-full pl-10 pr-3 py-3 text-sm border-2 border-[var(--color-border)] rounded-lg focus:border-[var(--brand-green)] outline-none"
+            className="w-full rounded-lg border-2 border-[var(--color-border)] py-3 pl-10 pr-3 text-sm outline-none focus:border-[var(--brand-green)]"
           >
             <option value="">Select your district</option>
             {districts.map((d) => (
-              <option key={d.id} value={d.id}>{d.name_en}</option>
+              <option key={d.id} value={d.id}>
+                {d.name_en}
+              </option>
             ))}
           </select>
         </div>
       </div>
 
       <div>
-        <label className="text-xs font-medium text-gray-700 mb-1.5 block">
-          WhatsApp Number
-        </label>
+        <label className="mb-1.5 block text-xs font-medium text-gray-700">WhatsApp Number</label>
         <div className="relative">
-          <MessageCircle className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <MessageCircle className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <input
             type="tel"
             inputMode="tel"
             value={whatsapp}
             onChange={(e) => setWhatsapp(e.target.value)}
             placeholder={phone}
-            className="w-full pl-10 pr-3 py-3 text-sm border-2 border-[var(--color-border)] rounded-lg focus:border-[var(--brand-green)] outline-none"
+            className="w-full rounded-lg border-2 border-[var(--color-border)] py-3 pl-10 pr-3 text-sm outline-none focus:border-[var(--brand-green)]"
           />
         </div>
-        <p className="text-xs text-gray-400 mt-1">
+        <p className="mt-1 text-xs text-gray-400">
           Defaults to your phone number. Leave as is if same.
         </p>
       </div>
 
       {error && <p className="text-xs text-red-500">{error}</p>}
 
-      <Button
-        variant="primary"
-        size="lg"
-        className="w-full"
-        onClick={submit}
-        loading={loading}
-      >
+      <Button variant="primary" size="lg" className="w-full" onClick={submit} loading={loading}>
         Save & Continue
       </Button>
     </div>

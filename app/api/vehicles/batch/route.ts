@@ -17,13 +17,15 @@ export async function GET(request: NextRequest) {
   const supabase = await createClient();
   const { data } = await supabase
     .from('vehicles')
-    .select(`
+    .select(
+      `
       id, slug, model, year, price,
       vehicle_makes ( name ),
       districts ( name_en ),
       cities ( name_en ),
       vehicle_images ( url, is_primary, sort_order )
-    `)
+    `,
+    )
     .in('id', ids)
     .eq('status', 'active');
 

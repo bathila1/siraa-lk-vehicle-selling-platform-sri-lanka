@@ -15,6 +15,7 @@ See the [Quickstart](./README.md#quickstart) in the README.
 ### Reporting bugs
 
 Open a GitHub issue with:
+
 - What you did
 - What you expected
 - What actually happened
@@ -45,6 +46,7 @@ Open a discussion or issue. Describe the use case and the problem it solves. Big
 - **Accessibility** — semantic HTML, alt text on every image, keyboard-navigable
 
 Run before pushing:
+
 ```bash
 npm run lint
 npm run typecheck
@@ -86,7 +88,7 @@ Common types: `feat`, `fix`, `docs`, `refactor`, `perf`, `chore`, `test`, `style
 Before requesting review:
 
 - [ ] PR title follows conventional commits
-- [ ] Description explains *what* and *why*
+- [ ] Description explains _what_ and _why_
 - [ ] Screenshots for UI changes
 - [ ] `npm run lint` passes
 - [ ] `npm run typecheck` passes

@@ -32,14 +32,16 @@ export default async function SharedListPage({ params }: Props) {
   // Fetch the vehicles
   const { data: rawVehicles } = await supabase
     .from('vehicles')
-    .select(`
+    .select(
+      `
       id, slug, model, year, price, mileage_km, fuel_type, transmission, created_at, view_count,
       vehicle_makes ( name ),
       districts ( name_en ),
       cities ( name_en ),
       vehicle_images ( url, is_primary, sort_order ),
       boosts ( status, boost_plans ( type ) )
-    `)
+    `,
+    )
     .in('id', list.vehicle_ids)
     .eq('status', 'active');
 
@@ -69,7 +71,9 @@ export default async function SharedListPage({ params }: Props) {
   });
 
   const expiresDate = new Date(list.expires_at).toLocaleDateString('en-LK', {
-    year: 'numeric', month: 'long', day: 'numeric',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
   });
 
   return (
@@ -77,22 +81,27 @@ export default async function SharedListPage({ params }: Props) {
       <Header />
       <main className="container mx-auto px-4 py-8">
         <div className="mb-6">
-          <h1 className="text-xl font-bold mb-1">Shared Vehicle List</h1>
+          <h1 className="mb-1 text-xl font-bold">Shared Vehicle List</h1>
           <p className="text-sm text-gray-500">
             {vehicles.length} vehicle{vehicles.length !== 1 ? 's' : ''} · expires {expiresDate}
           </p>
         </div>
 
         {vehicles.length === 0 ? (
-          <div className="text-center py-20 text-gray-400">
+          <div className="py-20 text-center text-gray-400">
             <p>All vehicles in this list are no longer available.</p>
-            <Link href="/search" className="text-[var(--brand-green)] hover:underline text-sm mt-2 inline-block">
+            <Link
+              href="/search"
+              className="mt-2 inline-block text-sm text-[var(--brand-green)] hover:underline"
+            >
               Browse current listings →
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 md:gap-4">
-            {vehicles.map((v) => <VehicleCard key={v.id} vehicle={v} />)}
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-6">
+            {vehicles.map((v) => (
+              <VehicleCard key={v.id} vehicle={v} />
+            ))}
           </div>
         )}
       </main>

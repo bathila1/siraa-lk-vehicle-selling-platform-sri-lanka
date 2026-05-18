@@ -37,27 +37,24 @@ export async function PATCH(request: NextRequest, { params }: RouteContext) {
 
   const v = parsed.data;
   const patch: any = {};
-  if (v.model !== undefined)         patch.model = v.model;
-  if (v.year !== undefined)          patch.year = v.year;
-  if (v.price !== undefined)         patch.price = v.price;
-  if (v.mileageKm !== undefined)     patch.mileage_km = v.mileageKm;
-  if (v.engineCc !== undefined)      patch.engine_cc = v.engineCc;
-  if (v.bodyType !== undefined)      patch.body_type = v.bodyType;
-  if (v.transmission !== undefined)  patch.transmission = v.transmission;
-  if (v.fuelType !== undefined)      patch.fuel_type = v.fuelType;
-  if (v.color !== undefined)         patch.color = v.color;
+  if (v.model !== undefined) patch.model = v.model;
+  if (v.year !== undefined) patch.year = v.year;
+  if (v.price !== undefined) patch.price = v.price;
+  if (v.mileageKm !== undefined) patch.mileage_km = v.mileageKm;
+  if (v.engineCc !== undefined) patch.engine_cc = v.engineCc;
+  if (v.bodyType !== undefined) patch.body_type = v.bodyType;
+  if (v.transmission !== undefined) patch.transmission = v.transmission;
+  if (v.fuelType !== undefined) patch.fuel_type = v.fuelType;
+  if (v.color !== undefined) patch.color = v.color;
   if (v.previousOwners !== undefined) patch.previous_owners = v.previousOwners;
-  if (v.description !== undefined)   patch.description = v.description;
-  if (v.districtId !== undefined)    patch.district_id = v.districtId;
-  if (v.cityId !== undefined)        patch.city_id = v.cityId;
-  if (v.lat !== undefined)           patch.lat = v.lat;
-  if (v.lng !== undefined)           patch.lng = v.lng;
+  if (v.description !== undefined) patch.description = v.description;
+  if (v.districtId !== undefined) patch.district_id = v.districtId;
+  if (v.cityId !== undefined) patch.city_id = v.cityId;
+  if (v.lat !== undefined) patch.lat = v.lat;
+  if (v.lng !== undefined) patch.lng = v.lng;
   if (v.customAttributes !== undefined) patch.custom_attributes = v.customAttributes;
 
-  const { error } = await supabase
-    .from('vehicles')
-    .update(patch)
-    .eq('id', vehicleId);
+  const { error } = await supabase.from('vehicles').update(patch).eq('id', vehicleId);
 
   if (error) return NextResponse.json({ error: 'Update failed' }, { status: 500 });
 

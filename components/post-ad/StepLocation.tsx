@@ -15,16 +15,16 @@ interface Props {
 // District-level fallback centers (approximate)
 const DISTRICT_CENTERS: Record<string, [number, number]> = {
   Colombo: [6.9271, 79.8612],
-  Gampaha: [7.0840, 80.0098],
+  Gampaha: [7.084, 80.0098],
   Kandy: [7.2906, 80.6337],
-  Galle: [6.0535, 80.2210],
+  Galle: [6.0535, 80.221],
   Matara: [5.9485, 80.5353],
   Kurunegala: [7.4863, 80.3623],
   Anuradhapura: [8.3114, 80.4037],
   Jaffna: [9.6615, 80.0255],
   Ratnapura: [6.6828, 80.4036],
   Kalutara: [6.5854, 79.9607],
-  Badulla: [6.9934, 81.0550],
+  Badulla: [6.9934, 81.055],
   Trincomalee: [8.5874, 81.2152],
   Batticaloa: [7.7104, 81.6924],
   Ampara: [7.2839, 81.6747],
@@ -35,7 +35,7 @@ const DISTRICT_CENTERS: Record<string, [number, number]> = {
   Moneragala: [6.8728, 81.3508],
   Kegalle: [7.2513, 80.3464],
   Puttalam: [8.0408, 79.8394],
-  Mannar: [8.9810, 79.9043],
+  Mannar: [8.981, 79.9043],
   Vavuniya: [8.7514, 80.4971],
   Kilinochchi: [9.3961, 80.4014],
   Mullaitivu: [9.2671, 80.8128],
@@ -149,10 +149,10 @@ export function StepLocation({ draft, update, districts, cities }: Props) {
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
         crossOrigin=""
       />
-      <h2 className="font-semibold text-base">Location</h2>
+      <h2 className="text-base font-semibold">Location</h2>
 
       <div>
-        <label className="text-xs font-medium text-gray-700 mb-1.5 block">
+        <label className="mb-1.5 block text-xs font-medium text-gray-700">
           District <span className="text-red-500">*</span>
         </label>
         <select
@@ -163,43 +163,45 @@ export function StepLocation({ draft, update, districts, cities }: Props) {
               cityId: null,
             })
           }
-          className="w-full p-3 text-sm border-2 border-[var(--color-border)] rounded-lg focus:border-[var(--brand-green)] outline-none"
+          className="w-full rounded-lg border-2 border-[var(--color-border)] p-3 text-sm outline-none focus:border-[var(--brand-green)]"
         >
           <option value="">Select district</option>
           {districts.map((d) => (
-            <option key={d.id} value={d.id}>{d.name_en}</option>
+            <option key={d.id} value={d.id}>
+              {d.name_en}
+            </option>
           ))}
         </select>
       </div>
 
       {draft.districtId && filteredCities.length > 0 && (
         <div>
-          <label className="text-xs font-medium text-gray-700 mb-1.5 block">
-            City / Area
-          </label>
+          <label className="mb-1.5 block text-xs font-medium text-gray-700">City / Area</label>
           <select
             value={draft.cityId ?? ''}
             onChange={(e) => update({ cityId: e.target.value ? Number(e.target.value) : null })}
-            className="w-full p-3 text-sm border-2 border-[var(--color-border)] rounded-lg focus:border-[var(--brand-green)] outline-none"
+            className="w-full rounded-lg border-2 border-[var(--color-border)] p-3 text-sm outline-none focus:border-[var(--brand-green)]"
           >
             <option value="">Select city (optional)</option>
             {filteredCities.map((c) => (
-              <option key={c.id} value={c.id}>{c.name_en}</option>
+              <option key={c.id} value={c.id}>
+                {c.name_en}
+              </option>
             ))}
           </select>
         </div>
       )}
 
       <div>
-        <label className="text-xs font-medium text-gray-700 mb-1.5 block flex items-center gap-1">
-          <MapPin className="w-3 h-3" />
+        <label className="mb-1.5 block flex items-center gap-1 text-xs font-medium text-gray-700">
+          <MapPin className="h-3 w-3" />
           Pin location on map (optional)
         </label>
         <div
           ref={mapContainerRef}
-          className="w-full h-64 rounded-lg overflow-hidden border-2 border-[var(--color-border)]"
+          className="h-64 w-full overflow-hidden rounded-lg border-2 border-[var(--color-border)]"
         />
-        <p className="text-xs text-gray-400 mt-1">
+        <p className="mt-1 text-xs text-gray-400">
           {draft.lat
             ? `📍 Location pinned (${draft.lat.toFixed(4)}, ${draft.lng?.toFixed(4)})`
             : 'Tap on the map to drop a pin'}

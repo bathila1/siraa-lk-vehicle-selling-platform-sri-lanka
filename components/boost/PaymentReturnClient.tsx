@@ -4,7 +4,14 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { CheckCircle2, Loader2, XCircle, AlertCircle } from 'lucide-react';
 
-type Status = 'loading' | 'completed' | 'pending' | 'failed' | 'cancelled' | 'not_found' | 'timeout';
+type Status =
+  | 'loading'
+  | 'completed'
+  | 'pending'
+  | 'failed'
+  | 'cancelled'
+  | 'not_found'
+  | 'timeout';
 
 const MAX_POLL_SECONDS = 60;
 const POLL_INTERVAL_MS = 3_000;
@@ -55,13 +62,15 @@ export function PaymentReturnClient({ orderId }: { orderId: string | null }) {
     };
 
     poll();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [orderId]);
 
   if (!orderId || status === 'not_found') {
     return (
       <Body
-        icon={<AlertCircle className="w-12 h-12 text-amber-500" />}
+        icon={<AlertCircle className="h-12 w-12 text-amber-500" />}
         title="Payment not found"
         message="We couldn't find your payment record. If you were charged, please contact support."
         actions={
@@ -76,13 +85,13 @@ export function PaymentReturnClient({ orderId }: { orderId: string | null }) {
   if (status === 'completed') {
     return (
       <Body
-        icon={<CheckCircle2 className="w-12 h-12 text-[var(--brand-green)]" />}
+        icon={<CheckCircle2 className="h-12 w-12 text-[var(--brand-green)]" />}
         title="Boost activated! 🎉"
         message="Your ad is now featured. Buyers will start seeing it at the top of search results."
         actions={
           <Link
             href="/dashboard"
-            className="inline-block bg-[var(--brand-green)] text-white text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-[var(--brand-deep)]"
+            className="inline-block rounded-lg bg-[var(--brand-green)] px-5 py-2.5 text-sm font-medium text-white hover:bg-[var(--brand-deep)]"
           >
             Go to Dashboard
           </Link>
@@ -94,7 +103,7 @@ export function PaymentReturnClient({ orderId }: { orderId: string | null }) {
   if (status === 'failed') {
     return (
       <Body
-        icon={<XCircle className="w-12 h-12 text-red-500" />}
+        icon={<XCircle className="h-12 w-12 text-red-500" />}
         title="Payment failed"
         message="Your payment didn't go through. Your card hasn't been charged. You can try again from your dashboard."
         actions={
@@ -109,7 +118,7 @@ export function PaymentReturnClient({ orderId }: { orderId: string | null }) {
   if (status === 'cancelled') {
     return (
       <Body
-        icon={<AlertCircle className="w-12 h-12 text-gray-400" />}
+        icon={<AlertCircle className="h-12 w-12 text-gray-400" />}
         title="Payment cancelled"
         message="You cancelled the payment. No charges were made."
         actions={
@@ -124,7 +133,7 @@ export function PaymentReturnClient({ orderId }: { orderId: string | null }) {
   if (status === 'timeout') {
     return (
       <Body
-        icon={<AlertCircle className="w-12 h-12 text-amber-500" />}
+        icon={<AlertCircle className="h-12 w-12 text-amber-500" />}
         title="Still confirming..."
         message="Your payment is taking longer than expected. If you completed payment, please check your dashboard in a few minutes. If you have any issues, contact support."
         actions={
@@ -139,13 +148,11 @@ export function PaymentReturnClient({ orderId }: { orderId: string | null }) {
   // Default: loading / pending
   return (
     <Body
-      icon={<Loader2 className="w-12 h-12 text-[var(--brand-green)] animate-spin" />}
+      icon={<Loader2 className="h-12 w-12 animate-spin text-[var(--brand-green)]" />}
       title="Confirming your payment..."
       message="This usually takes a few seconds. Please don't close this page."
       actions={
-        <p className="text-xs text-gray-400">
-          {elapsedSec > 0 && `Waiting ${elapsedSec}s...`}
-        </p>
+        <p className="text-xs text-gray-400">{elapsedSec > 0 && `Waiting ${elapsedSec}s...`}</p>
       }
     />
   );
@@ -163,10 +170,10 @@ function Body({
   actions: React.ReactNode;
 }) {
   return (
-    <div className="text-center py-4">
-      <div className="flex justify-center mb-4">{icon}</div>
-      <h1 className="text-lg font-bold mb-2">{title}</h1>
-      <p className="text-sm text-gray-500 mb-6 leading-relaxed">{message}</p>
+    <div className="py-4 text-center">
+      <div className="mb-4 flex justify-center">{icon}</div>
+      <h1 className="mb-2 text-lg font-bold">{title}</h1>
+      <p className="mb-6 text-sm leading-relaxed text-gray-500">{message}</p>
       {actions}
     </div>
   );

@@ -43,8 +43,8 @@ export default async function EditPage({ params }: Props) {
     <>
       <Header />
       <main className="min-h-[calc(100vh-3.5rem)] bg-[var(--brand-bg)]">
-        <div className="max-w-2xl mx-auto px-4 py-6">
-          <h1 className="text-xl font-bold mb-4">Edit Ad</h1>
+        <div className="mx-auto max-w-2xl px-4 py-6">
+          <h1 className="mb-4 text-xl font-bold">Edit Ad</h1>
           <EditAdForm
             vehicle={vehicle}
             vehicleTypes={vehicleTypes}

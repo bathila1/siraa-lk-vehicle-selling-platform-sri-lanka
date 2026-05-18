@@ -102,10 +102,7 @@ export async function POST(request: NextRequest) {
       .update({ value: { ...promo, current_count: (promo.current_count ?? 0) + 1 } })
       .eq('key', 'promo_first_100_sellers');
 
-    await supabase
-      .from('sellers')
-      .update({ free_posting_used: true })
-      .eq('id', session.seller_id);
+    await supabase.from('sellers').update({ free_posting_used: true }).eq('id', session.seller_id);
   }
 
   return NextResponse.json({ ok: true, id: vehicle.id, slug: vehicle.slug });

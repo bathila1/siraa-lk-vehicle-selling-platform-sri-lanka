@@ -72,13 +72,15 @@ export async function getHomepageData() {
     // Latest active vehicles
     supabase
       .from('vehicles')
-      .select(`
+      .select(
+        `
         id, slug, model, year, price, mileage_km, fuel_type, created_at, view_count,
         vehicle_makes ( name ),
         districts ( name_en ),
         cities ( name_en ),
         vehicle_images ( url, is_primary, sort_order )
-      `)
+      `,
+      )
       .eq('status', 'active')
       .order('created_at', { ascending: false })
       .limit(24),
@@ -86,24 +88,22 @@ export async function getHomepageData() {
     // Active BoostPro vehicles — join via vehicle_id, filter by plan type separately
     supabase
       .from('vehicles')
-      .select(`
+      .select(
+        `
         id, slug, model, year, price,
         vehicle_makes ( name ),
         districts ( name_en ),
         vehicle_images ( url, is_primary, sort_order ),
         boosts!inner ( status, boost_plans!inner ( type ) )
-      `)
+      `,
+      )
       .eq('status', 'active')
       .eq('boosts.status', 'active')
       .eq('boosts.boost_plans.type', 'pro')
       .limit(6),
 
     // Promo settings
-    supabase
-      .from('site_settings')
-      .select('value')
-      .eq('key', 'promo_first_100_sellers')
-      .single(),
+    supabase.from('site_settings').select('value').eq('key', 'promo_first_100_sellers').single(),
   ]);
 
   return {
@@ -141,7 +141,13 @@ export interface VehicleDetail {
   make: { id: number; name: string } | null;
   district: { id: number; name_en: string } | null;
   city: { id: number; name_en: string } | null;
-  images: { url: string; is_primary: boolean; sort_order: number; width: number | null; height: number | null }[];
+  images: {
+    url: string;
+    is_primary: boolean;
+    sort_order: number;
+    width: number | null;
+    height: number | null;
+  }[];
   seller: {
     id: string;
     full_name: string;
@@ -159,7 +165,8 @@ export async function getVehicleBySlug(slug: string): Promise<VehicleDetail | nu
 
   const { data, error } = await supabase
     .from('vehicles')
-    .select(`
+    .select(
+      `
       id, slug, model, year, price, mileage_km, engine_cc, body_type,
       fuel_type, transmission, condition, color, previous_owners,
       description, lat, lng, status, view_count, contact_reveal_count,
@@ -175,7 +182,8 @@ export async function getVehicleBySlug(slug: string): Promise<VehicleDetail | nu
       ),
       boosts ( status, boost_plans ( type ) ),
       price_history ( old_price, new_price, changed_at )
-    `)
+    `,
+    )
     .eq('slug', slug)
     .eq('status', 'active')
     .single();
@@ -183,9 +191,7 @@ export async function getVehicleBySlug(slug: string): Promise<VehicleDetail | nu
   if (error || !data) return null;
 
   const d = data as any;
-  const images = (d.vehicle_images ?? []).sort(
-    (a: any, b: any) => a.sort_order - b.sort_order,
-  );
+  const images = (d.vehicle_images ?? []).sort((a: any, b: any) => a.sort_order - b.sort_order);
   const activeBoost = (d.boosts ?? []).find((b: any) => b.status === 'active');
 
   return {
@@ -234,12 +240,14 @@ export async function getSimilarVehicles(
   const supabase = await createClient();
   const { data } = await supabase
     .from('vehicles')
-    .select(`
+    .select(
+      `
       id, slug, model, year, price,
       vehicle_makes ( name ),
       districts ( name_en ),
       vehicle_images ( url, is_primary, sort_order )
-    `)
+    `,
+    )
     .eq('status', 'active')
     .eq('vehicle_type_id', typeId)
     .eq('make_id', makeId)

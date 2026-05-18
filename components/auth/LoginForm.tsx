@@ -98,10 +98,14 @@ export function LoginForm({ redirectTo }: Props) {
     return (
       <div className="space-y-4">
         <button
-          onClick={() => { setStep('phone'); setCode(''); setError(null); }}
-          className="text-xs text-gray-500 hover:text-[var(--brand-green)] flex items-center gap-1"
+          onClick={() => {
+            setStep('phone');
+            setCode('');
+            setError(null);
+          }}
+          className="flex items-center gap-1 text-xs text-gray-500 hover:text-[var(--brand-green)]"
         >
-          <ArrowLeft className="w-3 h-3" />
+          <ArrowLeft className="h-3 w-3" />
           Change number
         </button>
 
@@ -109,9 +113,7 @@ export function LoginForm({ redirectTo }: Props) {
           <p className="text-sm text-gray-700">
             Code sent to <strong>{phone}</strong>
           </p>
-          <p className="text-xs text-gray-500 mt-1">
-            Enter the 6-digit code from your SMS
-          </p>
+          <p className="mt-1 text-xs text-gray-500">Enter the 6-digit code from your SMS</p>
         </div>
 
         <input
@@ -123,7 +125,7 @@ export function LoginForm({ redirectTo }: Props) {
           onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
           onKeyDown={(e) => e.key === 'Enter' && verifyOtp()}
           placeholder="6-digit code"
-          className="w-full text-lg tracking-widest text-center font-mono py-3 px-4 border-2 border-[var(--color-border)] rounded-lg focus:border-[var(--brand-green)] outline-none"
+          className="w-full rounded-lg border-2 border-[var(--color-border)] px-4 py-3 text-center font-mono text-lg tracking-widest outline-none focus:border-[var(--brand-green)]"
           autoFocus
         />
 
@@ -143,9 +145,9 @@ export function LoginForm({ redirectTo }: Props) {
         <button
           onClick={requestOtp}
           disabled={loading}
-          className="w-full text-xs text-gray-500 hover:text-[var(--brand-green)] py-2 flex items-center justify-center gap-1"
+          className="flex w-full items-center justify-center gap-1 py-2 text-xs text-gray-500 hover:text-[var(--brand-green)]"
         >
-          <RefreshCw className="w-3 h-3" />
+          <RefreshCw className="h-3 w-3" />
           Resend code
         </button>
       </div>
@@ -155,11 +157,11 @@ export function LoginForm({ redirectTo }: Props) {
   return (
     <div className="space-y-4">
       <div>
-        <label htmlFor="phone" className="text-xs font-medium text-gray-700 mb-1.5 block">
+        <label htmlFor="phone" className="mb-1.5 block text-xs font-medium text-gray-700">
           Mobile number
         </label>
         <div className="relative">
-          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <input
             id="phone"
             type="tel"
@@ -169,32 +171,30 @@ export function LoginForm({ redirectTo }: Props) {
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && requestOtp()}
-            className="w-full pl-10 pr-3 py-3 text-base border-2 border-[var(--color-border)] rounded-lg focus:border-[var(--brand-green)] outline-none"
+            className="w-full rounded-lg border-2 border-[var(--color-border)] py-3 pl-10 pr-3 text-base outline-none focus:border-[var(--brand-green)]"
             autoFocus
           />
         </div>
-        <p className="text-xs text-gray-400 mt-1.5">
-          We&apos;ll send a 6-digit code via SMS.
-        </p>
+        <p className="mt-1.5 text-xs text-gray-400">We&apos;ll send a 6-digit code via SMS.</p>
       </div>
 
       {error && <p className="text-xs text-red-500">{error}</p>}
 
-      <Button
-        variant="primary"
-        size="lg"
-        className="w-full"
-        onClick={requestOtp}
-        loading={loading}
-      >
+      <Button variant="primary" size="lg" className="w-full" onClick={requestOtp} loading={loading}>
         Send Code
-        <ArrowRight className="w-4 h-4" />
+        <ArrowRight className="h-4 w-4" />
       </Button>
 
-      <p className="text-xs text-gray-400 text-center leading-relaxed">
+      <p className="text-center text-xs leading-relaxed text-gray-400">
         By continuing, you agree to our{' '}
-        <a href="/terms" className="underline hover:text-[var(--brand-green)]">Terms</a> &{' '}
-        <a href="/privacy" className="underline hover:text-[var(--brand-green)]">Privacy Policy</a>.
+        <a href="/terms" className="underline hover:text-[var(--brand-green)]">
+          Terms
+        </a>{' '}
+        &{' '}
+        <a href="/privacy" className="underline hover:text-[var(--brand-green)]">
+          Privacy Policy
+        </a>
+        .
       </p>
 
       {/* Invisible Turnstile — auto-executes on mount */}

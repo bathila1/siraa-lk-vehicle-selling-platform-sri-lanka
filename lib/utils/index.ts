@@ -30,9 +30,7 @@ export function buildVehicleSlug(parts: {
   city?: string | null;
   random?: string;
 }): string {
-  const base = slugify(
-    [parts.make, parts.model, parts.year, parts.city].filter(Boolean).join(' '),
-  );
+  const base = slugify([parts.make, parts.model, parts.year, parts.city].filter(Boolean).join(' '));
   const rand = parts.random ?? randomShortId(6);
   return `${base}-${rand}`;
 }

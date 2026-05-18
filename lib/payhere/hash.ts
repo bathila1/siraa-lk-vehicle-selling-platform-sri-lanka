@@ -33,9 +33,7 @@ export function generateCheckoutHash(input: {
   const amountStr = input.amount.toFixed(2);
   const hashedSecret = md5Upper(input.merchantSecret);
 
-  return md5Upper(
-    `${input.merchantId}${input.orderId}${amountStr}${currency}${hashedSecret}`,
-  );
+  return md5Upper(`${input.merchantId}${input.orderId}${amountStr}${currency}${hashedSecret}`);
 }
 
 /**
@@ -54,9 +52,9 @@ export function verifyIpnSignature(input: {
   merchantId: string;
   merchantSecret: string;
   orderId: string;
-  payhereAmount: string;     // exactly as PayHere sent it
-  payhereCurrency: string;   // exactly as PayHere sent it
-  statusCode: string;        // exactly as PayHere sent it
+  payhereAmount: string; // exactly as PayHere sent it
+  payhereCurrency: string; // exactly as PayHere sent it
+  statusCode: string; // exactly as PayHere sent it
   receivedMd5Sig: string;
 }): boolean {
   const hashedSecret = md5Upper(input.merchantSecret);
@@ -84,11 +82,11 @@ export const PAYHERE_STATUS_MAP: Record<
   PayHereStatusCode,
   { label: string; payment: 'completed' | 'pending' | 'cancelled' | 'failed' | 'refunded' }
 > = {
-  '2':  { label: 'Success',        payment: 'completed' },
-  '0':  { label: 'Pending',        payment: 'pending'   },
-  '-1': { label: 'Cancelled',      payment: 'cancelled' },
-  '-2': { label: 'Failed',         payment: 'failed'    },
-  '-3': { label: 'Chargedback',    payment: 'refunded'  },
+  '2': { label: 'Success', payment: 'completed' },
+  '0': { label: 'Pending', payment: 'pending' },
+  '-1': { label: 'Cancelled', payment: 'cancelled' },
+  '-2': { label: 'Failed', payment: 'failed' },
+  '-3': { label: 'Chargedback', payment: 'refunded' },
 };
 
 /**

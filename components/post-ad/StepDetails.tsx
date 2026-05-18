@@ -32,7 +32,7 @@ export function StepDetails({ draft, update, vehicleTypes, makes, attributesSche
 
   return (
     <div className="space-y-4">
-      <h2 className="font-semibold text-base">Vehicle Details</h2>
+      <h2 className="text-base font-semibold">Vehicle Details</h2>
 
       {/* Vehicle type */}
       <Field label="Vehicle Type" required>
@@ -49,7 +49,9 @@ export function StepDetails({ draft, update, vehicleTypes, makes, attributesSche
         >
           <option value="">Select vehicle type</option>
           {vehicleTypes.map((t) => (
-            <option key={t.id} value={t.id}>{t.name_en}</option>
+            <option key={t.id} value={t.id}>
+              {t.name_en}
+            </option>
           ))}
         </select>
       </Field>
@@ -62,9 +64,13 @@ export function StepDetails({ draft, update, vehicleTypes, makes, attributesSche
           className="input"
           disabled={!draft.vehicleTypeId}
         >
-          <option value="">{draft.vehicleTypeId ? 'Select make' : 'Select vehicle type first'}</option>
+          <option value="">
+            {draft.vehicleTypeId ? 'Select make' : 'Select vehicle type first'}
+          </option>
           {filteredMakes.map((m) => (
-            <option key={m.id} value={m.id}>{m.name}</option>
+            <option key={m.id} value={m.id}>
+              {m.name}
+            </option>
           ))}
         </select>
       </Field>
@@ -90,7 +96,11 @@ export function StepDetails({ draft, update, vehicleTypes, makes, attributesSche
             className="input"
           >
             <option value="">Year</option>
-            {years.map((y) => <option key={y} value={y}>{y}</option>)}
+            {years.map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
           </select>
         </Field>
 
@@ -220,13 +230,13 @@ export function StepDetails({ draft, update, vehicleTypes, makes, attributesSche
           rows={4}
           className="input resize-none"
         />
-        <p className="text-xs text-gray-400 mt-1">{draft.description.length}/5000</p>
+        <p className="mt-1 text-xs text-gray-400">{draft.description.length}/5000</p>
       </Field>
 
       {/* Dynamic custom attributes */}
       {relevantAttrs.length > 0 && (
-        <div className="pt-3 border-t border-[var(--color-border)]">
-          <h3 className="text-sm font-medium mb-3">Additional Info</h3>
+        <div className="border-t border-[var(--color-border)] pt-3">
+          <h3 className="mb-3 text-sm font-medium">Additional Info</h3>
           <div className="space-y-3">
             {relevantAttrs.map((attr) => (
               <CustomAttributeField
@@ -267,10 +277,18 @@ export function StepDetails({ draft, update, vehicleTypes, makes, attributesSche
   );
 }
 
-function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
+function Field({
+  label,
+  required,
+  children,
+}: {
+  label: string;
+  required?: boolean;
+  children: React.ReactNode;
+}) {
   return (
     <div>
-      <label className="text-xs font-medium text-gray-700 mb-1.5 block">
+      <label className="mb-1.5 block text-xs font-medium text-gray-700">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       {children}
@@ -289,12 +307,12 @@ function CustomAttributeField({
 }) {
   if (attr.field_type === 'boolean') {
     return (
-      <label className="flex items-center gap-2 cursor-pointer">
+      <label className="flex cursor-pointer items-center gap-2">
         <input
           type="checkbox"
           checked={value === true}
           onChange={(e) => onChange(e.target.checked)}
-          className="w-4 h-4 accent-[var(--brand-green)]"
+          className="h-4 w-4 accent-[var(--brand-green)]"
         />
         <span className="text-sm">{attr.label_en}</span>
       </label>
@@ -304,7 +322,7 @@ function CustomAttributeField({
   if (attr.field_type === 'select') {
     return (
       <div>
-        <label className="text-xs font-medium text-gray-700 mb-1.5 block">{attr.label_en}</label>
+        <label className="mb-1.5 block text-xs font-medium text-gray-700">{attr.label_en}</label>
         <select
           value={(value as string) ?? ''}
           onChange={(e) => onChange(e.target.value || null)}
@@ -312,7 +330,9 @@ function CustomAttributeField({
         >
           <option value="">Select</option>
           {(attr.options ?? []).map((o: any) => (
-            <option key={o.value} value={o.value}>{o.label_en}</option>
+            <option key={o.value} value={o.value}>
+              {o.label_en}
+            </option>
           ))}
         </select>
       </div>
@@ -323,7 +343,7 @@ function CustomAttributeField({
     const arr = Array.isArray(value) ? (value as string[]) : [];
     return (
       <div>
-        <label className="text-xs font-medium text-gray-700 mb-1.5 block">{attr.label_en}</label>
+        <label className="mb-1.5 block text-xs font-medium text-gray-700">{attr.label_en}</label>
         <div className="flex flex-wrap gap-1.5">
           {(attr.options ?? []).map((o: any) => {
             const active = arr.includes(o.value);
@@ -334,9 +354,9 @@ function CustomAttributeField({
                 onClick={() =>
                   onChange(active ? arr.filter((v) => v !== o.value) : [...arr, o.value])
                 }
-                className={`text-xs px-2.5 py-1.5 rounded-full border transition-colors ${
+                className={`rounded-full border px-2.5 py-1.5 text-xs transition-colors ${
                   active
-                    ? 'bg-[var(--brand-green)] text-white border-[var(--brand-green)]'
+                    ? 'border-[var(--brand-green)] bg-[var(--brand-green)] text-white'
                     : 'border-[var(--color-border)] text-gray-600'
                 }`}
               >
@@ -352,7 +372,7 @@ function CustomAttributeField({
   if (attr.field_type === 'number') {
     return (
       <div>
-        <label className="text-xs font-medium text-gray-700 mb-1.5 block">{attr.label_en}</label>
+        <label className="mb-1.5 block text-xs font-medium text-gray-700">{attr.label_en}</label>
         <input
           type="number"
           inputMode="numeric"
@@ -366,7 +386,7 @@ function CustomAttributeField({
 
   return (
     <div>
-      <label className="text-xs font-medium text-gray-700 mb-1.5 block">{attr.label_en}</label>
+      <label className="mb-1.5 block text-xs font-medium text-gray-700">{attr.label_en}</label>
       <input
         type="text"
         value={(value as string) ?? ''}

@@ -61,12 +61,10 @@ export function ReportForm({ vehicleId, vehicleSlug }: Props) {
 
   if (done) {
     return (
-      <div className="text-center py-6">
-        <CheckCircle2 className="w-12 h-12 text-[var(--brand-green)] mx-auto mb-3" />
+      <div className="py-6 text-center">
+        <CheckCircle2 className="mx-auto mb-3 h-12 w-12 text-[var(--brand-green)]" />
         <p className="font-medium text-[var(--brand-deep)]">Thanks!</p>
-        <p className="text-sm text-gray-500 mt-1 mb-4">
-          We&apos;ll review this report shortly.
-        </p>
+        <p className="mb-4 mt-1 text-sm text-gray-500">We&apos;ll review this report shortly.</p>
         <Link
           href={`/vehicle/${vehicleSlug}`}
           className="text-sm text-[var(--brand-green)] hover:underline"
@@ -80,12 +78,12 @@ export function ReportForm({ vehicleId, vehicleSlug }: Props) {
   return (
     <div className="space-y-4">
       <div>
-        <p className="text-xs font-medium text-gray-700 mb-2">Why are you reporting it?</p>
+        <p className="mb-2 text-xs font-medium text-gray-700">Why are you reporting it?</p>
         <div className="space-y-1.5">
           {REASONS.map((r) => (
             <label
               key={r.value}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg border cursor-pointer transition-colors ${
+              className={`flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors ${
                 reason === r.value
                   ? 'border-[var(--brand-green)] bg-[var(--brand-bg)]'
                   : 'border-[var(--color-border)]'
@@ -106,7 +104,7 @@ export function ReportForm({ vehicleId, vehicleSlug }: Props) {
       </div>
 
       <div>
-        <label className="text-xs font-medium text-gray-700 mb-1.5 block">
+        <label className="mb-1.5 block text-xs font-medium text-gray-700">
           More details (optional)
         </label>
         <textarea
@@ -115,12 +113,12 @@ export function ReportForm({ vehicleId, vehicleSlug }: Props) {
           rows={3}
           maxLength={1000}
           placeholder="Tell us more..."
-          className="w-full p-3 text-sm border-2 border-[var(--color-border)] rounded-lg focus:border-[var(--brand-green)] outline-none resize-none"
+          className="w-full resize-none rounded-lg border-2 border-[var(--color-border)] p-3 text-sm outline-none focus:border-[var(--brand-green)]"
         />
       </div>
 
       <div>
-        <label className="text-xs font-medium text-gray-700 mb-1.5 block">
+        <label className="mb-1.5 block text-xs font-medium text-gray-700">
           Your phone (optional — for follow-up)
         </label>
         <input
@@ -129,7 +127,7 @@ export function ReportForm({ vehicleId, vehicleSlug }: Props) {
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           placeholder="07x xxx xxxx"
-          className="w-full p-3 text-sm border-2 border-[var(--color-border)] rounded-lg focus:border-[var(--brand-green)] outline-none"
+          className="w-full rounded-lg border-2 border-[var(--color-border)] p-3 text-sm outline-none focus:border-[var(--brand-green)]"
         />
       </div>
 

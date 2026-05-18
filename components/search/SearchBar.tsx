@@ -30,7 +30,10 @@ export function SearchBar({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const fetchSuggestions = useCallback(async (q: string) => {
-    if (q.trim().length < 2) { setSuggestions([]); return; }
+    if (q.trim().length < 2) {
+      setSuggestions([]);
+      return;
+    }
     try {
       const res = await fetch(`/api/search/suggest?q=${encodeURIComponent(q)}`);
       const data = await res.json();
@@ -86,12 +89,14 @@ export function SearchBar({
     <div className={cn('relative w-full', className)}>
       <div
         className={cn(
-          'flex items-center gap-2 bg-white border-2 rounded-xl transition-colors',
+          'flex items-center gap-2 rounded-xl border-2 bg-white transition-colors',
           'border-[var(--color-border)] focus-within:border-[var(--brand-green)]',
           size === 'large' ? 'px-4 py-3' : 'px-3 py-2',
         )}
       >
-        <Search className={cn('text-gray-400 flex-shrink-0', size === 'large' ? 'w-5 h-5' : 'w-4 h-4')} />
+        <Search
+          className={cn('flex-shrink-0 text-gray-400', size === 'large' ? 'h-5 w-5' : 'h-4 w-4')}
+        />
         <input
           ref={inputRef}
           type="text"
@@ -102,7 +107,7 @@ export function SearchBar({
           onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
           placeholder={placeholder}
           className={cn(
-            'flex-1 bg-transparent outline-none text-[var(--brand-black)] placeholder:text-gray-400',
+            'flex-1 bg-transparent text-[var(--brand-black)] outline-none placeholder:text-gray-400',
             size === 'large' ? 'text-base' : 'text-sm',
           )}
           autoComplete="off"
@@ -111,18 +116,22 @@ export function SearchBar({
         {query && (
           <button
             type="button"
-            onClick={() => { setQuery(''); setSuggestions([]); inputRef.current?.focus(); }}
-            className="text-gray-400 hover:text-gray-600 flex-shrink-0"
+            onClick={() => {
+              setQuery('');
+              setSuggestions([]);
+              inputRef.current?.focus();
+            }}
+            className="flex-shrink-0 text-gray-400 hover:text-gray-600"
             aria-label="Clear search"
           >
-            <X className="w-4 h-4" />
+            <X className="h-4 w-4" />
           </button>
         )}
         <button
           type="button"
           onClick={() => handleSubmit()}
           className={cn(
-            'flex-shrink-0 bg-[var(--brand-green)] text-white rounded-lg font-medium hover:bg-[var(--brand-deep)] transition-colors',
+            'flex-shrink-0 rounded-lg bg-[var(--brand-green)] font-medium text-white transition-colors hover:bg-[var(--brand-deep)]',
             size === 'large' ? 'px-4 py-2 text-sm' : 'px-3 py-1.5 text-xs',
           )}
         >
@@ -132,18 +141,22 @@ export function SearchBar({
 
       {/* Suggestions dropdown */}
       {showSuggestions && suggestions.length > 0 && (
-        <ul className="absolute top-full left-0 right-0 mt-1 bg-white border border-[var(--color-border)] rounded-xl shadow-lg z-50 overflow-hidden">
+        <ul className="absolute left-0 right-0 top-full z-50 mt-1 overflow-hidden rounded-xl border border-[var(--color-border)] bg-white shadow-lg">
           {suggestions.map((s, i) => (
             <li key={s}>
               <button
                 type="button"
-                onMouseDown={(e) => { e.preventDefault(); setQuery(s); handleSubmit(s); }}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  setQuery(s);
+                  handleSubmit(s);
+                }}
                 className={cn(
-                  'w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-gray-50',
+                  'flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm hover:bg-gray-50',
                   i === activeSuggestion && 'bg-gray-50',
                 )}
               >
-                <Search className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+                <Search className="h-3.5 w-3.5 flex-shrink-0 text-gray-400" />
                 {s}
               </button>
             </li>

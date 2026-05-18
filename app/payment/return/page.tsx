@@ -15,8 +15,8 @@ export default async function PaymentReturnPage({ searchParams }: Props) {
   return (
     <>
       <Header />
-      <main className="min-h-[calc(100vh-3.5rem)] flex items-start justify-center px-4 py-10 bg-[var(--brand-bg)]">
-        <div className="w-full max-w-md bg-white rounded-2xl border border-[var(--color-border)] p-6">
+      <main className="flex min-h-[calc(100vh-3.5rem)] items-start justify-center bg-[var(--brand-bg)] px-4 py-10">
+        <div className="w-full max-w-md rounded-2xl border border-[var(--color-border)] bg-white p-6">
           <PaymentReturnClient orderId={order_id ?? null} />
         </div>
       </main>

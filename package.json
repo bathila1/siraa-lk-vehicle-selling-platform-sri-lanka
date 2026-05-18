@@ -61,8 +61,13 @@
     "supabase": "^1.215.0"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"],
-    "*.{json,md,css,sql}": ["prettier --write"]
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css,sql}": [
+      "prettier --write"
+    ]
   },
   "engines": {
     "node": ">=20.0.0"

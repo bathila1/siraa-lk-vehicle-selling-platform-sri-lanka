@@ -59,12 +59,12 @@ export function EditAdForm({ vehicle, vehicleTypes, districts, makes, cities }: 
   };
 
   return (
-    <div className="bg-white rounded-xl border border-[var(--color-border)] p-4 md:p-6 space-y-4">
+    <div className="space-y-4 rounded-xl border border-[var(--color-border)] bg-white p-4 md:p-6">
       <Link
         href="/dashboard"
-        className="text-xs text-gray-500 hover:text-[var(--brand-green)] flex items-center gap-1"
+        className="flex items-center gap-1 text-xs text-gray-500 hover:text-[var(--brand-green)]"
       >
-        <ArrowLeft className="w-3 h-3" />
+        <ArrowLeft className="h-3 w-3" />
         Back to dashboard
       </Link>
 
@@ -86,7 +86,9 @@ export function EditAdForm({ vehicle, vehicleTypes, districts, makes, cities }: 
           <input
             type="number"
             value={form.year ?? ''}
-            onChange={(e) => setForm({ ...form, year: e.target.value ? Number(e.target.value) : null })}
+            onChange={(e) =>
+              setForm({ ...form, year: e.target.value ? Number(e.target.value) : null })
+            }
             className="input"
           />
         </Field>
@@ -94,21 +96,26 @@ export function EditAdForm({ vehicle, vehicleTypes, districts, makes, cities }: 
           <input
             type="number"
             value={form.price ?? ''}
-            onChange={(e) => setForm({ ...form, price: e.target.value ? Number(e.target.value) : null })}
+            onChange={(e) =>
+              setForm({ ...form, price: e.target.value ? Number(e.target.value) : null })
+            }
             className="input"
           />
         </Field>
       </div>
 
       <p className="text-xs text-gray-400">
-        Current: {formatLKR(form.price)} {form.price !== vehicle.price && '(changed from ' + formatLKR(vehicle.price) + ')'}
+        Current: {formatLKR(form.price)}{' '}
+        {form.price !== vehicle.price && '(changed from ' + formatLKR(vehicle.price) + ')'}
       </p>
 
       <Field label="Mileage (km)">
         <input
           type="number"
           value={form.mileageKm ?? ''}
-          onChange={(e) => setForm({ ...form, mileageKm: e.target.value ? Number(e.target.value) : null })}
+          onChange={(e) =>
+            setForm({ ...form, mileageKm: e.target.value ? Number(e.target.value) : null })
+          }
           className="input"
         />
       </Field>
@@ -120,7 +127,9 @@ export function EditAdForm({ vehicle, vehicleTypes, districts, makes, cities }: 
           className="input"
         >
           {districts.map((d) => (
-            <option key={d.id} value={d.id}>{d.name_en}</option>
+            <option key={d.id} value={d.id}>
+              {d.name_en}
+            </option>
           ))}
         </select>
       </Field>
@@ -129,12 +138,16 @@ export function EditAdForm({ vehicle, vehicleTypes, districts, makes, cities }: 
         <Field label="City">
           <select
             value={form.cityId ?? ''}
-            onChange={(e) => setForm({ ...form, cityId: e.target.value ? Number(e.target.value) : null })}
+            onChange={(e) =>
+              setForm({ ...form, cityId: e.target.value ? Number(e.target.value) : null })
+            }
             className="input"
           >
             <option value="">Select city</option>
             {filteredCities.map((c) => (
-              <option key={c.id} value={c.id}>{c.name_en}</option>
+              <option key={c.id} value={c.id}>
+                {c.name_en}
+              </option>
             ))}
           </select>
         </Field>
@@ -153,10 +166,21 @@ export function EditAdForm({ vehicle, vehicleTypes, districts, makes, cities }: 
       {error && <p className="text-xs text-red-500">{error}</p>}
 
       <div className="flex gap-2 pt-2">
-        <Button variant="outline" size="md" onClick={() => router.push('/dashboard')} className="flex-1">
+        <Button
+          variant="outline"
+          size="md"
+          onClick={() => router.push('/dashboard')}
+          className="flex-1"
+        >
           Cancel
         </Button>
-        <Button variant="primary" size="md" onClick={handleSave} loading={loading} className="flex-1">
+        <Button
+          variant="primary"
+          size="md"
+          onClick={handleSave}
+          loading={loading}
+          className="flex-1"
+        >
           Save Changes
         </Button>
       </div>
@@ -182,7 +206,7 @@ export function EditAdForm({ vehicle, vehicleTypes, districts, makes, cities }: 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="text-xs font-medium text-gray-700 mb-1.5 block">{label}</label>
+      <label className="mb-1.5 block text-xs font-medium text-gray-700">{label}</label>
       {children}
     </div>
   );

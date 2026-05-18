@@ -13,29 +13,30 @@
 
 ## What this is
 
-Siraa is a vehicle marketplace specifically designed for the Sri Lankan market — targeting *registered, used vehicles* sold by individual owners (not large dealerships).
+Siraa is a vehicle marketplace specifically designed for the Sri Lankan market — targeting _registered, used vehicles_ sold by individual owners (not large dealerships).
 
 It exists because the current Sri Lankan options (riyasewana.lk, ikman.lk) have well-known shortcomings: stale ads of already-sold vehicles, dated UI, weak mobile experience, poor search relevance, and intrusive layouts. Siraa is the focused, modern alternative.
 
 ## Stack
 
-| Layer | Choice | Why |
-|---|---|---|
-| Framework | Next.js 16.2 LTS (App Router) | SSR/SSG/ISR for SEO + speed |
-| Language | TypeScript (strict) | Type safety end-to-end |
-| Database | PostgreSQL via Supabase | Free tier, RLS, full-text search |
-| Auth | Phone OTP via SMSLenz | No email, no friction |
-| Image storage | Cloudflare R2 | Free 10 GB + free egress |
-| Payments | PayHere | Sri Lankan gateway |
-| Hosting | Vercel | Edge cache + free tier |
-| Styling | Tailwind CSS + CSS variables | Smallest CSS payload |
-| Search | Postgres `pg_trgm` + FTS | Fuzzy match, free, fast |
-| Bot protection | hCaptcha (invisible) | Zero-friction for humans |
-| Analytics | Google Analytics 4 | + Search Console integration |
+| Layer          | Choice                        | Why                              |
+| -------------- | ----------------------------- | -------------------------------- |
+| Framework      | Next.js 16.2 LTS (App Router) | SSR/SSG/ISR for SEO + speed      |
+| Language       | TypeScript (strict)           | Type safety end-to-end           |
+| Database       | PostgreSQL via Supabase       | Free tier, RLS, full-text search |
+| Auth           | Phone OTP via SMSLenz         | No email, no friction            |
+| Image storage  | Cloudflare R2                 | Free 10 GB + free egress         |
+| Payments       | PayHere                       | Sri Lankan gateway               |
+| Hosting        | Vercel                        | Edge cache + free tier           |
+| Styling        | Tailwind CSS + CSS variables  | Smallest CSS payload             |
+| Search         | Postgres `pg_trgm` + FTS      | Fuzzy match, free, fast          |
+| Bot protection | hCaptcha (invisible)          | Zero-friction for humans         |
+| Analytics      | Google Analytics 4            | + Search Console integration     |
 
 ## Features
 
 ### MVP (in development)
+
 - 📱 Phone OTP signup (Sri Lankan numbers, +94)
 - 🚗 Free unlimited posting (first 100 sellers promo)
 - 🔍 Smart search bar with fuzzy match, autocomplete, smart parsing
@@ -49,6 +50,7 @@ It exists because the current Sri Lankan options (riyasewana.lk, ikman.lk) have 
 - 🇱🇰 Singlish UI with Sinhala accents
 
 ### Planned for v2
+
 - Saved ads with seller accounts
 - Seller ratings
 - In-app chat (currently WhatsApp deeplink only)
@@ -57,6 +59,7 @@ It exists because the current Sri Lankan options (riyasewana.lk, ikman.lk) have 
 ## Quickstart
 
 ### Prerequisites
+
 - Node.js 20 or later
 - Supabase CLI: `npm install -g supabase`
 - A Supabase project (free tier works)
@@ -122,6 +125,7 @@ siraa-lk/
 See [`docs/`](./docs) for the full set of decision records (ADRs).
 
 Highlights:
+
 - **SSG + ISR**: vehicle pages are statically generated, revalidated on edit. Google sees fully-rendered HTML.
 - **Slug-based URLs**: `/vehicle/toyota-aqua-2015-colombo-abc123` — readable, SEO-friendly.
 - **JSON-LD per listing**: `Vehicle` schema for Google rich results.
@@ -156,4 +160,4 @@ Built by [Bathila](mailto:bathi.solutions@gmail.com) — University of Moratuwa.
 
 ---
 
-*අභිමානවත් ශ්‍රී ලාංකීය නිර්මාණයකි · A proudly Sri Lankan creation.*
+_අභිමානවත් ශ්‍රී ලාංකීය නිර්මාණයකි · A proudly Sri Lankan creation._

@@ -24,10 +24,7 @@ export default async function PaymentCancelPage({ searchParams }: Props) {
       .maybeSingle();
 
     if (payment && payment.status === 'pending') {
-      await supabase
-        .from('payments')
-        .update({ status: 'cancelled' })
-        .eq('id', payment.id);
+      await supabase.from('payments').update({ status: 'cancelled' }).eq('id', payment.id);
 
       await supabase
         .from('boosts')
@@ -40,16 +37,17 @@ export default async function PaymentCancelPage({ searchParams }: Props) {
   return (
     <>
       <Header />
-      <main className="min-h-[calc(100vh-3.5rem)] flex items-start justify-center px-4 py-10 bg-[var(--brand-bg)]">
-        <div className="w-full max-w-md bg-white rounded-2xl border border-[var(--color-border)] p-6 text-center">
-          <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <h1 className="text-lg font-bold mb-2">Payment cancelled</h1>
-          <p className="text-sm text-gray-500 mb-6">
-            No worries — your card wasn&apos;t charged. You can boost your ad anytime from your dashboard.
+      <main className="flex min-h-[calc(100vh-3.5rem)] items-start justify-center bg-[var(--brand-bg)] px-4 py-10">
+        <div className="w-full max-w-md rounded-2xl border border-[var(--color-border)] bg-white p-6 text-center">
+          <AlertCircle className="mx-auto mb-4 h-12 w-12 text-gray-400" />
+          <h1 className="mb-2 text-lg font-bold">Payment cancelled</h1>
+          <p className="mb-6 text-sm text-gray-500">
+            No worries — your card wasn&apos;t charged. You can boost your ad anytime from your
+            dashboard.
           </p>
           <Link
             href="/dashboard"
-            className="inline-block bg-[var(--brand-green)] text-white text-sm font-medium px-5 py-2.5 rounded-lg hover:bg-[var(--brand-deep)]"
+            className="inline-block rounded-lg bg-[var(--brand-green)] px-5 py-2.5 text-sm font-medium text-white hover:bg-[var(--brand-deep)]"
           >
             Back to Dashboard
           </Link>

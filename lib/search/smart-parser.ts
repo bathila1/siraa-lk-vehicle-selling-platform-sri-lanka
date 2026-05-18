@@ -10,7 +10,7 @@
  */
 
 export interface ParsedQuery {
-  textQuery: string;        // cleaned text to pass to FTS
+  textQuery: string; // cleaned text to pass to FTS
   year?: number;
   yearMin?: number;
   yearMax?: number;
@@ -58,12 +58,36 @@ const FUEL_HINTS: Record<string, string> = {
 
 // Sri Lankan cities/districts that might appear in search queries
 const LOCATION_HINTS = [
-  'colombo', 'gampaha', 'kandy', 'galle', 'matara', 'kurunegala',
-  'ratnapura', 'kalutara', 'negombo', 'moratuwa', 'dehiwala',
-  'kotte', 'battaramulla', 'nugegoda', 'maharagama', 'homagama',
-  'jaffna', 'trincomalee', 'batticaloa', 'anuradhapura', 'polonnaruwa',
-  'badulla', 'nuwara eliya', 'hambantota', 'matale', 'puttalam',
-  'vavuniya', 'ampara', 'moneragala', 'kegalle',
+  'colombo',
+  'gampaha',
+  'kandy',
+  'galle',
+  'matara',
+  'kurunegala',
+  'ratnapura',
+  'kalutara',
+  'negombo',
+  'moratuwa',
+  'dehiwala',
+  'kotte',
+  'battaramulla',
+  'nugegoda',
+  'maharagama',
+  'homagama',
+  'jaffna',
+  'trincomalee',
+  'batticaloa',
+  'anuradhapura',
+  'polonnaruwa',
+  'badulla',
+  'nuwara eliya',
+  'hambantota',
+  'matale',
+  'puttalam',
+  'vavuniya',
+  'ampara',
+  'moneragala',
+  'kegalle',
 ];
 
 export function parseSearchQuery(raw: string): ParsedQuery {

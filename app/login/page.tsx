@@ -25,13 +25,11 @@ export default async function LoginPage({ searchParams }: Props) {
   return (
     <>
       <Header />
-      <main className="min-h-[calc(100vh-3.5rem)] flex items-center justify-center px-4 py-8 bg-[var(--brand-bg)]">
-        <div className="w-full max-w-sm bg-white rounded-2xl shadow-sm border border-[var(--color-border)] p-6">
-          <div className="text-center mb-6">
+      <main className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center bg-[var(--brand-bg)] px-4 py-8">
+        <div className="w-full max-w-sm rounded-2xl border border-[var(--color-border)] bg-white p-6 shadow-sm">
+          <div className="mb-6 text-center">
             <h1 className="text-xl font-bold text-[var(--brand-deep)]">Sign In</h1>
-            <p className="text-sm text-gray-500 mt-1">
-              Use your mobile number to continue
-            </p>
+            <p className="mt-1 text-sm text-gray-500">Use your mobile number to continue</p>
           </div>
           <LoginForm redirectTo={next ?? '/dashboard'} />
         </div>

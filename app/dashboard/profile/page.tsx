@@ -39,12 +39,12 @@ export default async function ProfilePage({ searchParams }: Props) {
   return (
     <>
       <Header />
-      <main className="min-h-[calc(100vh-3.5rem)] flex items-start justify-center px-4 py-8 bg-[var(--brand-bg)]">
-        <div className="w-full max-w-sm bg-white rounded-2xl border border-[var(--color-border)] p-6">
-          <h1 className="text-lg font-bold mb-1">
+      <main className="flex min-h-[calc(100vh-3.5rem)] items-start justify-center bg-[var(--brand-bg)] px-4 py-8">
+        <div className="w-full max-w-sm rounded-2xl border border-[var(--color-border)] bg-white p-6">
+          <h1 className="mb-1 text-lg font-bold">
             {welcome ? 'Welcome to Siraa! 🎉' : 'Edit Profile'}
           </h1>
-          <p className="text-xs text-gray-500 mb-5">
+          <p className="mb-5 text-xs text-gray-500">
             {welcome
               ? 'Tell us a little about yourself before you post your first ad.'
               : 'Update your details.'}

@@ -25,7 +25,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!vehicle) return { title: 'Vehicle not found' };
 
   const title = `${vehicle.year} ${vehicle.make?.name} ${vehicle.model} — ${vehicle.district?.name_en}`;
-  const description = vehicle.description?.slice(0, 160) ??
+  const description =
+    vehicle.description?.slice(0, 160) ??
     `${vehicle.year} ${vehicle.make?.name} ${vehicle.model} for sale in ${vehicle.district?.name_en}. Price: ${formatLKR(vehicle.price)}.`;
 
   return {
@@ -44,9 +45,10 @@ export default async function VehicleDetailPage({ params }: Props) {
   const vehicle = await getVehicleBySlug(slug);
   if (!vehicle) notFound();
 
-  const similar = vehicle.vehicle_type && vehicle.make
-    ? await getSimilarVehicles(vehicle.id, vehicle.vehicle_type.id, vehicle.make.id)
-    : [];
+  const similar =
+    vehicle.vehicle_type && vehicle.make
+      ? await getSimilarVehicles(vehicle.id, vehicle.vehicle_type.id, vehicle.make.id)
+      : [];
 
   // Shape similar for VehicleCard
   const similarVehicles = (similar as any[]).map((row) => {
@@ -105,41 +107,51 @@ export default async function VehicleDetailPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Header />
-      <main className="container mx-auto px-4 py-6 max-w-6xl">
+      <main className="container mx-auto max-w-6xl px-4 py-6">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-1 text-xs text-gray-500 mb-4">
-          <Link href="/" className="hover:text-[var(--brand-green)]">Home</Link>
-          <ChevronRight className="w-3 h-3" />
-          <Link href="/search" className="hover:text-[var(--brand-green)]">Vehicles</Link>
+        <nav className="mb-4 flex items-center gap-1 text-xs text-gray-500">
+          <Link href="/" className="hover:text-[var(--brand-green)]">
+            Home
+          </Link>
+          <ChevronRight className="h-3 w-3" />
+          <Link href="/search" className="hover:text-[var(--brand-green)]">
+            Vehicles
+          </Link>
           {vehicle.vehicle_type && (
             <>
-              <ChevronRight className="w-3 h-3" />
-              <Link href={`/search?vehicleTypeId=${vehicle.vehicle_type.id}`} className="hover:text-[var(--brand-green)]">
+              <ChevronRight className="h-3 w-3" />
+              <Link
+                href={`/search?vehicleTypeId=${vehicle.vehicle_type.id}`}
+                className="hover:text-[var(--brand-green)]"
+              >
                 {vehicle.vehicle_type.name_en}
               </Link>
             </>
           )}
-          <ChevronRight className="w-3 h-3" />
-          <span className="text-gray-700 truncate max-w-[200px]">
+          <ChevronRight className="h-3 w-3" />
+          <span className="max-w-[200px] truncate text-gray-700">
             {vehicle.year} {vehicle.make?.name} {vehicle.model}
           </span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Left: images + details */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="space-y-6 lg:col-span-2">
             {/* Image gallery */}
-            <ImageGallery images={vehicle.images} title={`${vehicle.year} ${vehicle.make?.name} ${vehicle.model}`} />
+            <ImageGallery
+              images={vehicle.images}
+              title={`${vehicle.year} ${vehicle.make?.name} ${vehicle.model}`}
+            />
 
             {/* Title + price */}
             <div>
-              <div className="flex items-start justify-between gap-4 flex-wrap">
+              <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <h1 className="text-xl md:text-2xl font-bold text-[var(--brand-black)]">
+                  <h1 className="text-xl font-bold text-[var(--brand-black)] md:text-2xl">
                     {vehicle.year} {vehicle.make?.name} {vehicle.model}
                   </h1>
-                  <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
-                    <MapPin className="w-3.5 h-3.5" />
+                  <div className="mt-1 flex items-center gap-2 text-sm text-gray-500">
+                    <MapPin className="h-3.5 w-3.5" />
                     {[vehicle.city?.name_en, vehicle.district?.name_en].filter(Boolean).join(', ')}
                     <span>·</span>
                     <span>{timeAgo(vehicle.created_at)}</span>
@@ -150,46 +162,79 @@ export default async function VehicleDetailPage({ params }: Props) {
                     {formatLKR(vehicle.price)}
                   </p>
                   {priceDrop && priceDrop.old_price > priceDrop.new_price && (
-                    <p className="text-xs text-red-500 flex items-center gap-1 justify-end mt-1">
+                    <p className="mt-1 flex items-center justify-end gap-1 text-xs text-red-500">
                       <Badge variant="price-drop">↓ Price Drop</Badge>
-                      <span className="line-through text-gray-400">{formatLKR(priceDrop.old_price)}</span>
+                      <span className="text-gray-400 line-through">
+                        {formatLKR(priceDrop.old_price)}
+                      </span>
                     </p>
                   )}
                 </div>
               </div>
 
               {/* Badges */}
-              <div className="flex flex-wrap gap-2 mt-3">
+              <div className="mt-3 flex flex-wrap gap-2">
                 {vehicle.boost_type === 'pro' && <Badge variant="pro">⚡ Pro</Badge>}
                 {vehicle.boost_type === 'normal' && <Badge variant="boost">↑ Boosted</Badge>}
               </div>
             </div>
 
             {/* Key specs */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {[
                 { icon: Calendar, label: 'Year', value: vehicle.year },
-                vehicle.mileage_km != null && { icon: Gauge, label: 'Mileage', value: `${vehicle.mileage_km.toLocaleString()} km` },
-                vehicle.fuel_type && { icon: Fuel, label: 'Fuel', value: vehicle.fuel_type.charAt(0).toUpperCase() + vehicle.fuel_type.slice(1) },
-                vehicle.transmission && { icon: Settings2, label: 'Transmission', value: vehicle.transmission.charAt(0).toUpperCase() + vehicle.transmission.slice(1) },
-                vehicle.engine_cc && { icon: Settings2, label: 'Engine', value: `${vehicle.engine_cc} cc` },
-                vehicle.previous_owners != null && { icon: Users, label: 'Owners', value: vehicle.previous_owners === 0 ? 'First owner' : `${vehicle.previous_owners} prev.` },
-              ].filter(Boolean).map((spec: any) => (
-                <div key={spec.label} className="bg-[var(--brand-bg)] rounded-lg p-3 flex items-center gap-2">
-                  <spec.icon className="w-4 h-4 text-[var(--brand-green)] flex-shrink-0" />
-                  <div>
-                    <p className="text-xs text-gray-500">{spec.label}</p>
-                    <p className="text-sm font-medium">{spec.value}</p>
+                vehicle.mileage_km != null && {
+                  icon: Gauge,
+                  label: 'Mileage',
+                  value: `${vehicle.mileage_km.toLocaleString()} km`,
+                },
+                vehicle.fuel_type && {
+                  icon: Fuel,
+                  label: 'Fuel',
+                  value: vehicle.fuel_type.charAt(0).toUpperCase() + vehicle.fuel_type.slice(1),
+                },
+                vehicle.transmission && {
+                  icon: Settings2,
+                  label: 'Transmission',
+                  value:
+                    vehicle.transmission.charAt(0).toUpperCase() + vehicle.transmission.slice(1),
+                },
+                vehicle.engine_cc && {
+                  icon: Settings2,
+                  label: 'Engine',
+                  value: `${vehicle.engine_cc} cc`,
+                },
+                vehicle.previous_owners != null && {
+                  icon: Users,
+                  label: 'Owners',
+                  value:
+                    vehicle.previous_owners === 0
+                      ? 'First owner'
+                      : `${vehicle.previous_owners} prev.`,
+                },
+              ]
+                .filter(Boolean)
+                .map((spec: any) => (
+                  <div
+                    key={spec.label}
+                    className="flex items-center gap-2 rounded-lg bg-[var(--brand-bg)] p-3"
+                  >
+                    <spec.icon className="h-4 w-4 flex-shrink-0 text-[var(--brand-green)]" />
+                    <div>
+                      <p className="text-xs text-gray-500">{spec.label}</p>
+                      <p className="text-sm font-medium">{spec.value}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
 
             {/* Description */}
             {vehicle.description && (
               <div>
-                <h2 className="font-semibold mb-2 text-sm text-gray-500 uppercase tracking-wide">Description</h2>
-                <p className="text-sm text-gray-700 whitespace-pre-line leading-relaxed">
+                <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">
+                  Description
+                </h2>
+                <p className="whitespace-pre-line text-sm leading-relaxed text-gray-700">
                   {vehicle.description}
                 </p>
               </div>
@@ -198,13 +243,20 @@ export default async function VehicleDetailPage({ params }: Props) {
             {/* Custom attributes */}
             {Object.keys(vehicle.custom_attributes).length > 0 && (
               <div>
-                <h2 className="font-semibold mb-2 text-sm text-gray-500 uppercase tracking-wide">Features</h2>
+                <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">
+                  Features
+                </h2>
                 <div className="flex flex-wrap gap-2">
                   {Object.entries(vehicle.custom_attributes).map(([key, val]) => {
                     if (!val || val === false) return null;
                     return (
-                      <span key={key} className="text-xs bg-[var(--brand-bg)] px-3 py-1 rounded-full text-gray-700 capitalize">
-                        {String(val) === 'true' ? key.replace(/_/g, ' ') : `${key.replace(/_/g, ' ')}: ${val}`}
+                      <span
+                        key={key}
+                        className="rounded-full bg-[var(--brand-bg)] px-3 py-1 text-xs capitalize text-gray-700"
+                      >
+                        {String(val) === 'true'
+                          ? key.replace(/_/g, ' ')
+                          : `${key.replace(/_/g, ' ')}: ${val}`}
                       </span>
                     );
                   })}
@@ -215,8 +267,14 @@ export default async function VehicleDetailPage({ params }: Props) {
             {/* Map — Leaflet, no Google Maps */}
             {vehicle.lat && vehicle.lng && (
               <div>
-                <h2 className="font-semibold mb-2 text-sm text-gray-500 uppercase tracking-wide">Location</h2>
-                <LocationMap lat={vehicle.lat} lng={vehicle.lng} label={vehicle.district?.name_en ?? ''} />
+                <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">
+                  Location
+                </h2>
+                <LocationMap
+                  lat={vehicle.lat}
+                  lng={vehicle.lng}
+                  label={vehicle.district?.name_en ?? ''}
+                />
               </div>
             )}
           </div>
@@ -236,13 +294,13 @@ export default async function VehicleDetailPage({ params }: Props) {
 
               {/* Seller card */}
               {vehicle.seller && (
-                <div className="border border-[var(--color-border)] rounded-xl p-4">
-                  <p className="text-xs text-gray-500 mb-1">Seller</p>
+                <div className="rounded-xl border border-[var(--color-border)] p-4">
+                  <p className="mb-1 text-xs text-gray-500">Seller</p>
                   <p className="font-medium">{vehicle.seller.full_name}</p>
                   <p className="text-sm text-gray-500">{vehicle.seller.district?.name_en}</p>
                   <Link
                     href={`/seller/${vehicle.seller.id}`}
-                    className="text-xs text-[var(--brand-green)] hover:underline mt-2 inline-block"
+                    className="mt-2 inline-block text-xs text-[var(--brand-green)] hover:underline"
                   >
                     View all ads from this seller →
                   </Link>
@@ -252,7 +310,7 @@ export default async function VehicleDetailPage({ params }: Props) {
               {/* Report */}
               <Link
                 href={`/report/${vehicle.id}`}
-                className="block text-xs text-gray-400 hover:text-red-500 text-center transition-colors"
+                className="block text-center text-xs text-gray-400 transition-colors hover:text-red-500"
               >
                 Report this ad
               </Link>
@@ -263,8 +321,8 @@ export default async function VehicleDetailPage({ params }: Props) {
         {/* Similar vehicles */}
         {similarVehicles.length > 0 && (
           <section className="mt-12">
-            <h2 className="font-bold text-lg mb-4">Similar Vehicles</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            <h2 className="mb-4 text-lg font-bold">Similar Vehicles</h2>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
               {similarVehicles.map((v) => (
                 <VehicleCard key={v.id} vehicle={v} />
               ))}
