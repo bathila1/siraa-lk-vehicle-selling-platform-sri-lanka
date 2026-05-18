@@ -136,8 +136,8 @@ export async function POST(request: NextRequest) {
 
   const formFields = {
     merchant_id: merchantId,
-    return_url: `${siteUrl}/payment/return?order_id=${orderId}`,
-    cancel_url: `${siteUrl}/payment/cancel?order_id=${orderId}`,
+    return_url:  `${siteUrl}/payment/return`,
+    cancel_url:  `${siteUrl}/payment/cancel`,
     notify_url: `${siteUrl}/api/payment/notify`,
     order_id: orderId,
     items: itemDesc,
