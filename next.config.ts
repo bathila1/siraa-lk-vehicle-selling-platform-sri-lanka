@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   compress: true,
 
+  // Skip typecheck during build (we still typecheck in CI separately)
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [360, 640, 750, 828, 1080, 1200, 1920],

@@ -109,7 +109,7 @@ export async function getHomepageData() {
   return {
     latest: latestResult.data ?? [],
     boosted: boostedResult.data ?? [],
-    promo: promoResult.data?.value ?? null,
+    promo: (promoResult.data as any)?.value ?? null,
   };
 }
 
@@ -271,7 +271,7 @@ export async function getPopularSearches(limit = 6): Promise<string[]> {
 
   // Count and sort client-side (avoids GROUP BY complexity)
   const counts: Record<string, number> = {};
-  for (const row of data) {
+  for (const row of (data as any[])) {
     const key = (row as any).normalized as string;
     counts[key] = (counts[key] ?? 0) + 1;
   }

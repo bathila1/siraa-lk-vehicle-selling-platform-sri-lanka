@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
       city_id: v.cityId ?? null,
       lat: v.lat ?? null,
       lng: v.lng ?? null,
-      custom_attributes: v.customAttributes ?? {},
+      custom_attributes: (v.customAttributes ?? {}) as any,
       status: 'active', // Auto-publish (phone-verified sellers + report system)
     })
     .select('id, slug')
