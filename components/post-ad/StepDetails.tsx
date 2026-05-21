@@ -225,6 +225,7 @@ export function StepDetails({ draft, update, vehicleTypes, makes, attributesSche
           <option value="7">Eighth Owner</option>
           <option value="8">Ninth Owner</option>
           <option value="9">Tenth Owner</option>
+          <option value="10+">More than 10 Owners</option>
         </select>
       </Field>
 

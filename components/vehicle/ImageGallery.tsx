@@ -102,6 +102,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
                 src={img.url}
                 alt={`Thumbnail ${i + 1}`}
                 fill
+                loading="eager"
                 sizes="64px"
                 className="object-cover"
               />
@@ -151,6 +152,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
           >
             <Image
               src={images[active].url}
+              loading="eager"
               alt={`${title} — full size ${active + 1}`}
               width={images[active].width ?? 1200}
               height={images[active].height ?? 900}

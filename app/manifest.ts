@@ -4,14 +4,22 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'Siraa.lk',
     short_name: 'Siraa',
-    description: "Sri Lanka's vehicle marketplace",
+    description: "Sri Lanka's Registered Vehicle Marketplace",
     start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
     theme_color: '#2FA084',
     icons: [
-      { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
-      { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+      {
+        src: '/icon-192.png',
+        sizes: '192x192',
+        type: 'image/png',
+      },
+      {
+        src: '/icon-512.png',
+        sizes: '512x512',
+        type: 'image/png',
+      },
     ],
   };
 }
