@@ -61,7 +61,6 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
   },
   alternates: { canonical: SITE_URL },
-  icons: { icon: '/favicon.ico', apple: '/apple-touch-icon.png' },
 };
 
 export const viewport: Viewport = {
