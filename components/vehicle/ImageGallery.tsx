@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight, X, ZoomIn } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
+
+import { ImageZoomModal } from './ImageZoomModal';
 import { cn } from '@/lib/utils';
 
 interface GalleryImage {
@@ -20,7 +22,7 @@ interface ImageGalleryProps {
 
 export function ImageGallery({ images, title }: ImageGalleryProps) {
   const [active, setActive] = useState(0);
-  const [lightbox, setLightbox] = useState(false);
+  const [zoomOpen, setZoomOpen] = useState(false);
 
   if (images.length === 0) {
     return (
@@ -37,13 +39,19 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
     <>
       {/* Main image */}
       <div className="group relative aspect-[4/3] overflow-hidden rounded-xl bg-gray-100">
+        <button
+          type="button"
+          onClick={() => setZoomOpen(true)}
+          className="absolute inset-0 z-10 cursor-zoom-in"
+          aria-label="View full size"
+        />
+
         <Image
           src={images[active].url}
           alt={`${title} — photo ${active + 1}`}
           fill
-          loading="eager"
           sizes="(max-width: 768px) 100vw, 66vw"
-          className="object-cover"
+          className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
           priority={active === 0}
         />
 
@@ -51,15 +59,21 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
         {images.length > 1 && (
           <>
             <button
-              onClick={prev}
-              className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-white opacity-0 transition-opacity hover:bg-black/60 group-hover:opacity-100"
+              onClick={(e) => {
+                e.stopPropagation();
+                prev();
+              }}
+              className="absolute left-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-white opacity-0 transition-opacity hover:bg-black/60 group-hover:opacity-100"
               aria-label="Previous image"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
             <button
-              onClick={next}
-              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-white opacity-0 transition-opacity hover:bg-black/60 group-hover:opacity-100"
+              onClick={(e) => {
+                e.stopPropagation();
+                next();
+              }}
+              className="absolute right-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-white opacity-0 transition-opacity hover:bg-black/60 group-hover:opacity-100"
               aria-label="Next image"
             >
               <ChevronRight className="h-5 w-5" />
@@ -67,20 +81,17 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
           </>
         )}
 
-        {/* Counter + zoom */}
-        <div className="absolute bottom-2 right-2 flex items-center gap-2">
+        {/* Counter + zoom indicator */}
+        <div className="absolute bottom-2 right-2 z-20 flex items-center gap-2">
           {images.length > 1 && (
             <span className="rounded-full bg-black/40 px-2 py-1 text-xs text-white">
               {active + 1} / {images.length}
             </span>
           )}
-          <button
-            onClick={() => setLightbox(true)}
-            className="rounded-full bg-black/40 p-1.5 text-white hover:bg-black/60"
-            aria-label="View full size"
-          >
-            <ZoomIn className="h-4 w-4" />
-          </button>
+          <span className="flex items-center gap-1 rounded-full bg-black/40 px-2 py-1 text-xs text-white">
+            <ZoomIn className="h-3 w-3" />
+            Tap to zoom
+          </span>
         </div>
       </div>
 
@@ -102,7 +113,6 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
                 src={img.url}
                 alt={`Thumbnail ${i + 1}`}
                 fill
-                loading="eager"
                 sizes="64px"
                 className="object-cover"
               />
@@ -111,56 +121,13 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
         </div>
       )}
 
-      {/* Lightbox */}
-      {lightbox && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
-          onClick={() => setLightbox(false)}
-        >
-          <button
-            className="absolute right-4 top-4 rounded-full bg-white/20 p-2 text-white hover:bg-white/30"
-            onClick={() => setLightbox(false)}
-            aria-label="Close"
-          >
-            <X className="h-5 w-5" />
-          </button>
-          {images.length > 1 && (
-            <>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  prev();
-                }}
-                className="absolute left-4 rounded-full bg-white/20 p-2 text-white hover:bg-white/30"
-              >
-                <ChevronLeft className="h-6 w-6" />
-              </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  next();
-                }}
-                className="absolute right-4 rounded-full bg-white/20 p-2 text-white hover:bg-white/30"
-              >
-                <ChevronRight className="h-6 w-6" />
-              </button>
-            </>
-          )}
-          <div
-            className="relative mx-16 max-h-[90vh] w-full max-w-4xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Image
-              src={images[active].url}
-              loading="eager"
-              alt={`${title} — full size ${active + 1}`}
-              width={images[active].width ?? 1200}
-              height={images[active].height ?? 900}
-              className="max-h-[90vh] w-full object-contain"
-            />
-          </div>
-        </div>
-      )}
+      {/* Zoom modal */}
+      <ImageZoomModal
+        images={images}
+        initialIndex={active}
+        open={zoomOpen}
+        onClose={() => setZoomOpen(false)}
+      />
     </>
   );
 }

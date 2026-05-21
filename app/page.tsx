@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/Badge';
 import { getHomepageData, getVehicleTypes, getPopularSearches } from '@/lib/db/queries';
 import { formatLKR } from '@/lib/utils';
 import ComingSoonPopup from '@/components/UnderConstructionBanner'
+import { YouTubeLazy } from '@/components/shared/YouTubeLazy';
 
 export const revalidate = 60;
 
@@ -146,6 +147,24 @@ export default async function HomePage() {
                 );
               })}
             </div>
+          </div>
+        </section>
+
+                {/* Intro video — lazy loaded */}
+        <section className="py-8 md:py-12">
+          <div className="container mx-auto px-4 max-w-3xl">
+            <div className="text-center mb-5">
+              <h2 className="font-bold text-lg md:text-xl text-[var(--brand-deep)]">
+                How Siraa works
+              </h2>
+              <p className="text-sm text-gray-500 mt-1">
+                A quick 60-second tour of the platform.
+              </p>
+            </div>
+            <YouTubeLazy
+              videoId="Zk7tfpGezqY"
+              title="How Siraa works"
+            />
           </div>
         </section>
 

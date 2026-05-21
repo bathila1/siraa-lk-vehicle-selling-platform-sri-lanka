@@ -22,7 +22,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'images.siraa.lk',
+        hostname: 'siraa.lk',
       },
       // Supabase storage fallback (if used)
       {
