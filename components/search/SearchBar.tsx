@@ -90,13 +90,9 @@ export function SearchBar({
       <div
         className={cn(
           'flex items-center gap-2 rounded-xl border-2 bg-white transition-colors',
-          'border-[var(--color-border)] focus-within:border-[var(--brand-green)]',
-          size === 'large' ? 'px-4 py-3' : 'px-3 py-2',
+          size === 'large' ? 'px-4 py-1' : 'px-3 py-1',
         )}
       >
-        <Search
-          className={cn('flex-shrink-0 text-gray-400', size === 'large' ? 'h-5 w-5' : 'h-4 w-4')}
-        />
         <input
           ref={inputRef}
           type="text"
@@ -107,7 +103,7 @@ export function SearchBar({
           onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
           placeholder={placeholder}
           className={cn(
-            'flex-1 bg-transparent text-[var(--brand-black)] outline-none placeholder:text-gray-400',
+            'flex-1 bg-transparent text-[var(--brand-black)] outline-none ring-0 focus:outline-none focus:ring-0 placeholder:text-gray-300',
             size === 'large' ? 'text-base' : 'text-sm',
           )}
           autoComplete="off"
@@ -131,11 +127,14 @@ export function SearchBar({
           type="button"
           onClick={() => handleSubmit()}
           className={cn(
-            'flex-shrink-0 rounded-lg bg-[var(--brand-green)] font-medium text-white transition-colors hover:bg-[var(--brand-deep)]',
-            size === 'large' ? 'px-4 py-2 text-sm' : 'px-3 py-1.5 text-xs',
+            // Base styles: perfectly round circle, center content, brand colors, smooth transitions
+            'flex flex-shrink-0 items-center justify-center rounded-full bg-[var(--brand-green)] text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-[var(--brand-deep)] hover:shadow-lg active:translate-y-0 active:shadow-sm mt-1 mb-1',
+            // Size variants: equal height and width for a perfect circle
+            size === 'large' ? 'h-10 w-10' : 'h-7 w-7',
           )}
+          aria-label="Search"
         >
-          Search
+          <Search className={cn('flex-shrink-0', size === 'large' ? 'h-5 w-5' : 'h-4 w-4')} />
         </button>
       </div>
 
@@ -152,7 +151,7 @@ export function SearchBar({
                   handleSubmit(s);
                 }}
                 className={cn(
-                  'flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm hover:bg-gray-50',
+                  'flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm hover:bg-gray-50 text-[var(--brand-black)]',
                   i === activeSuggestion && 'bg-gray-50',
                 )}
               >

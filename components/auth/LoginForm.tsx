@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile';
-import { Phone, ArrowRight, ArrowLeft, RefreshCw } from 'lucide-react';
+import { Phone, ArrowRight, ArrowLeft, RefreshCw, Loader2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/Button';
 
@@ -34,8 +34,7 @@ export function LoginForm({ redirectTo }: Props) {
     }
 
     if (!captchaToken) {
-      setError('Verifying — please wait a moment and try again.');
-      turnstileRef.current?.execute();
+      setError('Please complete the verification first.');
       return;
     }
 
@@ -53,7 +52,6 @@ export function LoginForm({ redirectTo }: Props) {
       const data = await res.json();
       if (!res.ok) {
         setError(data.error ?? 'Something went wrong. Try again.');
-        // Reset captcha for next attempt
         turnstileRef.current?.reset();
         setCaptchaToken(null);
         return;
@@ -85,7 +83,6 @@ export function LoginForm({ redirectTo }: Props) {
         setError(data.error ?? 'Wrong code.');
         return;
       }
-      // If new seller without a name yet, go to profile setup
       router.push(data.needsProfile ? '/dashboard/profile?welcome=1' : redirectTo);
     } catch {
       setError('Network error. Check your connection.');
@@ -125,7 +122,7 @@ export function LoginForm({ redirectTo }: Props) {
           onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
           onKeyDown={(e) => e.key === 'Enter' && verifyOtp()}
           placeholder="6-digit code"
-          className="w-full rounded-lg border-2 border-[var(--color-border)] px-4 py-3 text-center font-mono text-lg tracking-widest outline-none focus:border-[var(--brand-green)]"
+          className="w-full rounded-lg border-2 border-[var(--color-border)] ring-0 focus:outline-none focus:ring-0 px-4 py-3 text-center font-mono text-lg tracking-widest"
           autoFocus
         />
 
@@ -170,17 +167,49 @@ export function LoginForm({ redirectTo }: Props) {
             placeholder="07x xxx xxxx"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && requestOtp()}
-            className="w-full rounded-lg border-2 border-[var(--color-border)] py-3 pl-10 pr-3 text-base outline-none focus:border-[var(--brand-green)]"
+            onKeyDown={(e) => captchaToken && e.key === 'Enter' && requestOtp()}
+            className="w-full ring-0 focus:outline-none focus:ring-0 rounded-lg border-2 border-[var(--color-border)] py-3 pl-10 pr-3 text-base outline-none focus:border-[var(--brand-green)]"
             autoFocus
           />
         </div>
         <p className="mt-1.5 text-xs text-gray-400">We&apos;ll send a 6-digit code via SMS.</p>
       </div>
 
+      {/* Visible Turnstile — runs once on mount, shows brief widget */}
+      {siteKey && (
+        <div className="flex justify-center">
+          <Turnstile
+            ref={turnstileRef}
+            siteKey={siteKey}
+            options={{
+              size: 'flexible',
+              theme: 'light',
+              appearance: 'interaction-only',
+            }}
+            onSuccess={setCaptchaToken}
+            onExpire={() => setCaptchaToken(null)}
+            onError={() => setCaptchaToken(null)}
+          />
+        </div>
+      )}
+
+      {!captchaToken && (
+        <p className="flex items-center justify-center gap-1.5 text-s text-red-400 text-center px-2 py-1 rounded bg-yellow-50">
+          <Loader2 className="h-3 w-3 animate-spin" />
+          Verifying you&apos;re human...
+        </p>
+      )}
+
       {error && <p className="text-xs text-red-500">{error}</p>}
 
-      <Button variant="primary" size="lg" className="w-full" onClick={requestOtp} loading={loading}>
+      <Button
+        variant="primary"
+        size="lg"
+        className="w-full"
+        onClick={requestOtp}
+        loading={loading}
+        disabled={!captchaToken}
+      >
         Send Code
         <ArrowRight className="h-4 w-4" />
       </Button>
@@ -196,18 +225,6 @@ export function LoginForm({ redirectTo }: Props) {
         </a>
         .
       </p>
-
-      {/* Invisible Turnstile — auto-executes on mount */}
-      {siteKey && (
-        <Turnstile
-          ref={turnstileRef}
-          siteKey={siteKey}
-          options={{ size: 'invisible', execution: 'execute' }}
-          onSuccess={setCaptchaToken}
-          onExpire={() => setCaptchaToken(null)}
-          onError={() => setCaptchaToken(null)}
-        />
-      )}
     </div>
   );
 }

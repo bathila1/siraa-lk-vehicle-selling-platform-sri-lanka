@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import {
-  ArrowRight, Car as CarIcon, Bike, Truck, Bus, Tractor, Construction, MoreHorizontal,
+  ArrowRight, Car as CarIcon, Bike, Truck, Bus, Tractor, Construction, MoreHorizontal, Caravan,
   Search as SearchIcon, ShieldCheck, Zap as ZapIcon, MessageCircle as MsgIcon,
 } from 'lucide-react';
 
@@ -12,6 +12,7 @@ import { VehicleCard } from '@/components/vehicle/VehicleCard';
 import { Badge } from '@/components/ui/Badge';
 import { getHomepageData, getVehicleTypes, getPopularSearches } from '@/lib/db/queries';
 import { formatLKR } from '@/lib/utils';
+import ComingSoonPopup from '@/components/UnderConstructionBanner'
 
 export const revalidate = 60;
 
@@ -19,7 +20,7 @@ export const revalidate = 60;
 const TYPE_ICONS: Record<string, any> = {
   car: CarIcon,
   'suv-jeep': CarIcon,
-  van: Truck,
+  van: Caravan,
   motorcycle: Bike,
   'three-wheeler': Bike,
   'lorry-truck': Truck,
@@ -70,6 +71,7 @@ export default async function HomePage() {
   return (
     <>
       <Header />
+      <ComingSoonPopup />
       <main>
         {/* Hero */}
         <section className="relative bg-gradient-to-br from-[var(--brand-deep)] via-[var(--brand-green)] to-[var(--brand-mint)] text-white overflow-hidden">
@@ -85,14 +87,14 @@ export default async function HomePage() {
           <div className="relative container mx-auto px-4 py-10 md:py-16 text-center max-w-2xl">
             {promoActive && (
               <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full mb-5 border border-white/30">
-                🎉 {(promo as any)?.label_en ?? 'First 100 sellers — free posting!'}
+                🎉 {(promo as any)?.label_en ?? 'පළමු වාහන පළ කිරීම් 100 නොමිලේ. ඔබත් දැන්ම නොමිලේ දැන්වීම් පළ කිරීමේ අවස්තාවක් ලබා ගන්න. Post Ad ක්ලික් කරන්න!'}
               </div>
             )}
-            <h1 className="text-3xl md:text-5xl font-bold mb-3 leading-tight tracking-tight">
-              Find your next vehicle in&nbsp;Sri&nbsp;Lanka
+            <h1 className="text-3xl md:text-5xl font-bold mb-3 tracking-tight">
+              ලියාපදිංචි කළ - Registered වාහන පමණි. 
             </h1>
             <p className="text-white/85 mb-7 text-sm md:text-lg max-w-lg mx-auto">
-              Thousands of registered vehicles from trusted sellers island-wide.
+              ශ්‍රී ලංකාවේ වාහන වෙළඳපොළේ නව අත්දැකීමක්. ඔබේ වාහනය විකිණීමට හෝ නව වාහනයක් සොයා ගැනීමට අදම 'සිරා' සමඟ සම්බන්ධ වන්න!
             </p>
             <SearchBar
               size="large"
@@ -198,7 +200,7 @@ export default async function HomePage() {
         <section className="py-10">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="font-bold text-lg md:text-xl">Latest Vehicles</h2>
+              <h2 className="font-bold text-lg md:text-xl">අලුත්ම දැන්වීම්</h2>
               <Link
                 href="/search?sort=newest"
                 className="text-sm text-[var(--brand-green)] hover:text-[var(--brand-deep)] flex items-center gap-1 font-medium"
@@ -231,7 +233,7 @@ export default async function HomePage() {
         <section className="py-10 bg-[var(--brand-bg)]">
           <div className="container mx-auto px-4 max-w-4xl">
             <h2 className="text-center font-bold text-lg md:text-xl mb-6 text-[var(--brand-deep)]">
-              Why use Siraa?
+              ඇයි ඔබ සිරා.lk තේරිය යුත්තේ?
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-6">
               {[
@@ -276,7 +278,7 @@ export default async function HomePage() {
               Selling your vehicle?
             </h2>
             <p className="text-sm text-gray-500 mb-5">
-              Reach thousands of buyers in Sri Lanka in minutes.
+              වාහනයක් ඉක්මනින් විකිණීමට අවශ්‍යද?
             </p>
             <Link
               href="/post-ad"

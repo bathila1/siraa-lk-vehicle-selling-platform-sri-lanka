@@ -186,7 +186,7 @@ export function PostAdWizard({
       {/* Promo banner */}
       {promoActive && (
         <div className="mb-4 rounded-full bg-[var(--brand-mint)] px-4 py-2 text-center text-sm font-medium text-[var(--brand-deep)]">
-          🎉 Free posting active — first 100 sellers!
+          🎉 පළමු වාහන පළ කිරීම් 100 නොමිලේ.
         </div>
       )}
 

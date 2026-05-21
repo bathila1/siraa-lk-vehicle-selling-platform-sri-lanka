@@ -206,19 +206,26 @@ export function StepDetails({ draft, update, vehicleTypes, makes, attributesSche
         </Field>
       </div>
 
-      <Field label="Previous Owners">
-        <input
-          type="number"
-          inputMode="numeric"
-          placeholder="e.g. 1 (first owner = 0)"
+      <Field label="ඔබ කී වෙනි owner ද?">
+ <select
           value={draft.previousOwners ?? ''}
           onChange={(e) =>
             update({ previousOwners: e.target.value !== '' ? Number(e.target.value) : null })
           }
           className="input"
-          min={0}
-          max={20}
-        />
+        >
+          <option value="">Select</option>
+          <option value="0">First Owner</option>
+          <option value="1">Second Owner</option>
+          <option value="2">Third Owner</option>
+          <option value="3">Fourth Owner</option>
+          <option value="4">Fifth Owner</option>
+          <option value="5">Sixth Owner</option>
+          <option value="6">Seventh Owner</option>
+          <option value="7">Eighth Owner</option>
+          <option value="8">Ninth Owner</option>
+          <option value="9">Tenth Owner</option>
+        </select>
       </Field>
 
       <Field label="Description">
