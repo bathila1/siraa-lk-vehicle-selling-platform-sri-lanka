@@ -181,7 +181,7 @@ export function StepDetails({ draft, update, vehicleTypes, makes, attributesSche
             className="input"
           >
             <option value="">Select</option>
-            <option value="sedan">Sedan</option>
+            <option value="sedan">Sedan (Car)</option>
             <option value="hatchback">Hatchback</option>
             <option value="suv">SUV</option>
             <option value="wagon">Wagon</option>

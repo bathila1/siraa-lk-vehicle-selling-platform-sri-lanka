@@ -237,6 +237,18 @@ export function PostAdWizard({
           <StepLocation draft={draft} update={updateDraft} districts={districts} cities={cities} />
         )}
         {step === 4 && (
+          <>
+          <div className="mb-6 flex items-center gap-3 rounded-lg bg-[var(--brand-green)]/10 px-4 py-2 text-sm font-medium text-[var(--brand-green)]">
+            <Button
+              variant="primary"
+              size="lg"
+              onClick={handleSubmit}
+              loading={submitting}
+              className="flex-1"
+            >
+              Publish Ad
+            </Button>
+          </div>
           <StepReview
             draft={draft}
             vehicleTypes={vehicleTypes}
@@ -244,6 +256,7 @@ export function PostAdWizard({
             districts={districts}
             cities={cities}
           />
+          </>
         )}
       </div>
 

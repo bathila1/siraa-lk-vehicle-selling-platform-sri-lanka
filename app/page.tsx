@@ -84,6 +84,13 @@ export default async function HomePage() {
               backgroundSize: '40px 40px',
             }}
           />
+          {/* Sri Lanka silhouette watermark */}
+          <img
+            src="/sri-lanka.png"  
+            alt=""
+            aria-hidden
+            className="absolute right-4 md:right-16 top-1/2 -translate-y-1/2 h-64 md:h-96 w-auto opacity-100 pointer-events-none select-none hidden sm:block"
+          />
           <div className="relative container mx-auto px-4 py-10 md:py-16 text-center max-w-2xl">
             {promoActive && (
               <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full mb-5 border border-white/30">

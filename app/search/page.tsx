@@ -18,7 +18,7 @@ export async function generateMetadata({ searchParams }: SearchPageProps): Promi
   const params = await searchParams;
   const q = params.q;
   return {
-    title: q ? `"${q}" — Search Results` : 'Browse Vehicles',
+    title: q ? `"${q}" Search Results` : 'Browse Vehicles',
     description: 'Search registered vehicles for sale in Sri Lanka.',
   };
 }
@@ -97,7 +97,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             </div>
 
             {/* Mobile filters */}
-            <div className="mb-4 lg:hidden">
+            {/* <div className="mb-4 lg:hidden">
               <Suspense>
                 <FilterBar
                   vehicleTypes={typeOptions}
@@ -105,13 +105,13 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                   districts={districtOptions}
                 />
               </Suspense>
-            </div>
+            </div> */}
 
             {/* Grid */}
             {vehicles.length === 0 ? (
               <div className="py-20 text-center text-gray-400">
                 <p className="mb-2 text-base">No vehicles found</p>
-                <p className="text-sm">Try removing some filters or a different search.</p>
+                <p className="text-sm">Try a different search.</p>
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 xl:grid-cols-4">

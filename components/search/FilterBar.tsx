@@ -119,7 +119,7 @@ export function FilterBar({ vehicleTypes, makes, districts }: FilterBarProps) {
       </FilterSection>
 
       {/* Year range */}
-      <FilterSection title="Year">
+      {/* <FilterSection title="Year">
         <div className="flex items-center gap-2">
           <input
             type="number"
@@ -141,10 +141,10 @@ export function FilterBar({ vehicleTypes, makes, districts }: FilterBarProps) {
             className="w-full rounded-lg border border-[var(--color-border)] px-3 py-2 text-sm outline-none focus:border-[var(--brand-green)]"
           />
         </div>
-      </FilterSection>
+      </FilterSection> */}
 
       {/* Price range */}
-      <FilterSection title="Price (LKR)">
+      {/* <FilterSection title="Price (LKR)">
         <div className="flex items-center gap-2">
           <input
             type="number"
@@ -169,7 +169,7 @@ export function FilterBar({ vehicleTypes, makes, districts }: FilterBarProps) {
             {current.priceMax ? formatLKR(Number(current.priceMax)) : 'Any'}
           </p>
         )}
-      </FilterSection>
+      </FilterSection> */}
 
       {/* Transmission */}
       <FilterSection title="Transmission">
