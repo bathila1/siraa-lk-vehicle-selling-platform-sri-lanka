@@ -1,8 +1,9 @@
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Plus } from 'lucide-react';
 
 import { AdminShell } from '@/components/admin/AdminShell';
+import { BoostRowActions } from '@/components/admin/BoostRowActions';
 import { getAdminSession } from '@/lib/auth/admin-session';
 import { createServiceClient } from '@/lib/supabase/server';
 import { formatLKR } from '@/lib/utils';
@@ -21,23 +22,37 @@ export default async function BoostsAdminPage({ searchParams }: Props) {
   const supabase = createServiceClient();
   const { data: boosts } = await supabase
     .from('boosts')
-    .select(`
+    .select(
+      `
       id, status, starts_at, expires_at, amount_paid, created_at,
       boost_plans ( name, type ),
       vehicles ( id, slug, model, year, vehicle_makes(name) )
-    `)
+    `,
+    )
     .eq('status', filterStatus as any)
-    .order('expires_at', { ascending: filterStatus === 'active' })
+    .order('created_at', { ascending: false })
     .limit(100);
 
   return (
-    <AdminShell title="Boosts" subtitle={`${boosts?.length ?? 0} ${filterStatus}`}>
-      <div className="flex gap-2 mb-4 border-b border-[var(--color-border)]">
+    <AdminShell
+      title="Boosts"
+      subtitle={`${boosts?.length ?? 0} ${filterStatus}`}
+      actions={
+        <Link
+          href="/admin/boosts/new"
+          className="flex items-center gap-1.5 rounded-lg bg-[var(--brand-green)] px-3 py-2 text-sm font-medium text-white hover:bg-[var(--brand-deep)]"
+        >
+          <Plus className="h-4 w-4" />
+          Manual Boost
+        </Link>
+      }
+    >
+      <div className="mb-4 flex gap-2 border-b border-[var(--color-border)]">
         {['active', 'pending', 'expired', 'cancelled'].map((s) => (
           <Link
             key={s}
             href={`/admin/boosts?status=${s}`}
-            className={`text-sm px-3 py-2 capitalize ${
+            className={`px-3 py-2 text-sm capitalize ${
               filterStatus === s
                 ? 'border-b-2 border-[var(--brand-green)] text-[var(--brand-deep)] font-medium'
                 : 'text-gray-500 hover:text-gray-700'
@@ -48,47 +63,63 @@ export default async function BoostsAdminPage({ searchParams }: Props) {
         ))}
       </div>
 
-      <div className="bg-white rounded-xl border border-[var(--color-border)] overflow-hidden">
+      <div className="overflow-hidden rounded-xl border border-[var(--color-border)] bg-white">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-[var(--brand-bg)] text-xs uppercase text-gray-500">
               <tr>
-                <th className="text-left px-3 py-2 font-medium">Vehicle</th>
-                <th className="text-left px-3 py-2 font-medium">Plan</th>
-                <th className="text-left px-3 py-2 font-medium">Amount</th>
-                <th className="text-left px-3 py-2 font-medium">Starts</th>
-                <th className="text-left px-3 py-2 font-medium">Expires</th>
+                <th className="px-3 py-2 text-left font-medium">Vehicle</th>
+                <th className="px-3 py-2 text-left font-medium">Plan</th>
+                <th className="px-3 py-2 text-left font-medium">Amount</th>
+                <th className="px-3 py-2 text-left font-medium">Starts</th>
+                <th className="px-3 py-2 text-left font-medium">Expires</th>
+                <th className="px-3 py-2 text-right font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
               {(boosts ?? []).length === 0 ? (
-                <tr><td colSpan={5} className="text-center py-12 text-gray-400">No boosts</td></tr>
+                <tr>
+                  <td colSpan={6} className="py-12 text-center text-gray-400">
+                    No boosts
+                  </td>
+                </tr>
               ) : (
                 (boosts as any[]).map((b) => (
                   <tr key={b.id} className="border-t border-[var(--color-border)]">
                     <td className="px-3 py-2">
                       {b.vehicles ? (
-                        <Link href={`/vehicle/${b.vehicles.slug}`} target="_blank" className="hover:underline inline-flex items-center gap-1">
+                        <Link
+                          href={`/vehicle/${b.vehicles.slug}`}
+                          target="_blank"
+                          className="inline-flex items-center gap-1 hover:underline"
+                        >
                           {b.vehicles.year} {b.vehicles.vehicle_makes?.name} {b.vehicles.model}
-                          <ExternalLink className="w-3 h-3 text-gray-400" />
+                          <ExternalLink className="h-3 w-3 text-gray-400" />
                         </Link>
-                      ) : <span className="text-gray-400 italic">Vehicle deleted</span>}
+                      ) : (
+                        <span className="italic text-gray-400">Vehicle deleted</span>
+                      )}
                     </td>
                     <td className="px-3 py-2">
-                      <span className={`text-xs px-2 py-0.5 rounded-full capitalize ${
-                        b.boost_plans?.type === 'pro'
-                          ? 'bg-amber-100 text-amber-700'
-                          : 'bg-green-100 text-green-700'
-                      }`}>
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-xs capitalize ${
+                          b.boost_plans?.type === 'pro'
+                            ? 'bg-amber-100 text-amber-700'
+                            : 'bg-green-100 text-green-700'
+                        }`}
+                      >
                         {b.boost_plans?.name}
                       </span>
                     </td>
                     <td className="px-3 py-2 font-medium">{formatLKR(b.amount_paid)}</td>
                     <td className="px-3 py-2 text-xs text-gray-500">
-                      {new Date(b.starts_at).toLocaleDateString('en-LK')}
+                      {b.starts_at ? new Date(b.starts_at).toLocaleDateString('en-LK') : '—'}
                     </td>
                     <td className="px-3 py-2 text-xs text-gray-500">
-                      {new Date(b.expires_at).toLocaleDateString('en-LK')}
+                      {b.expires_at ? new Date(b.expires_at).toLocaleDateString('en-LK') : '—'}
+                    </td>
+                    <td className="px-3 py-2">
+                      <BoostRowActions boostId={b.id} status={b.status} />
                     </td>
                   </tr>
                 ))

@@ -9,6 +9,7 @@ import { BoostPicker } from '@/components/boost/BoostPicker';
 import { getSession } from '@/lib/auth/session';
 import { createServiceClient } from '@/lib/supabase/server';
 import { formatLKR } from '@/lib/utils';
+import { PendingBoostActions } from '@/components/boost/PendingBoostActions';
 
 export const metadata: Metadata = { title: 'Boost Your Ad' };
 
@@ -98,24 +99,19 @@ export default async function BoostPage({ params }: Props) {
             </div>
           </div>
 
-          {activeBoost ? (
-            <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm">
+          {activeBoost?.status === 'active' ? (
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm">
               <p className="font-medium text-amber-800">
-                {activeBoost.status === 'pending'
-                  ? 'A boost is pending payment for this vehicle.'
-                  : `This vehicle is currently boosted as ${(activeBoost as any).boost_plans?.name}.`}
+                This vehicle is currently boosted as {(activeBoost as any).boost_plans?.name}.
               </p>
-              {activeBoost.status === 'active' && (
-                <p className="mt-1 text-xs text-amber-700">
-                  Expires{' '}
-                  {new Date(activeBoost.expires_at).toLocaleDateString('en-LK', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}
-                </p>
-              )}
+              <p className="text-xs text-amber-700 mt-1">
+                Expires {new Date(activeBoost.expires_at).toLocaleDateString('en-LK', {
+                  year: 'numeric', month: 'long', day: 'numeric',
+                })}
+              </p>
             </div>
+          ) : activeBoost?.status === 'pending' ? (
+            <PendingBoostActions boost={activeBoost} vehicleId={v.id} />
           ) : (
             <BoostPicker vehicleId={v.id} plans={plans ?? []} />
           )}
