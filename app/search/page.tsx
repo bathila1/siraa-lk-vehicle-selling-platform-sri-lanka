@@ -9,6 +9,7 @@ import { FilterBar } from '@/components/search/FilterBar';
 import { getVehicleTypes, getDistricts, getVehicleMakesByType } from '@/lib/db/queries';
 import { searchVehicles } from '@/lib/search/query-builder';
 import { searchQuerySchema } from '@/lib/validations/schemas';
+import { MobileFilterButton } from '@/components/search/MobileFilterButton';
 
 interface SearchPageProps {
   searchParams: Promise<Record<string, string>>;
@@ -74,8 +75,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
           {/* Results */}
           <div className="min-w-0 flex-1">
+            
             {/* Results header */}
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-4">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
               <p className="text-sm text-gray-500">
                 {total === 0
                   ? 'No results'
@@ -83,29 +85,27 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 {raw.q ? (
                   <>
                     {' '}
-                    for <strong>"{raw.q}"</strong>
+                    for <strong>&quot;{raw.q}&quot;</strong>
                   </>
                 ) : (
                   ''
                 )}
               </p>
 
-              {/* Sort */}
-              <Suspense>
-                <SortSelect current={raw.sort ?? 'newest'} />
-              </Suspense>
-            </div>
+              <div className="flex items-center gap-2">
+                <Suspense>
+                  <MobileFilterButton
+                    vehicleTypes={typeOptions}
+                    makes={makeOptions}
+                    districts={districtOptions}
+                  />
+                </Suspense>
 
-            {/* Mobile filters */}
-            {/* <div className="mb-4 lg:hidden">
-              <Suspense>
-                <FilterBar
-                  vehicleTypes={typeOptions}
-                  makes={makeOptions}
-                  districts={districtOptions}
-                />
-              </Suspense>
-            </div> */}
+                <Suspense>
+                  <SortSelect current={raw.sort ?? 'newest'} />
+                </Suspense>
+              </div>
+            </div>
 
             {/* Grid */}
             {vehicles.length === 0 ? (

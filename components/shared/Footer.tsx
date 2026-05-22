@@ -59,7 +59,7 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/post-ad" className="text-gray-500 hover:text-[var(--brand-green)]">
-                  Post Ad
+                  Post Ad Free
                 </Link>
               </li>
             </ul>
@@ -105,6 +105,24 @@ export function Footer() {
           <p className="flex items-center gap-1">
             Made with <Heart className="h-3 w-3 fill-red-400 text-red-400" /> in Sri Lanka
           </p>
+        </div>
+        <div className="mt-4 text-center text-[10px] text-gray-300">
+          <Link
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://bathila.netlify.app/"
+            style={{ color: 'var(--neutral-500)', textDecoration: 'none' }}
+          >
+            <p
+              style={{
+                fontSize: '0.8rem',
+                color: 'var(--neutral-600)',
+                textAlign: 'center',
+              }}
+            >
+              Developed by Bathila Sanvidu
+            </p>
+          </Link>
         </div>
       </div>
     </footer>

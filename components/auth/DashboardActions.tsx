@@ -6,16 +6,19 @@ import Link from 'next/link';
 import { MoreVertical, Edit3, CheckSquare, Trash2, Zap } from 'lucide-react';
 
 interface Props {
+  isBoosted: boolean;
   vehicleId: number;
   vehicleSlug: string;
   isSold: boolean;
 }
 
-export function DashboardActions({ vehicleId, isSold }: Props) {
+export function DashboardActions({isBoosted, vehicleId, isSold }: Props) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  // console.log('DashboardActions rendered with:', { isBoosted, vehicleId, isSold });
 
   useEffect(() => {
     const onClickOutside = (e: MouseEvent) => {
@@ -52,55 +55,69 @@ export function DashboardActions({ vehicleId, isSold }: Props) {
   };
 
   return (
-    <div className="relative" ref={menuRef}>
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        disabled={busy}
-        className="rounded-lg p-2 transition-colors hover:bg-gray-100"
-        aria-label="Actions"
-      >
-        <MoreVertical className="h-4 w-4 text-gray-500" />
-      </button>
-
-      {open && (
-        <div className="absolute right-0 top-full z-30 mt-1 w-44 overflow-hidden rounded-lg border border-[var(--color-border)] bg-white shadow-lg">
-          {!isSold && (
-            <Link
-              href={`/dashboard/boost/${vehicleId}`}
-              className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-[var(--brand-deep)] transition-colors hover:bg-[var(--brand-bg)]"
-            >
-              <Zap className="h-3.5 w-3.5 text-amber-500" />
-              Boost ad
-            </Link>
-          )}
+    <div className="flex items-center gap-1.5">
+      {/* Primary visible actions — only when not sold */}
+      {!isSold && (
+        <>
+        {!isBoosted && (
+          // {/* Boost — revenue driver, highest emphasis */}
           <Link
-            href={`/dashboard/edit/${vehicleId}`}
-            className="flex items-center gap-2 px-3 py-2 text-sm transition-colors hover:bg-gray-50"
+            href={`/dashboard/boost/${vehicleId}`}
+            className="flex h-9 items-center gap-1 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 px-2.5 text-xs font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-95 sm:px-3 sm:text-sm"
+            aria-label="Boost this ad"
           >
-            <Edit3 className="h-3.5 w-3.5 text-gray-500" />
-            Edit
+            <Zap className="h-3.5 w-3.5 fill-white" />
+            <span className="hidden xs:inline">Boost</span>
           </Link>
-          {!isSold && (
-            <button
-              type="button"
-              onClick={markSold}
-              className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors hover:bg-gray-50"
-            >
-              <CheckSquare className="h-3.5 w-3.5 text-gray-500" />
-              Mark as sold
-            </button>
-          )}
+        )}
+          {/* Mark as sold — neutral but visible */}
           <button
             type="button"
-            onClick={deleteAd}
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 transition-colors hover:bg-red-50"
+            onClick={markSold}
+            disabled={busy}
+            className="flex h-9 items-center gap-1 rounded-lg border border-[var(--color-border)] bg-white px-2.5 text-xs font-medium text-gray-700 transition-colors hover:border-[var(--brand-green)] hover:text-[var(--brand-green)] active:scale-95 disabled:opacity-50 sm:px-3 sm:text-sm"
+            aria-label="Mark as sold"
           >
-            <Trash2 className="h-3.5 w-3.5" />
-            Delete
+            <CheckSquare className="h-3.5 w-3.5" />
+            <span className="xs:inline">Sold</span>
           </button>
-        </div>
+        </>
       )}
+
+      {/* Overflow menu (Edit, Delete) */}
+      <div className="relative" ref={menuRef}>
+        <button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          disabled={busy}
+          className="flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:bg-gray-100 active:scale-95"
+          aria-label="More actions"
+          aria-expanded={open}
+        >
+          <MoreVertical className="h-4 w-4 text-gray-500" />
+        </button>
+
+        {open && (
+          <div className="absolute right-0 top-full z-30 mt-1 w-40 overflow-hidden rounded-lg border border-[var(--color-border)] bg-white shadow-lg">
+            <Link
+              href={`/dashboard/edit/${vehicleId}`}
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2 px-3 py-2.5 text-sm transition-colors hover:bg-gray-50"
+            >
+              <Edit3 className="h-3.5 w-3.5 text-gray-500" />
+              Edit
+            </Link>
+            <button
+              type="button"
+              onClick={deleteAd}
+              className="flex w-full items-center gap-2 border-t border-[var(--color-border)] px-3 py-2.5 text-left text-sm text-red-600 transition-colors hover:bg-red-50"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+              Delete
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

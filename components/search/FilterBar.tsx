@@ -65,24 +65,7 @@ export function FilterBar({ vehicleTypes, makes, districts }: FilterBarProps) {
         )}
       </div>
 
-      {/* Vehicle type */}
-      <FilterSection title="Vehicle Type">
-        <div className="flex flex-col gap-1">
-          {vehicleTypes.map((t) => (
-            <FilterChip
-              key={t.id}
-              label={t.label}
-              active={current.vehicleTypeId === String(t.id)}
-              onClick={() =>
-                setParam(
-                  'vehicleTypeId',
-                  current.vehicleTypeId === String(t.id) ? null : String(t.id),
-                )
-              }
-            />
-          ))}
-        </div>
-      </FilterSection>
+
 
       {/* Make */}
       {makes.length > 0 && (
@@ -194,6 +177,25 @@ export function FilterBar({ vehicleTypes, makes, districts }: FilterBarProps) {
               label={f.charAt(0).toUpperCase() + f.slice(1)}
               active={current.fuelType === f}
               onClick={() => setParam('fuelType', current.fuelType === f ? null : f)}
+            />
+          ))}
+        </div>
+      </FilterSection>
+
+            {/* Vehicle type */}
+      <FilterSection title="Vehicle Type">
+        <div className="flex flex-col gap-1">
+          {vehicleTypes.map((t) => (
+            <FilterChip
+              key={t.id}
+              label={t.label}
+              active={current.vehicleTypeId === String(t.id)}
+              onClick={() =>
+                setParam(
+                  'vehicleTypeId',
+                  current.vehicleTypeId === String(t.id) ? null : String(t.id),
+                )
+              }
             />
           ))}
         </div>

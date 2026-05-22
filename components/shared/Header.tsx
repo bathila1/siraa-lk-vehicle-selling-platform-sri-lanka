@@ -55,7 +55,7 @@ export async function Header() {
               className="flex items-center gap-1.5 rounded-lg bg-[var(--brand-green)] px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--brand-deep)] sm:px-4"
             >
               <PlusCircle className="h-4 w-4" />
-              <span>Post Ad</span>
+              <span>Post Free</span>
             </Link>
           </nav>
         </div>

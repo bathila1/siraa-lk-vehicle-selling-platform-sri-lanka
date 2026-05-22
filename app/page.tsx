@@ -3,6 +3,9 @@ import Image from 'next/image';
 import {
   ArrowRight, Car as CarIcon, Bike, Truck, Bus, Tractor, Construction, MoreHorizontal, Caravan,
   Search as SearchIcon, ShieldCheck, Zap as ZapIcon, MessageCircle as MsgIcon,
+  BellIcon,
+  Bird,
+  Locate,
 } from 'lucide-react';
 
 import { Header } from '@/components/shared/Header';
@@ -95,7 +98,7 @@ export default async function HomePage() {
           <div className="relative container mx-auto px-4 py-10 md:py-16 text-center max-w-2xl">
             {promoActive && (
               <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full mb-5 border border-white/30">
-                🎉 {(promo as any)?.label_en ?? 'පළමු වාහන පළ කිරීම් 100 නොමිලේ. ඔබත් දැන්ම නොමිලේ දැන්වීම් පළ කිරීමේ අවස්තාවක් ලබා ගන්න. Post Ad ක්ලික් කරන්න!'}
+                🎉 {(promo as any)?.label_en ?? 'පළමු වාහන පළ කිරීම් 100 නොමිලේ. ඔබත් දැන්ම නොමිලේ දැන්වීම් පළ කිරීමේ අවස්තාවක් ලබා ගන්න. Post Free ක්ලික් කරන්න!'}
               </div>
             )}
             <h1 className="text-3xl md:text-5xl font-bold mb-3 tracking-tight">
@@ -203,7 +206,7 @@ export default async function HomePage() {
                           />
                         )}
                         <div className="absolute top-1.5 left-1.5">
-                          <Badge variant="pro">⚡ Pro</Badge>
+                          <Badge variant="pro">Pro⚡</Badge>
                         </div>
                       </div>
                       <div className="p-2.5">
@@ -264,19 +267,34 @@ export default async function HomePage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-6">
               {[
                 {
+                  icon: Bird,
+                  title: 'භාවිතය හරිම පහසුයි',
+                  desc: 'අපගේ පරිශීලක interface එක සරල සහ නවීනයි, ඔබට අවශ්‍ය වාහනය හෝ විකිණීමට අවශ්‍ය වාහනය ඉක්මනින් සොයා ගැනීමට හැකි වේ.',
+                },
+                {
                   icon: ShieldCheck,
-                  title: 'Verified sellers',
-                  desc: 'Every seller signs in with phone OTP. No fake accounts.',
+                  title: 'මහා පරිමාණ Sale shops නොමැත.',
+                  desc: 'Registered vehicles පමණක් නිසා Open Papers / Unregistered / Brand New වාහන තිබෙන Sale කරුවන් ඇතුලත් නොවේ. අපි මහා පරිමාණ Sale shops වලට විකුණුම්කරුවන් හෝ මිලදී ගැනීමේ අවස්ථා ලබා නොදෙමු. ඔබට සෘජුවම විකුණුම්කරුවන් හා සම්බන්ධ වීමට හැකි වේ, එමඟින් අමතර ගාස්තු සහ මැදිහත්කාරීත්වය අවම කරයි.',
+                },
+                {
+                  icon: Locate,
+                  title: '100% Sri Lankan Website',
+                  desc: 'වෙනත් වෙබ් භාවිතයෙන් විදේශ සන්තක වන මුදල් ඉතුරු කරමු. අපි සිරා.lk හි සියලුම දත්ත ශ්‍රී ලංකාවේම සත්කාරකයන් මගින් පවත්වයි.',
                 },
                 {
                   icon: SearchIcon,
-                  title: 'Smart search',
+                  title: 'Search කිරීම ඉතාම පහසුයි',
                   desc: '"Toyota Aqua 2015 under 5m Colombo" — just works.',
                 },
                 {
                   icon: MsgIcon,
                   title: 'WhatsApp & call',
-                  desc: 'Contact sellers directly. No middlemen, no fees.',
+                  desc: 'කෙලින්ම වාහන විකුණුම්කරුවා Contact කරගන්න.  බ්‍රෝකර් කරුවන් නොමැත.',
+                }, 
+                {
+                  icon: BellIcon,
+                  title: ' Price Drop Alerts',
+                  desc: 'විකුණුම්කරුවා මිල අඩු කළ විට දැනගන්න.',
                 },
               ].map((item) => {
                 const Icon = item.icon;
@@ -310,7 +328,7 @@ export default async function HomePage() {
               href="/post-ad"
               className="inline-flex items-center gap-2 bg-[var(--brand-green)] hover:bg-[var(--brand-deep)] text-white font-medium px-6 py-3 rounded-xl transition-colors shadow-md"
             >
-              Post Your Ad <ArrowRight className="w-4 h-4" />
+              Post Your Ad Free <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </section>

@@ -49,22 +49,22 @@ export function randomShortId(length = 6): string {
  * Format LKR price compactly: 4_500_000 → "Rs. 45 Lakhs"
  * Pass full=true to get "Rs. 4,500,000".
  */
-export function formatLKR(amount: number, full = false): string {
-  if (full) {
-    return 'Rs. ' + amount.toLocaleString('en-LK');
-  }
-  if (amount >= 10_000_000) {
-    return `Rs. ${(amount / 10_000_000).toFixed(amount % 10_000_000 === 0 ? 0 : 2)} Cr`;
-  }
-  if (amount >= 100_000) {
-    const lakhs = amount / 100_000;
-    return `Rs. ${lakhs % 1 === 0 ? lakhs.toFixed(0) : lakhs.toFixed(2)} Lakhs`;
-  }
-  if (amount >= 1000) {
-    return `Rs. ${(amount / 1000).toFixed(0)}K`;
-  }
-  return 'Rs. ' + amount.toLocaleString('en-LK');
-}
+// export function formatLKR(amount: number, full = false): string {
+//   if (full) {
+//     return 'Rs. ' + amount.toLocaleString('en-LK');
+//   }
+//   if (amount >= 10_000_000) {
+//     return `Rs. ${(amount / 10_000_000).toFixed(amount % 10_000_000 === 0 ? 0 : 2)} Cr`;
+//   }
+//   if (amount >= 100_000) {
+//     const lakhs = amount / 100_000;
+//     return `Rs. ${lakhs % 1 === 0 ? lakhs.toFixed(0) : lakhs.toFixed(2)} Lakhs`;
+//   }
+//   if (amount >= 1000) {
+//     return `Rs. ${(amount / 1000).toFixed(0)}K`;
+//   }
+//   return 'Rs. ' + amount.toLocaleString('en-LK');
+// }
 
 /** Build a WhatsApp deeplink for a vehicle inquiry. */
 export function whatsappLink(phone: string, message: string): string {
@@ -105,4 +105,30 @@ export function timeAgo(date: Date | string): string {
   if (seconds < 2592000) return `${Math.floor(seconds / 604800)} weeks ago`;
   if (seconds < 31536000) return `${Math.floor(seconds / 2592000)} months ago`;
   return `${Math.floor(seconds / 31536000)} years ago`;
+}
+
+import { CURRENCY } from '@/lib/variables';
+/** Format a price in LKR using config from lib/variables.ts */
+export function formatLKR(amount: number | null | undefined): string {
+  if (amount == null || isNaN(amount)) return '—';
+  const c = CURRENCY;
+
+  if (c.useCrores && amount >= c.croresThreshold) {
+    const value = amount / c.croresThreshold;
+    return `${c.prefix}${value.toFixed(c.croresDecimals).replace(/\.?0+$/, '')} ${c.croresLabel}`;
+  }
+  if (c.useLakhs && amount >= c.lakhsThreshold) {
+    const value = amount / c.lakhsThreshold;
+    return `${c.prefix}${value.toFixed(c.lakhsDecimals).replace(/\.?0+$/, '')} ${c.lakhsLabel}`;
+  }
+  if (c.useThousands && amount >= c.thousandThreshold) {
+    const value = amount / c.thousandThreshold;
+    return `${c.prefix}${value.toFixed(0)}${c.thousandLabel}`;
+  }
+  return `${c.prefix}${amount.toLocaleString('en-LK')}`;
+}
+
+export function formatLKRFull(amount: number | null | undefined): string {
+  if (amount == null || isNaN(amount)) return '—';
+  return `${CURRENCY.prefix}${amount.toLocaleString('en-LK')}`;
 }

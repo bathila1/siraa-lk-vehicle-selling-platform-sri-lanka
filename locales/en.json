@@ -6,7 +6,7 @@
   },
   "nav": {
     "browse": "Browse",
-    "post_ad": "Post Ad",
+    "post_ad": "Post Free",
     "saved": "Saved",
     "dashboard": "Dashboard",
     "login": "Sign In",
@@ -43,7 +43,7 @@
     "step_review": "Review & publish",
     "publish": "Publish ad",
     "image_help": "Upload 3 to 6 clear photos. Max 8 MB each.",
-    "promo_active": "🎉 පළමු වාහන පළ කිරීම් 100 නොමිලේ. ඔබත් දැන්ම නොමිලේ දැන්වීම් පළ කිරීමේ අවස්තාවක් ලබා ගන්න. Post Ad ක්ලික් කරන්න!"
+    "promo_active": "🎉 පළමු වාහන පළ කිරීම් 100 නොමිලේ. ඔබත් දැන්ම නොමිලේ දැන්වීම් පළ කිරීමේ අවස්තාවක් ලබා ගන්න. Post Free ක්ලික් කරන්න!"
   },
   "report": {
     "title": "Report this ad",
