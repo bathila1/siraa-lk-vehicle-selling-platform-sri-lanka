@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Rate limit
-  const rl = rateLimitOtpRequest(phone, ip);
+  const rl = await rateLimitOtpRequest(phone, ip);  // ← await added
   if (!rl.allowed) {
     const minutes = Math.ceil((rl.resetAt - Date.now()) / 60_000);
     return NextResponse.json(

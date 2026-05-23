@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
   const { phone, code, purpose } = parsed.data;
 
   // Rate limit verify attempts (brute-force protection)
-  const rl = rateLimitOtpVerify(phone);
+  const rl = await rateLimitOtpVerify(phone);
   if (!rl.allowed) {
     return NextResponse.json(
       { error: 'Too many attempts. Please request a new code.' },

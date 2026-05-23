@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { rateLimit, RATE_LIMITS } from '@/lib/auth/rate-limit';
 
 import { reportSchema } from '@/lib/validations/schemas';
 import { createServiceClient } from '@/lib/supabase/server';
-import { rateLimit } from '@/lib/auth/rate-limit';
 
 export async function POST(request: NextRequest) {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] ?? 'unknown';
 
   // Rate limit reports — 5 per IP per hour
-  const rl = rateLimit(`report:${ip}`, { limit: 5, windowMs: 60 * 60_000 });
+  const rl = await rateLimit(`report:${ip}`, RATE_LIMITS.reports);
   if (!rl.allowed) {
     return NextResponse.json({ error: 'Too many reports. Try again later.' }, { status: 429 });
   }

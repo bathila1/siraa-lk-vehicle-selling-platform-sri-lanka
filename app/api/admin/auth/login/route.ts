@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-
+import { rateLimit, RATE_LIMITS } from '@/lib/auth/rate-limit';
 import { verifyTurnstileToken } from '@/lib/auth/turnstile';
-import { rateLimit } from '@/lib/auth/rate-limit';
 import { createServiceClient } from '@/lib/supabase/server';
 import { setAdminSession } from '@/lib/auth/admin-session';
 import { logAuditEvent } from '@/lib/auth/audit-log';
@@ -27,7 +26,10 @@ export async function POST(request: NextRequest) {
   }
 
   // Rate limit — by IP since password is shared
-  const rl = rateLimit(`admin_login:${ip}`, { limit: 5, windowMs: 15 * 60_000 });
+
+  // ...
+
+  const rl = await rateLimit(`admin_login:${ip}`, RATE_LIMITS.adminLogin);
   if (!rl.allowed) {
     return NextResponse.json(
       { error: 'Too many attempts. Try again in 15 minutes.' },

@@ -63,9 +63,10 @@ export async function GET(request: NextRequest) {
     staleCount = ids.length;
   }
 
-  // 3. Cleanup expired OTPs and saved lists
+  // 3. Cleanup expired OTPs, saved lists, and rate-limit counters
   const { data: otpCount } = await supabase.rpc('cleanup_expired_otps' as any);
   const { data: listCount } = await supabase.rpc('cleanup_expired_saved_lists' as any);
+  const { data: rateLimitCount } = await supabase.rpc('cleanup_expired_rate_limits' as any);
 
   return NextResponse.json({
     ok: true,
@@ -73,6 +74,7 @@ export async function GET(request: NextRequest) {
     stale_payments_cancelled: staleCount,
     otps_cleaned: otpCount ?? 0,
     saved_lists_cleaned: listCount ?? 0,
+    rate_limits_cleaned: rateLimitCount ?? 0,
     timestamp: new Date().toISOString(),
   });
 }
