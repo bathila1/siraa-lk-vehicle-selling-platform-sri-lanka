@@ -7,12 +7,38 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: '/',
-        disallow: ['/admin', '/api', '/dashboard', '/post-ad', '/payment/'],
+        allow: [
+          '/',
+          '/search',
+          '/vehicle/',
+          '/categories',
+          '/cars/',
+          '/locations',
+          '/price-guide',
+          '/blog',
+          '/seller/',
+          '/about',
+          '/contact',
+          '/terms',
+          '/privacy',
+        ],
+        disallow: [
+          '/dashboard',
+          '/dashboard/',
+          '/admin',
+          '/admin/',
+          '/api/',
+          '/login',
+          '/post-ad',
+          '/payment/',
+          '/report/',
+        ],
       },
-      // Block known scrapers from auto-pulling listings
-      { userAgent: 'GPTBot', disallow: '/' },
-      { userAgent: 'CCBot', disallow: '/' },
+      // Block known bad bots
+      {
+        userAgent: ['AhrefsBot', 'SemrushBot', 'MJ12bot'],
+        disallow: '/',
+      },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
     host: SITE_URL,
