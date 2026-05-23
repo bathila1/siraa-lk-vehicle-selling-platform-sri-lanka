@@ -11,6 +11,7 @@ import { JsonLd } from '@/components/shared/JsonLd';
 import {
   getDistrictBySlug,
   getLandingPageListings,
+  slugifyLocation,
 } from '@/lib/db/seo-queries';
 import { createServiceClient } from '@/lib/supabase/server';
 
@@ -92,14 +93,17 @@ export default async function DistrictPage({ params }: Props) {
             <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500">
               Cities in {d.name_en}
             </h2>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
               {(cities as any[]).map((c) => (
                 <Link
                   key={c.id}
-                  href={`/search?districtId=${d.id}&cityId=${c.id}`}
-                  className="inline-flex items-center gap-1 rounded-full border border-[var(--color-border)] bg-white px-3 py-1 text-xs hover:border-[var(--brand-green)]"
+                  href={`/locations/${district}/${slugifyLocation(c.name_en)}`}
+                  className="group flex items-center justify-between rounded-lg border border-[var(--color-border)] bg-white px-3 py-2 text-sm transition-colors hover:border-[var(--brand-green)]"
                 >
-                  {c.name_en}
+                  <span className="font-medium group-hover:text-[var(--brand-green)]">
+                    {c.name_en}
+                  </span>
+                  <ChevronRight className="h-3.5 w-3.5 text-gray-300 group-hover:text-[var(--brand-green)]" />
                 </Link>
               ))}
             </div>

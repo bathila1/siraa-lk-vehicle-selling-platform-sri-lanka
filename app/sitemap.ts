@@ -110,7 +110,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // ===== Location landing pages =====
     const { data: districts } = await supabase
       .from('districts')
-      .select('name_en')
+      .select('id, name_en')
       .order('sort_order');
 
     const locationRoutes: MetadataRoute.Sitemap = (districts ?? []).map((d: any) => ({
@@ -119,6 +119,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'daily',
       priority: 0.6,
     }));
+
+    // City pages: only include cities that have at least 1 active listing
+    const { data: citiesWithListings } = await supabase
+      .from('vehicles')
+      .select('city_id, cities ( id, name_en, district_id, districts ( name_en ) )')
+      .eq('status', 'active')
+      .not('city_id', 'is', null);
+
+    const seenCities = new Set<number>();
+    const cityRoutes: MetadataRoute.Sitemap = [];
+    (citiesWithListings ?? []).forEach((row: any) => {
+      const city = row.cities;
+      if (!city || seenCities.has(city.id) || !city.districts?.name_en) return;
+      seenCities.add(city.id);
+      cityRoutes.push({
+        url: `${SITE_URL}/locations/${slugifyLocation(city.districts.name_en)}/${slugifyLocation(city.name_en)}`,
+        lastModified: now,
+        changeFrequency: 'daily',
+        priority: 0.5,
+      });
+    });
 
     // ===== Price guide pages (top models with sufficient data) =====
     const { data: priceModels } = await supabase
@@ -156,6 +177,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ...sellerRoutes,
       ...categoryRoutes,
       ...locationRoutes,
+      ...cityRoutes,
       ...priceGuideRoutes,
     ];
   } catch (err) {
