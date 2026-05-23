@@ -12,19 +12,15 @@ import { z } from 'zod';
 
 // ---------- Primitives ----------
 
-/** Sri Lankan phone numbers: accepts +9476..., 9476..., 076... — normalizes to +9476... */
+import { normalizePhone } from '@/lib/phone';
+
+/** Sri Lankan phone numbers: accepts +9476..., 9476..., 076..., with/without spaces — normalizes to +9476... */
 export const sriLankanPhone = z
   .string()
   .trim()
-  .transform((v) => v.replace(/\s|-/g, ''))
-  .refine((v) => /^(\+?94|0)7\d{8}$/.test(v), {
+  .transform((v) => normalizePhone(v))
+  .refine((v): v is string => v !== null, {
     message: 'Enter a valid Sri Lankan mobile number (07x xxx xxxx)',
-  })
-  .transform((v) => {
-    if (v.startsWith('+94')) return v;
-    if (v.startsWith('94')) return `+${v}`;
-    if (v.startsWith('0')) return `+94${v.slice(1)}`;
-    return v;
   });
 
 export const otpCode = z
@@ -68,9 +64,23 @@ export const sellerSignupSchema = z.object({
 
 export const vehicleConditionEnum = z.enum(['registered']);
 
-export const transmissionEnum = z.enum(['auto', 'manual', 'tiptronic', 'cvt', 'other']);
+export const transmissionEnum = z.enum([
+  'auto',
+  'manual',
+  'tiptronic',
+  'cvt',
+  'other',
+]);
 
-export const fuelEnum = z.enum(['petrol', 'diesel', 'hybrid', 'electric', 'cng', 'lpg', 'other']);
+export const fuelEnum = z.enum([
+  'petrol',
+  'diesel',
+  'hybrid',
+  'electric',
+  'cng',
+  'lpg',
+  'other',
+]);
 
 export const bodyTypeEnum = z.enum([
   'sedan',
@@ -111,7 +121,10 @@ export const vehicleCreateSchema = z.object({
   lat: z.coerce.number().min(-90).max(90).optional(),
   lng: z.coerce.number().min(-180).max(180).optional(),
   customAttributes: z.record(z.unknown()).default({}),
-  imageIds: z.array(z.string()).min(3, 'Upload at least 3 images').max(6, 'Maximum 6 images'),
+  imageIds: z
+    .array(z.string())
+    .min(3, 'Upload at least 3 images')
+    .max(6, 'Maximum 6 images'),
 });
 
 export const vehicleUpdateSchema = vehicleCreateSchema.partial();
@@ -144,11 +157,7 @@ export const searchQuerySchema = z.object({
 export const imageUploadSchema = z.object({
   filename: z.string().trim().min(1).max(120),
   contentType: z.enum(['image/jpeg', 'image/png', 'image/webp']),
-  size: z
-    .number()
-    .int()
-    .positive()
-    .max(8 * 1024 * 1024, 'Max 8 MB per image'),
+  size: z.number().int().positive().max(8 * 1024 * 1024, 'Max 8 MB per image'),
 });
 
 // ---------- Boosts & payments ----------
@@ -166,6 +175,7 @@ export const reportSchema = z.object({
   reporterPhone: sriLankanPhone.optional(),
   reporterName: z.string().trim().max(80).optional(),
   notes: z.string().trim().max(1000).optional(),
+  captchaToken: z.string().min(1, 'Captcha verification required'),
 });
 
 // ---------- Saved lists ----------
