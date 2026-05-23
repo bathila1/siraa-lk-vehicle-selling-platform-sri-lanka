@@ -21,13 +21,7 @@ interface Props {
  * Mobile-first: shows fixed at bottom with safe-area padding.
  * Desktop: appears as a smaller pill in the bottom-right corner.
  */
-export function QuickContactWidget({
-  phone,
-  whatsapp,
-  vehicleId,
-  vehicleTitle,
-  price,
-}: Props) {
+export function QuickContactWidget({ phone, whatsapp, vehicleId, vehicleTitle, price }: Props) {
   const [visible, setVisible] = useState(false);
   const [revealed, setRevealed] = useState(false);
 
@@ -68,7 +62,7 @@ export function QuickContactWidget({
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 z-40 border-t border-[var(--color-border)] bg-white shadow-[0_-4px_20px_-8px_rgba(0,0,0,0.1)] md:bottom-4 md:left-auto md:right-4 md:max-w-md md:rounded-2xl md:border md:shadow-xl"
+      className="fixed left-0 right-0 z-40 hidden min-w-0 flex-1 border-t border-[var(--color-border)] bg-white shadow-[0_-4px_20px_-8px_rgba(0,0,0,0.1)] md:bottom-4 md:left-auto md:right-4 md:block md:max-w-md md:rounded-2xl md:border md:shadow-xl"
       style={{
         paddingBottom: 'env(safe-area-inset-bottom)',
         animation: 'slideUp 0.25s ease-out',
@@ -76,7 +70,7 @@ export function QuickContactWidget({
     >
       <div className="flex items-center gap-2 p-3">
         {/* Quick info — hidden on mobile to save space */}
-        <div className="hidden flex-1 min-w-0 md:block">
+        <div className="hidden min-w-0 flex-1 md:block">
           <p className="truncate text-xs text-gray-500">Contact seller</p>
           <p className="truncate text-sm font-medium">{formatLKR(price)}</p>
         </div>

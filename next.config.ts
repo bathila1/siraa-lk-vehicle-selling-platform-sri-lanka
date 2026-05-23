@@ -65,7 +65,6 @@
 
 // export default nextConfig;
 
-
 import type { NextConfig } from 'next';
 
 const isDev = process.env.NODE_ENV !== 'production';
@@ -135,8 +134,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Permissions-Policy',
-            value:
-              'camera=(), microphone=(), geolocation=(self), payment=(self), usb=(), interest-cohort=()',
+            value: 'camera=(), microphone=(), geolocation=(self), payment=(self), usb=(), browsing-topics=()',
           },
           { key: 'X-XSS-Protection', value: '1; mode=block' },
           { key: 'Content-Security-Policy', value: cspDirectives },

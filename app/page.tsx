@@ -29,6 +29,7 @@ import { formatLKR } from '@/lib/utils';
 import ComingSoonPopup from '@/components/UnderConstructionBanner';
 import { YouTubeLazy } from '@/components/shared/YouTubeLazy';
 import { RecentSearches } from '@/components/search/RecentSearches';
+import WhatsAppButton from '@/components/shared/WhatsAppButton';
 
 export const revalidate = 60;
 
@@ -344,6 +345,8 @@ export default async function HomePage() {
           </div>
         </section>
       </main>
+          <WhatsAppButton />
+
       <Footer />
     </>
   );
