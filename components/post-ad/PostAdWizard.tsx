@@ -238,7 +238,7 @@ export function PostAdWizard({
         )}
         {step === 4 && (
           <>
-          <div className="mb-6 flex items-center gap-3 rounded-lg bg-[var(--brand-green)]/10 px-4 py-2 text-sm font-medium text-[var(--brand-green)]">
+          <div className="hidden md:flex b-6 flex items-center gap-3 rounded-lg bg-[var(--brand-green)]/10 px-4 py-2 text-sm font-medium text-[var(--brand-green)]">
             <Button
               variant="primary"
               size="lg"
@@ -263,7 +263,7 @@ export function PostAdWizard({
       {submitError && <p className="mt-3 text-center text-xs text-red-500">{submitError}</p>}
 
       {/* Sticky bottom action bar (mobile-friendly) */}
-      <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-[var(--color-border)] bg-white p-3 md:relative md:mt-4 md:border-0 md:bg-transparent md:p-0">
+      <div className="fixed bottom-0 left-0 right-0 z-[9999] border-t border-[var(--color-border)] bg-white p-3 md:relative md:mt-4 md:border-0 md:bg-transparent md:p-0">
         <div className="mx-auto flex max-w-2xl items-center gap-2">
           {step > 1 && (
             <Button

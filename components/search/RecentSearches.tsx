@@ -43,7 +43,7 @@ export function addRecentSearch(query: string) {
  */
 export function RecentSearches({
   className,
-  title = 'Recent searches',
+  title = 'Search History',
 }: {
   className?: string;
   title?: string;

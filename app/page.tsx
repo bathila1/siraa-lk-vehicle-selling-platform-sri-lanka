@@ -114,11 +114,11 @@ export default async function HomePage() {
               </div>
             )}
             <h1 className="mb-3 text-3xl font-bold tracking-tight md:text-5xl">
-              ලියාපදිංචි කළ - Registered වාහන පමණි.
+              Registered Owner වාහන පමණි.
             </h1>
             <p className="mx-auto mb-7 max-w-lg text-sm text-white/85 md:text-lg">
               ශ්‍රී ලංකාවේ වාහන වෙළඳපොළේ නව අත්දැකීමක්. ඔබේ වාහනය විකිණීමට හෝ නව වාහනයක් සොයා ගැනීමට
-              අදම 'සිරා' සමඟ සම්බන්ධ වන්න!
+              අදම 'සිරා.lk' සමඟ සම්බන්ධ වන්න!
             </p>
             <SearchBar
               size="large"
@@ -177,14 +177,17 @@ export default async function HomePage() {
           <div className="container mx-auto max-w-3xl px-4">
             <div className="mb-5 text-center">
               <h2 className="text-lg font-bold text-[var(--brand-deep)] md:text-xl">
-                How Siraa works
+                Siraa.lk ගැන කෙටියෙන්
               </h2>
-              <p className="mt-1 text-sm text-gray-500">A quick 60-second tour of the platform.</p>
+              <p className="mt-1 text-sm text-gray-500">
+                ඔබත් Siraa සමඟ එක්වී වාහනයක් ඉක්මණින් පහසුවෙන් සොයා ගන්න. පහසුවෙන් වාහනයක් විකුණා
+                ගන්න.
+              </p>
             </div>
             <YouTubeLazy videoId="Zk7tfpGezqY" title="How Siraa works" />
           </div>
         </section>
-
+        <hr />
         {/* BoostPro carousel */}
         {boosted.length > 0 && (
           <section className="bg-gradient-to-b from-amber-50/40 to-transparent py-8">
@@ -241,7 +244,7 @@ export default async function HomePage() {
             </div>
           </section>
         )}
-
+        <hr />
         {/* Latest listings */}
         <section className="py-10">
           <div className="container mx-auto px-4">
@@ -271,7 +274,7 @@ export default async function HomePage() {
             )}
           </div>
         </section>
-
+<hr/>
         {/* Trust strip */}
         <section className="bg-[var(--brand-bg)] py-10">
           <div className="container mx-auto max-w-4xl px-4">
@@ -298,12 +301,12 @@ export default async function HomePage() {
                 {
                   icon: SearchIcon,
                   title: 'Search කිරීම ඉතාම පහසුයි',
-                  desc: '"Toyota Aqua 2015 under 5m Colombo" — just works.',
+                  desc: '"Toyota Premio 2018 Kurunegala" යනාදී ලෙස ගැසූ විට අදාළ වාහන පමණක් දිස්වේ.',
                 },
                 {
                   icon: MsgIcon,
-                  title: 'WhatsApp & call',
-                  desc: 'කෙලින්ම වාහන විකුණුම්කරුවා Contact කරගන්න.  බ්‍රෝකර් කරුවන් නොමැත.',
+                  title: 'වාහනයක් සෙවීමට අපහසුද? ඔබ සොයන වාහනය සමුවූයේ නැති ද?',
+                  desc: 'Request එකෙන් එකක් දමන්න. අපගේ Team එක මගින් ඔබට ගැළපෙන වාහන කිහිපයක තොරතුරු ඔබට කැපවී සොයා දේ. (හැකි තරම් ඉක්මණින්)',
                 },
                 {
                   icon: BellIcon,
@@ -328,7 +331,7 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
-
+<hr/>
         {/* Final CTA */}
         <section className="py-12 text-center">
           <div className="container mx-auto max-w-md px-4">
@@ -345,7 +348,7 @@ export default async function HomePage() {
           </div>
         </section>
       </main>
-          <WhatsAppButton />
+      <WhatsAppButton />
 
       <Footer />
     </>

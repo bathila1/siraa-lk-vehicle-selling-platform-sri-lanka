@@ -100,9 +100,9 @@ const isDev = process.env.NODE_ENV !== 'production';
 const cspDirectives = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ''} https://www.googletagmanager.com https://www.google-analytics.com https://challenges.cloudflare.com https://www.payhere.lk https://sandbox.payhere.lk`,
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com",
   "font-src 'self' https://fonts.gstatic.com data:",
-  "img-src 'self' data: blob: https:",
+  "img-src 'self' data: blob: https: https://unpkg.com",
   "connect-src 'self' https://*.supabase.co https://*.r2.dev https://*.r2.cloudflarestorage.com https://images.siraa.lk https://www.google-analytics.com https://*.google-analytics.com https://challenges.cloudflare.com https://www.payhere.lk https://sandbox.payhere.lk https://i.ytimg.com",
   "frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com https://challenges.cloudflare.com https://www.payhere.lk https://sandbox.payhere.lk",
   "form-action 'self' https://www.payhere.lk https://sandbox.payhere.lk",

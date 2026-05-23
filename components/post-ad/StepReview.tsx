@@ -21,9 +21,9 @@ export function StepReview({ draft, vehicleTypes, makes, districts, cities }: Pr
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="text-base font-semibold">Review & Publish</h2>
+        <h2 className="text-base font-semibold">Review & Publish | Registered Owner වාහනයක් බව තහවුරු කරමි.</h2>
         <p className="mt-1 text-xs text-gray-500">
-          Check the details below. You can edit your ad later from the dashboard.
+          Check the details below. You can edit your ad later from the dashboard. 
         </p>
       </div>
 

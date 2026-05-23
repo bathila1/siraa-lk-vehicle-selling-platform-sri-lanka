@@ -159,7 +159,13 @@ export default async function DashboardPage({ searchParams }: Props) {
               <DashboardVehicleCard key={v.id} vehicle={v} />
             ))}
           </div>
+          
         )}
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
       </main>
     </>
   );

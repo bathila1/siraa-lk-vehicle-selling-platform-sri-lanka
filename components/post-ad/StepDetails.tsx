@@ -57,7 +57,7 @@ export function StepDetails({ draft, update, vehicleTypes, makes, attributesSche
       </Field>
 
       {/* Make */}
-      <Field label="Make" required>
+      <Field label="Make : e.g. Toyota,Honda" required>
         <select
           value={draft.makeId ?? ''}
           onChange={(e) => update({ makeId: e.target.value ? Number(e.target.value) : null })}
@@ -65,7 +65,7 @@ export function StepDetails({ draft, update, vehicleTypes, makes, attributesSche
           disabled={!draft.vehicleTypeId}
         >
           <option value="">
-            {draft.vehicleTypeId ? 'Select make' : 'Select vehicle type first'}
+            {draft.vehicleTypeId ? 'Select' : 'Select vehicle type first'}
           </option>
           {filteredMakes.map((m) => (
             <option key={m.id} value={m.id}>
@@ -79,7 +79,7 @@ export function StepDetails({ draft, update, vehicleTypes, makes, attributesSche
       <Field label="Model" required>
         <input
           type="text"
-          placeholder="e.g. Aqua, Civic, Tipper"
+          placeholder="e.g. Aqua, Civic, Premio, Axio"
           value={draft.model}
           onChange={(e) => update({ model: e.target.value })}
           className="input"
@@ -225,7 +225,7 @@ export function StepDetails({ draft, update, vehicleTypes, makes, attributesSche
           <option value="7">Eighth Owner</option>
           <option value="8">Ninth Owner</option>
           <option value="9">Tenth Owner</option>
-          <option value="10+">More than 10 Owners</option>
+          <option value="10">More than 10 Owners</option>
         </select>
       </Field>
 

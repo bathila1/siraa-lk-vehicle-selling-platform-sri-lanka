@@ -58,7 +58,7 @@ export default function WhatsAppButton() {
 
       {/* Floating container */}
       <div
-        className="fixed bottom-20 right-5 z-[9999] flex flex-col items-end gap-3"
+        className="fixed bottom-20 md:bottom-5 right-5 z-[9999] flex flex-col items-end gap-3"
         style={{ opacity: visible ? 1 : 0, transition: 'opacity 0.4s ease' }}
       >
         {/* Tooltip bubble */}
