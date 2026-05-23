@@ -3,6 +3,7 @@ import { Heart, PlusCircle, User } from 'lucide-react';
 
 import { SearchBar } from '@/components/search/SearchBar';
 import { getSession } from '@/lib/auth/session';
+import { NotificationBell } from '../auth/NotificationBell';
 
 export async function Header() {
   const session = await getSession();
@@ -31,6 +32,12 @@ export async function Header() {
               <Heart className="h-4 w-4" />
               <span className="hidden sm:inline">Saved</span>
             </Link>
+            {session && (
+  <>
+    <NotificationBell />
+    {/* existing My Ads / Dashboard links */}
+  </>
+)}
 
             {session ? (
               <Link

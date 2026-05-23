@@ -17,6 +17,7 @@ import { getVehicleBySlug, getSimilarVehicles } from '@/lib/db/queries';
 import { formatLKR, timeAgo, buildVehicleSlug } from '@/lib/utils';
 import { QuickContactWidget } from '@/components/vehicle/QuickContactWidget';
 import { ShareButtons } from '@/components/shared/ShareButtons';
+import { getTrustTier, VerifiedBadge } from '@/components/ui/VerifiedBadge';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -295,7 +296,6 @@ export default async function VehicleDetailPage({ params }: Props) {
             )}
           </div>
 
-
           {/* Right: contact card (sticky) */}
           <div className="lg:col-span-1">
             <div className="sticky top-20 space-y-4">
@@ -314,6 +314,7 @@ export default async function VehicleDetailPage({ params }: Props) {
                 <div className="rounded-xl border border-[var(--color-border)] p-4">
                   <p className="mb-1 text-xs text-gray-500">Seller</p>
                   <p className="font-medium">{vehicle.seller.full_name}</p>
+                  <VerifiedBadge tier={getTrustTier(vehicle.seller)} showLabel />
                   <p className="text-sm text-gray-500">{vehicle.seller.district?.name_en}</p>
                   <Link
                     href={`/seller/${vehicle.seller.id}`}
@@ -324,16 +325,15 @@ export default async function VehicleDetailPage({ params }: Props) {
                 </div>
               )}
 
-              
-          {/* New */}
-          <div className="my-4">
-          <ShareButtons
-            url={`${process.env.NEXT_PUBLIC_SITE_URL}/vehicle/${vehicle.slug}`}
-            title={`${vehicle.year} ${vehicle.make?.name} ${vehicle.model}`}
-            description={formatLKR(vehicle.price)}
-          />
-        </div>
-          {/* New */}
+              {/* New */}
+              <div className="my-4">
+                <ShareButtons
+                  url={`${process.env.NEXT_PUBLIC_SITE_URL}/vehicle/${vehicle.slug}`}
+                  title={`${vehicle.year} ${vehicle.make?.name} ${vehicle.model}`}
+                  description={formatLKR(vehicle.price)}
+                />
+              </div>
+              {/* New */}
 
               {/* Report */}
               <Link

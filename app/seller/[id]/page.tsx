@@ -8,6 +8,7 @@ import { Footer } from '@/components/shared/Footer';
 import { VehicleCard } from '@/components/vehicle/VehicleCard';
 import { createServiceClient } from '@/lib/supabase/server';
 import { timeAgo } from '@/lib/utils';
+import { getTrustTier, VerifiedBadge } from '@/components/ui/VerifiedBadge';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -114,15 +115,22 @@ export default async function SellerProfilePage({ params }: Props) {
             {/* Avatar */}
             <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-white/20 text-2xl font-bold backdrop-blur-sm">
               {s.full_name.charAt(0).toUpperCase()}
+              
             </div>
+            {/* Details */}
+
 
             <div className="flex-1 min-w-0">
+  <VerifiedBadge tier={getTrustTier(seller)} showLabel />
+
               <h1 className="text-xl font-bold md:text-2xl truncate">{s.full_name}</h1>
               {s.verified_at && (
                 <div className="mt-1 flex items-center gap-1 text-xs text-white/85">
                   <ShieldCheck className="h-3.5 w-3.5" />
                   Phone verified
+                  
                 </div>
+                
               )}
               <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-white/85">
                 {s.districts?.name_en && (

@@ -12,18 +12,19 @@ import { getSession } from '@/lib/auth/session';
 import { createServiceClient } from '@/lib/supabase/server';
 import { formatLKR, timeAgo, cn } from '@/lib/utils';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { CelebrationConfetti } from '@/components/shared/CelebrationConfetti';
 
 export const metadata: Metadata = { title: 'My Dashboard' };
 
 interface Props {
-  searchParams: Promise<{ posted?: string }>;
+  searchParams: Promise<{ posted?: string; registered?: string }>;
 }
 
 export default async function DashboardPage({ searchParams }: Props) {
   const session = await getSession();
   if (!session) redirect('/login?next=/dashboard');
 
-  const { posted } = await searchParams;
+  const { posted, registered } = await searchParams;
 
   const supabase = createServiceClient();
 
@@ -69,6 +70,9 @@ export default async function DashboardPage({ searchParams }: Props) {
 
   return (
     <>
+      <CelebrationConfetti trigger={posted} />
+      <CelebrationConfetti trigger={registered} />
+
       <Header />
       <main className="container mx-auto max-w-4xl px-4 py-6">
         {/* Header */}

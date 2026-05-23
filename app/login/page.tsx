@@ -19,7 +19,7 @@ export default async function LoginPage({ searchParams }: Props) {
   const { next } = await searchParams;
 
   if (session) {
-    redirect(next ?? '/dashboard');
+    redirect(next ?? '/dashboard?registered=success');
   }
 
   return (
@@ -32,7 +32,7 @@ export default async function LoginPage({ searchParams }: Props) {
             <p>ඔබගේ Phone Number එක අතුලත් කර ලැබෙන OTP එක Submit කිරීමෙන් ලියාපදිංචි වී දැන්වීම් පළ කරන්න</p>
             <p className="mt-1 text-sm text-gray-500">Use your mobile number to continue</p>
           </div>
-          <LoginForm redirectTo={next ?? '/dashboard'} />
+          <LoginForm redirectTo={next ?? '/dashboard?registered=success'} />
         </div>
       </main>
     </>

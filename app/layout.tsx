@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter, Noto_Sans_Sinhala } from 'next/font/google';
 
 import '@/styles/globals.css';
+import '@/styles/transitions.css';
 import { JsonLd, organizationSchema, websiteSchema } from '@/components/shared/JsonLd';
 
 const inter = Inter({
@@ -21,7 +22,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://siraa.lk';
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Siraa.lk — Sri Lanka\'s Registered Vehicle Marketplace',
+    default: 'Siraa.lk — Sri Lanka\'s Vehicle Marketplace',
     template: '%s | Siraa.lk',
   },
   description:
@@ -44,14 +45,14 @@ export const metadata: Metadata = {
     locale: 'en_LK',
     url: SITE_URL,
     siteName: 'Siraa.lk',
-    title: "Siraa.lk — Sri Lanka's Registered Vehicle Marketplace",
+    title: "Siraa.lk — Sri Lanka's Vehicle Marketplace",
     description:
       'Buy and sell vehicles in Sri Lanka — fast, simple, mobile-first. අභිමානවත් ශ්‍රී ලාංකීය නිර්මාණයකි.',
     images: [{ url: '/og-default.png', width: 1200, height: 630, alt: 'Siraa.lk' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Siraa.lk — Sri Lanka's Registered Vehicle Marketplace",
+    title: "Siraa.lk — Sri Lanka's Vehicle Marketplace",
     description: 'Buy and sell vehicles in Sri Lanka — fast, simple, mobile-first.',
     images: ['/og-default.png'],
   },
@@ -61,6 +62,8 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
   },
   alternates: { canonical: SITE_URL },
+  icons: { icon: '/favicon.ico', apple: '/apple-touch-icon.png' },
+  manifest: '/manifest.webmanifest',
 };
 
 export const viewport: Viewport = {

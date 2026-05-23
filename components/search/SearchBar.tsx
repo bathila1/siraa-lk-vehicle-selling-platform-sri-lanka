@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Search, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { addRecentSearch } from '@/components/search/RecentSearches';
 
 interface SearchBarProps {
   defaultValue?: string;
@@ -30,10 +31,7 @@ export function SearchBar({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const fetchSuggestions = useCallback(async (q: string) => {
-    if (q.trim().length < 2) {
-      setSuggestions([]);
-      return;
-    }
+    if (q.trim().length < 2) { setSuggestions([]); return; }
     try {
       const res = await fetch(`/api/search/suggest?q=${encodeURIComponent(q)}`);
       const data = await res.json();
@@ -55,6 +53,7 @@ export function SearchBar({
   const handleSubmit = (q: string = query) => {
     if (!q.trim()) return;
     setShowSuggestions(false);
+    addRecentSearch(q.trim()); // save to history
     const params = new URLSearchParams(searchParams.toString());
     params.set('q', q.trim());
     params.delete('page');
@@ -93,6 +92,7 @@ export function SearchBar({
           size === 'large' ? 'px-4 py-1' : 'px-3 py-1',
         )}
       >
+        <Search className={cn('text-gray-400 flex-shrink-0', size === 'large' ? 'w-5 h-5' : 'w-4 h-4')} />
         <input
           ref={inputRef}
           type="text"
@@ -112,15 +112,11 @@ export function SearchBar({
         {query && (
           <button
             type="button"
-            onClick={() => {
-              setQuery('');
-              setSuggestions([]);
-              inputRef.current?.focus();
-            }}
+            onClick={() => { setQuery(''); setSuggestions([]); inputRef.current?.focus(); }}
             className="flex-shrink-0 text-gray-400 hover:text-gray-600"
             aria-label="Clear search"
           >
-            <X className="h-4 w-4" />
+            <X className="w-4 h-4" />
           </button>
         )}
         <button
@@ -140,22 +136,18 @@ export function SearchBar({
 
       {/* Suggestions dropdown */}
       {showSuggestions && suggestions.length > 0 && (
-        <ul className="absolute left-0 right-0 top-full z-50 mt-1 overflow-hidden rounded-xl border border-[var(--color-border)] bg-white shadow-lg">
+        <ul className="absolute top-full text-black left-0 right-0 mt-1 bg-white border border-[var(--color-border)] rounded-xl shadow-lg z-50 overflow-hidden">
           {suggestions.map((s, i) => (
             <li key={s}>
               <button
                 type="button"
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  setQuery(s);
-                  handleSubmit(s);
-                }}
+                onMouseDown={(e) => { e.preventDefault(); setQuery(s); handleSubmit(s); }}
                 className={cn(
-                  'flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm hover:bg-gray-50 text-[var(--brand-black)]',
+                  'w-full text-left px-4 py-2.5 text-sm flex items-center gap-2 hover:bg-gray-50',
                   i === activeSuggestion && 'bg-gray-50',
                 )}
               >
-                <Search className="h-3.5 w-3.5 flex-shrink-0 text-gray-400" />
+                <Search className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
                 {s}
               </button>
             </li>
