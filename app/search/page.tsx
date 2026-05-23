@@ -10,6 +10,8 @@ import { getVehicleTypes, getDistricts, getVehicleMakesByType } from '@/lib/db/q
 import { searchVehicles } from '@/lib/search/query-builder';
 import { searchQuerySchema } from '@/lib/validations/schemas';
 import { MobileFilterButton } from '@/components/search/MobileFilterButton';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { SearchX } from 'lucide-react';
 
 interface SearchPageProps {
   searchParams: Promise<Record<string, string>>;
@@ -109,10 +111,15 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
             {/* Grid */}
             {vehicles.length === 0 ? (
-              <div className="py-20 text-center text-gray-400">
-                <p className="mb-2 text-base">No vehicles found</p>
-                <p className="text-sm">Try a different search.</p>
-              </div>
+            <EmptyState
+                icon={SearchX}
+                title="No vehicles found."
+                description="Clear Filters කර නැවත උත්සාහ කරන්න"
+                actionLabel="Clear filters"
+                actionHref="/search"
+                secondaryLabel="Browse All"
+                secondaryHref="/search"
+              />
             ) : (
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 xl:grid-cols-4">
                 {vehicles.map((v) => (

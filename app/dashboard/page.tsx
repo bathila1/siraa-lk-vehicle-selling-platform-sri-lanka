@@ -11,6 +11,7 @@ import { LogoutButton } from '@/components/auth/LogoutButton';
 import { getSession } from '@/lib/auth/session';
 import { createServiceClient } from '@/lib/supabase/server';
 import { formatLKR, timeAgo, cn } from '@/lib/utils';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 export const metadata: Metadata = { title: 'My Dashboard' };
 
@@ -137,18 +138,13 @@ export default async function DashboardPage({ searchParams }: Props) {
         )}
 
         {enriched.length === 0 ? (
-          <div className="py-20 text-center">
-            <div className="mb-4 text-6xl opacity-30">🚗</div>
-            <p className="mb-2 text-gray-500">You haven&apos;t posted any ads yet</p>
-            <p className="mb-6 text-sm text-gray-400">It only takes 2 minutes to list your vehicle</p>
-            <Link
-              href="/post-ad"
-              className="inline-flex items-center gap-1.5 rounded-lg bg-[var(--brand-green)] px-5 py-2.5 text-sm font-medium text-white hover:bg-[var(--brand-deep)]"
-            >
-              <Plus className="h-4 w-4" />
-              Post Your First Ad
-            </Link>
-          </div>
+          <EmptyState
+            icon="🚗"
+            title="You haven&apos;t posted any ads yet."
+            description="It only takes 2 minutes to post your vehicle."
+            actionLabel="Post Your First Ad"
+            actionHref="/post-ad"
+          />
         ) : (
           <div className="space-y-3">
             {enriched.map((v: any) => (
