@@ -2,7 +2,9 @@ import { cookies } from 'next/headers';
 import { SignJWT, jwtVerify } from 'jose';
 
 const COOKIE_NAME = 'siraa_session';
-const SESSION_TTL_DAYS = 30;
+// const SESSION_TTL_DAYS = 30;
+const SESSION_TTL_DAYS = 90;
+
 
 interface SessionPayload {
   seller_id: string;

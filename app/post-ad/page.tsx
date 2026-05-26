@@ -7,6 +7,7 @@ import { getVehicleTypes, getDistricts, getVehicleMakesByType } from '@/lib/db/q
 import { createServiceClient } from '@/lib/supabase/server';
 import { LayoutDashboard, PlusCircle } from 'lucide-react';
 import Link from 'next/link';
+import BackBtn from './components/BackBtn';
 
 export const metadata: Metadata = { title: 'Post Your Ad' };
 
@@ -52,6 +53,7 @@ export default async function PostAdPage() {
           <nav className="ml-auto flex items-center gap-1">
             {/* MY ADS — outlined (secondary) */}
               <>
+                <BackBtn />
                 <Link
                   href="/dashboard"
                   className="items-center gap-2 rounded-xl border-2 border-[var(--brand-green)] bg-white px-2 py-[3px] text-sm font-semibold text-[var(--brand-green)] transition-all duration-200 hover:bg-[var(--brand-green)] hover:text-white active:scale-95 sm:inline-flex sm:px-4"
