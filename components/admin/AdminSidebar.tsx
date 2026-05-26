@@ -16,6 +16,7 @@ import {
   ScrollText,
   MapPin,
   FileText,
+  Sparkles,
   LogOut,
   Menu,
   X,
@@ -34,6 +35,7 @@ const NAV_GROUPS = [
     items: [
       { href: '/admin/vehicles', label: 'Vehicles', icon: Car },
       { href: '/admin/sellers', label: 'Sellers', icon: Users },
+      { href: '/admin/requests', label: 'Requests', icon: Sparkles },
       { href: '/admin/reports', label: 'Reports', icon: AlertTriangle },
     ],
   },

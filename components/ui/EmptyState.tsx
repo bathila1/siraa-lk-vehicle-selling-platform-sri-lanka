@@ -44,21 +44,16 @@ export function EmptyState({
   className,
 }: EmptyStateProps) {
   return (
-    <div className={cn('flex flex-col items-center justify-center px-4 py-16 text-center', className)}>
+    <div className={cn('flex flex-col items-center justify-center px-4 py-6 text-center', className)}>
       {Icon && (
         <div className="mb-4">
-          {typeof Icon === 'string' ? (
+          {typeof Icon === 'string' && (
             <span className="text-5xl opacity-40" aria-hidden>
               {Icon}
             </span>
-          ) : (
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[var(--brand-bg)]">
-              <Icon className="h-7 w-7 text-[var(--brand-green)]" />
-            </div>
           )}
         </div>
       )}
-
       <h3 className="mb-1 text-base font-semibold text-[var(--brand-black)] md:text-lg">{title}</h3>
       {description && (
         <p className="mb-5 max-w-md text-sm text-gray-500">{description}</p>

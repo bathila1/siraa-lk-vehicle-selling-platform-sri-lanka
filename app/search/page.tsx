@@ -12,6 +12,7 @@ import { searchQuerySchema } from '@/lib/validations/schemas';
 import { MobileFilterButton } from '@/components/search/MobileFilterButton';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { SearchX } from 'lucide-react';
+import { NoResultsRequestCTA } from '@/components/request/NoResultsRequestCTA';
 
 interface SearchPageProps {
   searchParams: Promise<Record<string, string>>;
@@ -111,6 +112,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
             {/* Grid */}
             {vehicles.length === 0 ? (
+              <>
+               <NoResultsRequestCTA query={raw.q} />
+
             <EmptyState
                 icon={SearchX}
                 title="No vehicles found."
@@ -120,6 +124,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 secondaryLabel="Browse All"
                 secondaryHref="/search"
               />
+              </>
             ) : (
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 xl:grid-cols-4">
                 {vehicles.map((v) => (
