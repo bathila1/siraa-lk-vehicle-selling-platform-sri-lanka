@@ -93,7 +93,7 @@ export function RecentSearches({
         <button
           type="button"
           onClick={clearAll}
-          className="text-xs text-gray-400 hover:text-red-500"
+          className="text-xs text-white hover:text-gray-100 mr-5"
         >
           Clear all
         </button>

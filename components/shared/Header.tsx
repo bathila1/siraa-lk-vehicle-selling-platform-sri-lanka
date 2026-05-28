@@ -4,11 +4,14 @@ import { Heart, PlusCircle, User, LayoutDashboard } from 'lucide-react';
 import { SearchBar } from '@/components/search/SearchBar';
 import { getSession } from '@/lib/auth/session';
 import { NotificationBell } from '../auth/NotificationBell';
+import { ScrollResetOnNavigate } from './ScrollResetOnNavigate';
 
 export async function Header() {
   const session = await getSession();
 
   return (
+    <>
+    <ScrollResetOnNavigate />
     <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-white shadow-sm">
       <div className="container mx-auto px-4">
         {/* Main row */}
@@ -153,5 +156,6 @@ export async function Header() {
 
       {session && <div className="h-0 md:hidden" id="mobile-nav-spacer" />}
     </header>
+    </>
   );
 }

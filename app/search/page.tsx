@@ -13,6 +13,8 @@ import { MobileFilterButton } from '@/components/search/MobileFilterButton';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { SearchX } from 'lucide-react';
 import { NoResultsRequestCTA } from '@/components/request/NoResultsRequestCTA';
+// Add the new import here
+import { SortSelect } from '@/components/search/SortSelect'; 
 
 interface SearchPageProps {
   searchParams: Promise<Record<string, string>>;
@@ -144,30 +146,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 }
 
 // ---------- Sub-components ----------
-
-function SortSelect({ current }: { current: string }) {
-  'use client';
-  // Server-rendered select — JS-free sort via URL params would need a client component.
-  // For now, render as a link list or use a server action.
-  // Simple approach: render as native select with form action.
-  return (
-    <div className="flex items-center gap-2 text-sm text-gray-500">
-      <span>Sort:</span>
-      <span className="font-medium capitalize text-gray-700">
-        {current === 'newest'
-          ? 'Newest'
-          : current === 'price_asc'
-            ? 'Price ↑'
-            : current === 'price_desc'
-              ? 'Price ↓'
-              : current === 'year_desc'
-                ? 'Year ↓'
-                : 'Newest'}
-      </span>
-      {/* Full sort selector is in FilterBar client component */}
-    </div>
-  );
-}
 
 function Pagination({
   current,

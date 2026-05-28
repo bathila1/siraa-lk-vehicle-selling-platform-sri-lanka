@@ -88,11 +88,11 @@ export function SearchBar({
     <div className={cn('relative w-full', className)}>
       <div
         className={cn(
-          'flex items-center gap-2 rounded-xl border-2 bg-white transition-colors',
-          size === 'large' ? 'px-4 py-1' : 'px-3 py-1',
+          'flex items-center gap-2 border-2 bg-white transition-colors',
+          size === 'large' ? 'px-3 py-1' : 'px-3 py-1 rounded-3xl',
         )}
       >
-        <Search className={cn('text-gray-400 flex-shrink-0', size === 'large' ? 'w-5 h-5' : 'w-4 h-4')} />
+        {/* <Search className={cn('text-gray-400 flex-shrink-0', size === 'large' ? 'w-5 h-5' : 'w-4 h-4')} /> */}
         <input
           ref={inputRef}
           type="text"
@@ -126,7 +126,7 @@ export function SearchBar({
             // Base styles: perfectly round circle, center content, brand colors, smooth transitions
             'flex flex-shrink-0 items-center justify-center rounded-full bg-[var(--brand-green)] text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-[var(--brand-deep)] hover:shadow-lg active:translate-y-0 active:shadow-sm mt-1 mb-1',
             // Size variants: equal height and width for a perfect circle
-            size === 'large' ? 'h-10 w-10' : 'h-7 w-7',
+            size === 'large' ? 'h-9 w-9' : 'h-7 w-7',
           )}
           aria-label="Search"
         >
